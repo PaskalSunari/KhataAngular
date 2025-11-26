@@ -34,7 +34,6 @@ export class PosComponent implements AfterViewInit {
 
       $('select').on('select2:close', function (this: HTMLElement, event: any) {
         const $this = $(this);
-
         // Wait for Select2 dropdown to close completely
         setTimeout(() => {
           setFocusOnNextElement.call($this);
