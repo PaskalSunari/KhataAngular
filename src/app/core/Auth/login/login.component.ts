@@ -280,11 +280,14 @@ export class LoginComponent implements OnInit, AfterViewInit {
           this.toastr.error('Invalid Credentials');
         }
       },
-      error: () => {
+      error: (error) => {
         this.loadingDR = false;
         this.isLoginFormShow = true;
         this.isFormShow = false;
+        console.log(error,"error");
         this.toastr.error('Failed to login');
+
+        
       },
     });
   }
