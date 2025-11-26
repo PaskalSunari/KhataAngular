@@ -1,0 +1,23 @@
+.fotter_all {
+    position: fixed;
+    width: 100%;
+    background-color: #ffffff;
+    padding: 0;
+    bottom: 0;
+    font-weight: 600;
+    color: #137b95;
+    border-top: 2px solid #f8a15b;
+    padding-left: 40px;
+    z-index: 10000000;
+    display: flex;
+    justify-content: space-between;
+
+    label {
+        font-size: 12px;
+    }
+}
+
+.fotter_all_right {
+    padding-right: 80px;
+}
+

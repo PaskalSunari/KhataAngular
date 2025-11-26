@@ -1,0 +1,29 @@
+.heading {
+   color:$color-blue-dark-700;
+   &__primary {
+      font-size: $font-size-md;
+   }
+}
+
+@font-face {
+   font-family: 'preeti';
+   src: url('../../assets/fonts/preeti_normal-webfont.woff') format('woff2'),
+        url('../../assets/fonts/preeti_normal-webfont.woff') format('woff');
+   font-weight: normal;
+   font-style: normal;
+
+}
+
+/* Apply Preeti font to the Summernote content */
+// .note-editable {
+//    font-family: 'preeti';  
+//    font-size: 16px;
+// }
+
+// .note-frame{
+//    width: 100% !important;
+// }
+
+// td span[style*="font-family: preeti;"] {
+//    font-size: 18px !important; /* Or any desired size */
+//  }

@@ -1,0 +1,66 @@
+.page__header {
+  background: white;
+  padding: 0px !important;
+  position: relative;
+  z-index: 1000;
+  border-bottom: 2px solid #f8a15b;
+}
+
+.menu_toggle_icon {
+  color: #f8a15b;
+  padding-right: 20px;
+  font-size: 20px;
+  vertical-align: middle;
+}
+
+.menu_toggle_icon i {
+  cursor: pointer;
+}
+
+.top_nav_left_img {
+  height: 45px;
+  line-height: 45px;
+}
+
+.top_nav_left_img img {
+  height: 88%;
+}
+
+//drop down
+
+.admin-dropdown {
+  font-size: 14px;
+}
+
+.admin-dropdown .btn {
+  background: $primary-500;
+  border-color: $primary-500;
+  padding: 0.35rem 0.75rem;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.admin-dropdown .dropdown-item {
+  font-size: 12px;
+}
+
+.admin-dropdown .btn:hover,
+.admin-dropdown .btn:focus {
+  border-color: $primary-600;
+}
+
+.admin-dropdown .user-icon {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
+
+.ngbDropdownMenu button {
+  display: flex;
+  align-items: center;
+}
+
+.ngbDropdownMenu i {
+  width: 20px;
+  text-align: center;
+}

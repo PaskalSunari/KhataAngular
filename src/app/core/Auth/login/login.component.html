@@ -1,0 +1,300 @@
+<div class="login-root">
+    <div class="login__container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6 col-xl-8 col-md-12  p-0">
+                    <div class="login__container--left">
+
+                        <div id="slick-slider">
+                            <div><img src="../../../../assets/img/1.jpg" alt="Slide 1"></div>
+                            <div><img src="../../../../assets/img/2.jpg" alt="Slide 2"></div>
+                            <div><img src="../../../../assets/img/3.jpg" alt="Slide 3"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-xl-4 col-md-12  p-0">
+                    <div class="login__container--right">
+                        <div class="login__form" [hidden]="!isLoginFormShow">
+                            <form [formGroup]="loginForm">
+                                <div class="col-12">
+                                    <div class="login__logo">
+                                        <figure>
+                                            <img src="../../../../assets/img/khata-logo.png" alt="Khata Logo of Book"
+                                                id="logo">
+                                        </figure>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="login__container--heading">
+                                        <h2 id="companyTitle">Welcome to Khata</h2>
+                                    </div>
+                                </div>
+                                <div class="col-12" id="companycode_container">
+                                    <div class="custom__input-container">
+
+                                        <input type="text" #inputName0 id="CompanyCode"
+                                            class="form-control  custom__input req" formControlName="CompanyCode"
+                                            (keyup)="event1($event, inputName0, inputName1)" />
+
+                                        <label>Company Code</label>
+                                    </div>
+
+                                </div>
+                                <div class="col-12" id="userName_container">
+                                    <div class="custom__input-container">
+                                        <input type="text" #inputName1 class="form-control custom__input req"
+                                            formControlName="username1" (keyup)="event1($event, inputName1, inputName2)"
+                                            id="username1" autocomplete="off" />
+
+                                        <label>User</label>
+                                    </div>
+                                </div>
+                                <div class="col-12" id="password_container">
+                                    <div class="custom__input-container">
+                                        <input [type]="isPasswordVisible ? 'text' : 'password'" #inputName2
+                                            class="form-control custom__input req" formControlName="password"
+                                            (keyup)="event1($event, inputName2, inputName3)" id="password"
+                                            placeholder="Password" autocomplete="off" />
+                                        <span id="showBtn" class="show-btn">
+                                            <i class="fa fa-fw field-icon toggle-password"
+                                                [ngClass]="{'fa-eye': !isPasswordVisible, 'fa-eye-slash': isPasswordVisible}"
+                                                (click)="togglePasswordVisibility()" aria-hidden="true"></i>
+                                        </span>
+                                        <label>Password</label>
+                                    </div>
+
+                                </div>
+                                <div class="col-12" id="login_container">
+                                    <div class="login__btn-container">
+                                        <div class="d-flex align-items-center">
+                                            <input type="checkbox" id="rememberMe" formControlName="rememberMe">
+                                            <label for="rememberMe">Remember me</label>
+                                        </div>
+
+                                        <button type="button" #inputName3 id="button"
+                                            class="form-control login_button mt-3" autocomplete="off"
+                                            (click)="publoginsubmit()">
+                                            LOGIN
+                                        </button>
+                                        <div class="forgot__password--box">
+                                            <a (click)="InquiryPopup()" class="inquiry__form"
+                                                data-bs-target="#inquiryFormModal"
+                                                style="font-size: 12px; cursor: pointer;">
+                                                Request for Demo.
+                                            </a>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="login__form" [hidden]="!isFormShow">
+                            <form [formGroup]="loginForm">
+                                <div class="col-12">
+                                    <div class="login__logo">
+                                        <figure>
+                                            <img [src]="isFormShow ? logo : '../../../../assets/img/khata-logo.png'"
+                                                alt="Khata Logo of Book" id="logo" />
+                                        </figure>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="login__container--heading text-center">
+                                        <h2 id="companyTitle">Welcome to Our</h2>
+                                        <span> {{companyName }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-12" id="">
+                                    <div class="custom__input-container">
+                                        <select class="form-control custom__input req">
+                                            <option value="">-- Select Branch --</option>
+                                            <option *ngFor="let item of departmentBranch" [value]="item.branch_Id">
+                                                {{ item.branchDepartment }}
+                                            </option>
+                                        </select>
+                                        <label>Company Branch</label>
+                                    </div>
+
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="login__sidebar">
+                            <ul>
+                                <li><button type="button" (click)="about()"><i class="fa-solid fa-info"></i></button>
+                                </li>
+                                <li><button type="button" (click)="faq()"><i class="fa-solid fa-question"></i></button>
+                                </li>
+
+                                <li> <a [routerLink]="['/policy/index']" title="Policy" target="_blank">
+                                        <i class="fa-solid fa-lock just"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a [routerLink]="['/TermsConditions/Index']" title="Terms &amp; Conditions"
+                                        target="_blank">
+                                        <i class="just fas fa-file-contract"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-12" style="background: #137b95;">
+                    <p class="copyright">
+                        <span>©2023.All rights reserved</span> <span>Developed by&nbsp;:&nbsp;<a
+                                href="https://searchtech.com.np/" target="_blank">Search Technology</a></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- IsInquiryPopup Popup -->
+<div [hidden]="!IsInquiryPopup">
+    <div class="customPopupContainer">
+        <div class="customPopup customPopup-md-35 ">
+            <div class="customPopupHeader"><span>Add Folder</span><span class="closeIcon"
+                    (click)="closeInquiryPopup()"><i class="fa-solid fa-xmark" style="color: #ffffff;"></i></span></div>
+       <form class="">
+    <div class="hms-input pt-4 py-3 p-3">
+        <div class="input-group">
+            <input #orgInput autocomplete="off" id="OrganizationName" type="text"
+                class="input-field w-100 rounded-3 req" name="OrganizationName"
+                [(ngModel)]="loginservice.InquiryModel.organizationName" required />
+            <label class="input-label" for="OrganizationName">Organization Name</label>
+        </div>
+    </div>
+
+    <div class="hms-input py-3 p-3">
+        <div class="input-group">
+            <input #addrInput autocomplete="off" id="Address" type="text"
+                class="input-field w-100 rounded-3 req" name="Address"
+                [(ngModel)]="loginservice.InquiryModel.address" required />
+            <label class="input-label" for="Address">Address</label>
+        </div>
+    </div>
+
+    <div class="hms-input py-3 p-3">
+        <div class="input-group">
+            <input #contactInput autocomplete="off" id="Contact" type="text"
+                class="input-field w-100 rounded-3 req" name="Contact"
+                [(ngModel)]="loginservice.InquiryModel.contact" required />
+            <label class="input-label" for="Contact">Contact</label>
+        </div>
+    </div>
+
+    <div class="hms-input py-3 p-3">
+        <div class="input-group">
+            <input #emailInput autocomplete="off" id="Email" type="text"
+                class="input-field w-100 rounded-3 req" name="Email"
+                [(ngModel)]="loginservice.InquiryModel.email" required />
+            <label class="input-label" for="Email">Email</label>
+        </div>
+    </div>
+
+    <div class="hms-input py-3 p-3">
+        <div class="input-group">
+            <select #natureSelect class="input-field w-100 select2" data-placeholder='--Choose--'
+                id="Nature" name="Nature" [(ngModel)]="loginservice.InquiryModel.nature">
+          
+                <option value="Account">Account</option>
+                <option value="Account + Inventory">Account + Inventory</option>
+                <option value="Inventory">Inventory</option>
+                <option value="Pharmacy">Pharmacy</option>
+                <option value="Manufacturer">Manufacturer</option>
+                <option value="Other">Other</option>
+            </select>
+            <label class="input-label">Nature</label>
+        </div>
+    </div>
+
+    <div class="hms-input py-3 p-3">
+        <div class="input-group">
+            <input #remarksInput [(ngModel)]="loginservice.InquiryModel.remarks"
+                class="input-field w-100 rounded-3" name="remarks" id="remarks"/>
+            <label class="input-label">Remarks</label>
+        </div>
+    </div>
+
+    <div class="hms-input py-3 p-3">
+        <div class="input-group">
+            <button #submitBtn (click)="Inquirysubmit()" type="button" id="buttons" autocomplete="off"
+                class="buttons button--primary form-control">SUBMIT</button>
+        </div>
+    </div>
+</form>
+
+
+        </div>
+    </div>
+</div>
+
+<!-- isAboutShown Popup -->
+<div [hidden]="!isAboutShown">
+    <div class="customPopupContainer">
+        <div class="customPopup">
+            <div class="customPopupHeader"><span>About Us</span><span class="closeIcon" (click)="closeAbout()"><i
+                        class="fa-solid fa-xmark" style="color: #ffffff;"></i></span></div>
+            <div class="modal-body p-4">
+                <h5 class="about-us__heading">About Khata</h5>
+                <p class="about-us__description">
+                    KHATA is our premium accounting software that provides a complete and intuitive solution for
+                    businesses
+                    of all sizes.
+                    With KHATA, you can easily track your financial transactions, manage your accounts, and generate
+                    reports
+                    with just a few clicks.
+                    Our software is designed to be user-friendly and easy to use, even for those with no prior
+                    accounting
+                    experience.
+                    One of the key features of KHATA is its real-time tracking capability.
+                    You can see your financial status at any time, giving you complete control and visibility over your
+                    business.
+                    Additionally, Another advantage of KHATA is its security.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- isFAQShown Popup -->
+<div [hidden]="!isFAQShown">
+    <div class="customPopupContainer">
+        <div class="customPopup">
+            <div class="customPopupHeader"><span>FAQ</span>
+                <span class="closeIcon" (click)="closeFAQ()">
+                    <i class="fa-solid fa-xmark"></i>
+                </span>
+            </div>
+            <div class="modal-body p-4">
+                <div class="accordion">
+
+                    <div class="item">
+                        <h3 (click)="toggle(1)" class="header header--accordion">
+                            <span> How do I change the password of my account?</span>
+
+                            <i class="accordion-cross-icon"
+                                [ngClass]="openItem === 1 ? 'fa-solid fa-chevron-up' : 'fa-solid fa-chevron-down'">
+                            </i>
+
+                        </h3>
+                        <div class="body" *ngIf="openItem === 1">
+                            To change your password, Contact Admin.
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

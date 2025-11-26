@@ -1,0 +1,64 @@
+.form {
+
+  &__section {
+    border: 1px solid $color-gray-200 ;
+    position: relative;
+
+    padding: 0 .5rem .9rem .5rem;
+
+    .accordion,
+    .accordion-item {
+      border-radius: 0px !important;
+    }
+
+    .accordion-button {
+      padding: .3rem 1rem;
+      background-color: $color-blue-500 !important;
+      border: none !important;
+      border-radius: 0 !important;
+      color: $color-blue-800;
+      text-transform: initial;
+      font-size: $primary-font-size;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+      color: $color-white-100 !important;
+
+      &::after {
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M201.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 274.7 86.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z" fill="rgb(255,255,255)"/></svg>') !important;
+        display: none;
+      }
+    }
+  }
+
+  &__inner {
+    padding: 0 .5rem .9rem .5rem;
+  }
+}
+
+
+.hide {
+  display: none !important;
+  transition: all 1s ease-in-out;
+}
+
+legend {
+  color: $color-black-900;
+  font-size: 12px !important;
+
+}
+
+fieldset {
+  border: 1px groove blue !important;
+  background-color: #eee;
+}
+
+
+.w3-bar-pd {
+  padding: 1rem;
+}
+
+
+.dropdown-btn,
+.select2-container--default .select2-selection--single {
+  border: 1px solid #ddd !important;
+}

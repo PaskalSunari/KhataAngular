@@ -1,0 +1,106 @@
+<div class="navigation-overlay"></div>
+
+<div class="navigation" [class.active]="isOpen">
+
+    <mat-accordion>
+        <mat-accordion class="sidemenu">
+            <mat-expansion-panel *ngFor="let menus of Menulist">
+                <mat-expansion-panel-header class="">
+                    <mat-panel-title>
+                        <span class="matmenuicon">
+                            <i class="{{menus.menuicon}}"></i></span>
+                        <span class=" user-select-none fs-5 matMenuName">{{menus.strName}}</span>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <ul>
+                    <li *ngFor="let subMenu of menus.children">
+                        <div *ngIf="subMenu.children!=''">
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header class="">
+                                    <mat-panel-title>
+                                        <span>
+                                            <i class="{{subMenu.menuicon}}"></i></span>
+                                        <span class=" user-select-none fs-5 matMenuName">{{subMenu.strName}}</span>
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <ul>
+                                    <li *ngFor="let subsubMenu of subMenu.children">
+                                        <div *ngIf="subsubMenu.children!=''">
+                                            <mat-expansion-panel>
+                                                <mat-expansion-panel-header class="">
+                                                    <mat-panel-title>
+                                                        <span class="matmenuicon">
+                                                            <i class="{{subsubMenu.menuicon}}"></i></span>
+                                                        <span
+                                                            class=" user-select-none fs-5 matMenuName">{{subsubMenu.strName}}</span>
+                                                    </mat-panel-title>
+                                                </mat-expansion-panel-header>
+                                                <ul>
+                                                    <li *ngFor="let subsubsubMenu of subsubMenu.children">
+
+                                                        <ng-container
+                                                            *ngIf="subsubMenu.strShorCut === 'Khata'; else noTarget">
+                                                            <a [routerLink]="subsubsubMenu.webUrl"
+                                                                [queryParams]="{menuName: subsubsubMenu.strName}"
+                                                                target="_blank">
+                                                                <i
+                                                                    class="{{subsubsubMenu.menuicon}}"></i><span>{{subsubsubMenu.strName}}</span>
+                                                            </a>
+                                                        </ng-container>
+                                                        <ng-template #noTarget>
+                                                            <a [routerLink]="subsubsubMenu.webUrl"
+                                                                [queryParams]="{menuName: subsubsubMenu.strName}"
+                                                                disableRipple>
+                                                                <i
+                                                                    class="{{subsubsubMenu.menuicon}}"></i><span>{{subsubsubMenu.strName}}</span>
+                                                            </a>
+                                                        </ng-template>
+                                                    </li>
+                                                </ul>
+                                            </mat-expansion-panel>
+                                        </div>
+                                        <div *ngIf="subsubMenu.children==''">
+
+                                            <ng-container *ngIf="subsubMenu.strShorCut === 'Khata'; else noTarget">
+
+                                                <a [routerLink]="subsubMenu.webUrl"
+                                                    [queryParams]="{menuName: subsubMenu.strName}" target="_blank">
+                                                    <i
+                                                        class="{{subsubMenu.menuicon}}"></i><span>{{subsubMenu.strName}}</span>
+                                                </a>
+                                            </ng-container>
+                                            <ng-template #noTarget>
+                                                <a [routerLink]="subsubMenu.webUrl"
+                                                    [queryParams]="{menuName: subsubMenu.strName}" disableRipple>
+                                                    <i
+                                                        class="{{subsubMenu.menuicon}}"></i><span>{{subsubMenu.strName}}</span>
+                                                </a>
+                                            </ng-template>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </mat-expansion-panel>
+                        </div>
+                        <div *ngIf="subMenu.children==''">
+                            <ng-container *ngIf="subMenu.strShorCut === 'Khata'; else noTarget">
+
+                                <a [routerLink]="subMenu.webUrl" [queryParams]="{menuName: subMenu.strName}"
+                                    target="_blank">
+                                    <i class="{{subMenu.menuicon}}"></i><span>{{subMenu.strName}}</span>
+                                </a>
+                            </ng-container>
+                            <ng-template #noTarget>
+                                <a [routerLink]="subMenu.webUrl" [queryParams]="{menuName: subMenu.strName}"
+                                    disableRipple>
+                                    <i class="{{subMenu.menuicon}}"></i><span>{{subMenu.strName}}</span>
+                                </a>
+                            </ng-template>
+                        </div>
+                    </li>
+                </ul>
+            </mat-expansion-panel>
+        </mat-accordion>
+
+
+    </mat-accordion>
+</div>

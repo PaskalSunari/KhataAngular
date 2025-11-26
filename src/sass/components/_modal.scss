@@ -1,0 +1,537 @@
+.modal-dialog {
+  margin: 0 0 0 20rem !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.modal {
+  --bs-modal-width: 1024px !important;
+  height: 650px !important;
+}
+
+.permissionPrivilege {
+  background: linear-gradient(150deg, #137b95 40%, #2b88a0 0, #4295aa 80%, #5aa3b5 0);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // padding: .5rem 1rem;
+  padding: 0.5rem 1.5rem;
+  color: #ffffff;
+  width: 100%;
+  height: 3.8rem !important;
+  font-size: 1.6rem;
+}
+
+
+.customPopupHeader {
+  background: linear-gradient(150deg, #137b95 40%, #2b88a0 0, #4295aa 80%, #5aa3b5 0);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // padding: .5rem 1rem;
+  padding: 0.5rem 1.5rem;
+  color: #ffffff;
+  width: 100%;
+  user-select: none;
+
+  .closeIcon {
+    background-color: #cc2333;
+    padding: .2rem 1rem 0;
+    margin: -.5rem 0;
+    border-radius: 0.4rem;
+    cursor: pointer;
+
+    &:hover {
+
+      background-color: #d64f5c;
+      transition: all .2s ease;
+    }
+  }
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+
+
+
+.customPopupContainer {
+  // animation: fadeInAnimation ease 1s;
+  position: fixed;
+  overflow-y: scroll;
+  top: 0;
+  left: 0;
+  z-index: 9999999;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  // flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  tr:nth-child(odd) td {
+    background-color: $color-white-100 !important;
+  }
+
+  tr:nth-child(even) td {
+    background-color: $color-gray-99 !important;
+  }
+
+  .revtable tr:nth-child(even) td {
+    background: none !important;
+  }
+
+  .revtable th,
+  .revtable td {
+    border: none !important;
+  }
+
+}
+
+
+.customPopupSynchronizeDashboard {
+  // animation: fadeInAnimation ease 1s;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999999;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  // flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.iframeview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999999;
+  width: 100%;
+  height: 90vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  // flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.customPopupverification {
+  // animation: fadeInAnimation ease 1s;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999999;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  // flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.customPopupReport {
+  animation: fadeInAnimation ease 1s;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999999;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  // flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.customPopup {
+  width: 100%;
+  background-color: #ffffff;
+  max-width: 700px;
+  border-radius: 5px;
+  overflow-y: hidden;
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.customPopup.Big {
+  max-width: 900px;
+  height: 510px;
+}
+
+.customPopup.fingerprint {
+  max-width: 1200px;
+  height: 510px;
+}
+
+
+.customPopup.EBig {
+  max-width: 900px;
+  height: 580px !important;
+
+}
+
+.customPopup.EBigs {
+  max-width: 1000px;
+  height: 600px !important;
+  margin-left: 4rem;
+}
+
+.customPopup.modalPop {
+  min-width: 90vw;
+  height: 90vh !important;
+  margin-left: 4rem;
+}
+
+.customPopup.verificationPop {
+  min-width: 70vw;
+  height: 80vh !important;
+  overflow: scroll;
+}
+
+.customPopupHeader-stiky {
+  position: sticky;
+  top: 0;
+  z-index: 10000;
+}
+
+.customPopup.small {
+  max-width: 850px;
+  height: 500px;
+}
+
+.customPopup.culture {
+  max-width: 800px;
+  height: 450px;
+}
+
+.customPopup.testPopupWidth {
+  max-width: 800px;
+}
+
+.tableForPopup {
+  height: fit-content !important;
+  padding: 4rem 0 0 0;
+}
+
+.customPopup.Verify {
+  max-width: 1050px;
+  height: 500px;
+  margin-left: 100px;
+
+}
+
+.customPopup.costMapEdit {
+  max-width: 1050px;
+  height: 400px;
+}
+
+.customPopup.Report {
+  max-width: 900px;
+  height: 550px;
+  margin-left: 100px;
+}
+
+.customPopupSpace {
+  width: 100%;
+  background-color: #ffffff;
+  max-width: 1200px;
+  height: 500px;
+
+}
+
+.customPopupReports {
+  width: 100%;
+  background-color: #ffffff;
+  max-width: 900px;
+  border-radius: 5px;
+  overflow-y: hidden;
+  position: absolute;
+  left: 50%;
+  top: 50px;
+  transform: translateX(-50%);
+}
+
+// @media only screen and (max-width: 1400px) {
+//   .customPopupReports {
+//     top: 126px
+//   }
+// }
+
+
+//   .span .dropdown-wrapper{
+// z-index: 99999999999;
+//   }
+
+span .select2-conatiner {
+  z-index: 9999999 !important;
+}
+
+.patientNoTD {
+  cursor: pointer;
+}
+
+.toast-container {
+  z-index: 9999999999 !important;
+}
+
+.toast-error {
+  z-index: 99999999999 !important;
+}
+
+.ngx-awesome-popup-overlay.confirm-box-overlay {
+  z-index: 999999999999 !important;
+}
+
+
+.select2-container--open {
+  z-index: 99999999999 !important;
+}
+
+.pRPatientDetails {
+  animation: fadeInAnimation ease 1s;
+}
+
+
+//// Multiselect single selection dropdown 
+.singleselect .multiselect-item-checkbox {
+  padding: 0px !important;
+}
+
+.singleselect input[type=checkbox]+div:before {
+  display: none;
+}
+
+.singleselect input[type=checkbox]+div:after {
+  display: none;
+}
+
+.singleselect input[type=checkbox]+div {
+  padding: 6px 10px !important;
+}
+
+.singleselect input[type=checkbox]:checked+div {
+  background-color: #337ab7 !important;
+  color: #fff !important;
+}
+
+#medicalSyncReportHtml {
+  height: 74vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 4px;
+
+  .header {
+    padding: 1rem;
+  }
+}
+
+
+.customPopup-verify {
+  width: 40rem;
+}
+
+.customPopup-finger {
+  width: 73rem;
+}
+
+
+@media only screen and (max-width: 992px) {
+
+  #medicalSyncReportHtml {
+    overflow-x: inherit;
+  }
+
+  .customPopup {
+    max-width: 90% !important;
+    width: 90% !important;
+  }
+
+}
+
+@media only screen and (min-width: 1400px) {
+  .customPopupReports {
+    max-width: 1120px;
+    height: 85vh;
+  }
+}
+
+
+.fingers {
+  padding: 1rem;
+}
+
+.verifyOtp {
+  flex: 1;
+}
+
+.btns-groups {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 47%;
+  margin: 0 auto;
+}
+
+.verify-hms-input input {
+  height: 36px;
+  font-size: 20px;
+  text-align: center;
+}
+
+
+//modal height and width
+
+.wrapper--custom {
+  height: 600px !important;
+}
+
+.customPopup-md-30 {
+  max-width: 30% !important;
+
+}
+
+
+.customPopup-md-35 {
+  max-width: 35% !important;
+
+}
+
+
+
+.customPopup-md-40 {
+  max-width: 40% !important;
+
+}
+
+.customPopup-md-50 {
+  max-width: 50% !important;
+
+}
+
+
+.customPopup-md-60 {
+  max-width: 60% !important;
+
+}
+
+
+.customPopup-md-70 {
+  max-width: 70% !important;
+
+}
+
+
+.customPopup-md-80 {
+  max-width: 80% !important;
+
+}
+
+.customPopup-md-90 {
+  max-width: 90% !important;
+
+}
+
+.customPopup-md-hgt-50 {
+  height: 50% !important;
+}
+
+.customPopup-md-hgt-60 {
+  height: 60% !important;
+}
+
+.customPopup-md-hgt-70 {
+  height: 70% !important;
+}
+
+.customPopup-md-hgt-80 {
+  height: 80% !important;
+}
+
+.customPopup-md-hgt-90 {
+  height: 90% !important;
+}
+
+
+
+
+@media only screen and (min-width: 1400px) {
+
+  .wrapper--custom {
+    height: 600px !important;
+  }
+
+
+  .customPopup-xl-43 {
+    max-width: 43% !important;
+
+  }
+
+  .customPopup-xl-50 {
+    max-width: 50% !important;
+
+  }
+
+
+  .customPopup-xl-60 {
+    max-width: 60% !important;
+
+  }
+
+
+  .customPopup-xl-70 {
+    max-width: 70% !important;
+
+  }
+
+
+  .customPopup-xl-80 {
+    max-width: 80% !important;
+
+  }
+
+  .customPopup-xl-90 {
+    max-width: 90% !important;
+
+  }
+
+  .customPopup-xl-hgt-50 {
+    height: 50% !important;
+  }
+
+  .customPopup-xl-hgt-60 {
+    height: 60% !important;
+  }
+
+  .customPopup-xl-hgt-70 {
+    height: 70% !important;
+  }
+
+  .customPopup-xl-hgt-80 {
+    height: 80% !important;
+  }
+
+  .customPopup-xl-hgt-90 {
+    height: 90% !important;
+  }
+
+
+}

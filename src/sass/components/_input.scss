@@ -1,0 +1,359 @@
+.hms-input {
+  position: relative;
+  font-size: $input-field-font-size;
+  z-index: 1;
+
+  @media only screen and (max-width: 1200px) {
+    &.sm-desk {
+      margin-bottom: 0;
+    }
+
+  }
+}
+
+.filterContainer .hms-input {
+  z-index: inherit;
+}
+
+.Zindex {
+  z-index: inherit;
+
+}
+
+@media only screen and (max-width: 1200px) {
+  .filterContainer.mt-4 .hms-input {
+    margin-bottom: 0 !important;
+  }
+
+}
+
+
+
+.file-label {
+  display: inline-block;
+  position: relative;
+  padding: $input-field-padding-y $input-field-padding-x;
+  padding-left: calc($input-field-padding-x + 2rem);
+  border: 1px solid $color-gray-200;
+  height: 100%;
+  width: 100%;
+  background-color: $color-white-100;
+}
+
+.file-label::after {
+  content: '';
+  height: 2rem;
+  width: 2rem;
+  position: absolute;
+  left: $input-field-padding-x;
+  top: 60%;
+  transform: translateY(-50%);
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M448 80c8.8 0 16 7.2 16 16V415.8l-5-6.5-136-176c-4.5-5.9-11.6-9.3-19-9.3s-14.4 3.4-19 9.3L202 340.7l-30.5-42.7C167 291.7 159.8 288 152 288s-15 3.7-19.5 10.1l-80 112L48 416.3l0-.3V96c0-8.8 7.2-16 16-16H448zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm80 192a48 48 0 1 0 0-96 48 48 0 1 0 0 96z" fill="rgb(71,74,81)"/></svg>');
+  background-repeat: no-repeat;
+}
+
+input[type="date"]~.input-label {
+  top: -$input-label-top !important;
+  font-size: $font-size-sm;
+  // background-color: $color-white-100;
+  background-color: transparent;
+  padding-left: .1rem;
+  padding-right: .1rem;
+}
+
+.input-label {
+  position: absolute;
+  top: -0.102662rem;
+  left: 1rem;
+  transform: translateY(-53%);
+  transition: all .2s ease-in-out;
+  z-index: 9999999;
+  background: #fff;
+}
+
+input:required~label::after,
+select:required~label::after,
+textarea:required~label::after
+{
+  content: '*';
+  color: red;
+  position: absolute;
+  top: 50%;
+  margin-left: 2px;
+  // right: -.5rem;
+  transform: translateY(-50%);
+}
+
+.textareaReq~label::after {
+  content: '*';
+  color: red;
+  position: absolute;
+  top: 50%;
+  margin-left: 2px;
+  // right: -.5rem;
+  transform: translateY(-50%);
+}
+
+
+
+
+// input:required.input-field::before {
+//   content: '*';
+//   color: red;
+//   position: absolute;
+//   top: 50%;
+//   right: -.6rem;
+//   transform: translateY(-50%);
+// }
+
+
+.input-field {
+  border-radius: 2px;
+  padding: $input-field-padding-y $input-field-padding-x;
+  border: 1px solid $color-gray-200;
+  width: 100%;
+
+  &:focus {
+    border: 1px solid $primary-500;
+    outline: none;
+  }
+
+  &:focus~.input-label,
+  &:not([value=""])~.input-label {
+    top: -$input-label-top;
+    font-size: $font-size-smd;
+    // background-color: $color-white-100;
+    // background-color: rgba($color: #ffffff, $alpha: .2);
+    // background-image: linear-gradient(to center, rgba(255,255,255,1), rgba(255, 255, 255,1));
+    background-image: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+
+    padding-left: .1rem;
+    padding-right: 1rem;
+
+    &::before {
+      right: .4rem;
+    }
+  }
+}
+
+
+
+// .checkboxContainer {
+//   padding-bottom: 1rem;
+
+//   [type="checkbox"] {
+//     height: 1.8rem;
+//     width: 100%;
+//     margin: .5rem 0 0 1rem;
+//   }
+// }
+
+.filterContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.searchContainer {
+  position: relative;
+
+  margin-bottom: 0.5rem;
+
+  // [name="search"]{
+  //   // padding-right: 3rem;
+  // }
+
+
+  .loginInput {
+    position: relative;
+  }
+
+  .loginInput i {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 24px;
+    width: 24px;
+    display: inline-block;
+  }
+
+}
+
+
+// .multi-label::after {
+//   content: '*';
+//   color: red;
+// }
+
+.rowContainer {
+  border: 1px solid $color-gray-200;
+  margin: 0 0.1rem !important;
+  padding: 2rem 0 0.5rem 0;
+  position: relative;
+}
+
+.rowContainerLabel {
+  font-size: $font-size-sm !important;
+  font-weight: 500 !important;
+  position: absolute !important;
+  top: -30%;
+  left: 1%;
+  width: fit-content !important;
+  background-image: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+}
+
+.rowContainerLabelDoubleLine {
+  top: -17%
+}
+
+.multi-label {
+  position: absolute !important;
+  top: -44%;
+  left: 8%;
+  background-image: linear-gradient(to top, rgba(163, 154, 154, 0), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+  font-size: $font-size-smd !important;
+  font-weight: 400;
+  width: fit-content !important;
+}
+
+
+
+// .multi-label::after {
+//   content: '*';
+//   color: red;
+// }
+
+ng-multiselect-dropdown[required]+label::after {
+  content: ' *';
+  color: red;
+}
+
+
+.summerText {
+  position: relative;
+}
+
+.summernotes-label {
+  position: absolute;
+  top: -7%;
+  left: 8%;
+  background-image: linear-gradient(to top, rgba(245, 245, 245, 1), rgba(245, 245, 245, 0.9), rgba(2245, 245, 245, 0));
+  font-size: $font-size-smd;
+}
+
+
+.select2-container {
+  display: block !important;
+  width: 100% !important;
+  z-index: 9999999;
+}
+
+#patientEdit .select2-container,
+#patientEdit1 .select2-container {
+  z-index: 0;
+}
+
+
+div.hms-input label.input-label.dropDownDisbaleLabel {
+  background-image: linear-gradient(to top, rgb(230, 230, 230), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+}
+
+
+
+/* Style for the select element */
+.custom-select {
+  width: fit-content;
+  padding: 0px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  outline: none;
+  font-size: 12px;
+  /* Set a fixed height and overflow-y to create a scrollbar */
+  height: 25px;
+  //background-color: #f4f4f4;
+  color: #333;
+  /* Add any other desired styles */
+}
+
+/* Style for the options within the select */
+.custom-select option[value=""] {
+  background-color: #e0e0e0;
+  color: #030303;
+  padding: 10px;
+  height: 10px;
+  /* Add any other desired styles */
+  max-height: 5px !important;
+  overflow-y: scroll;
+}
+
+/* Alternate color for even options */
+// .custom-select option:nth-child(even) {
+//   background-color: #ccc;
+//   /* Add any other desired styles */
+// }
+
+/* Hover effect for options */
+select option:hover {
+  background-color: #5aa3b5 !important;
+  /* Add any other desired styles */
+}
+
+/* Selected option style */
+.custom-select option:checked {
+  background-color: #5aa3b5;
+  color: white;
+  /* Add any other desired styles */
+}
+
+
+
+
+//ng multiselect dropdown
+ng-multiselect-dropdown .multiselect-dropdown {
+
+  .dropdown-btn {
+    padding: 3px 3px !important;
+    height: 28px;
+
+    .selected-item {
+
+      max-width: 143px !important;
+      display: flex;
+      flex-wrap: nowrap;
+
+
+      span {
+
+        max-width: 108px !important;
+        text-wrap: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+
+
+      }
+
+      a {
+        margin-left: 5px;
+
+      }
+    }
+  }
+}
+
+
+//multiselect
+.multiselect-dropdown[_ngcontent-ng-c1411523848] .dropdown-btn[_ngcontent-ng-c1411523848] .dropdown-multiselect__caret[_ngcontent-ng-c1411523848]:before {
+
+  top: 55% !important;
+  border-width: 5px 5px 0 5px !important;
+
+}
+
+
+.multiselect-dropdown[_ngcontent-ng-c1411523848] .dropdown-btn[_ngcontent-ng-c1411523848] .dropdown-multiselect__caret[_ngcontent-ng-c1411523848] {
+  width: 23px !important;
+  height: 30px !important;
+}
+
+

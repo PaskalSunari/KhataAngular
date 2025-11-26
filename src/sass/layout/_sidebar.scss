@@ -1,0 +1,267 @@
+.navigation-overlay {
+  width: 45px;
+  /* width: 250px; */
+  background-color: #137b95;
+  height: 100%;
+  top: 48px;
+  position: absolute;
+  overflow: auto;
+  z-index: 1000;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.par_navigation {
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.navigation {
+  width: 45px;
+  /* width: 250px; */
+  background-color: #137b95;
+  height: 100%;
+  top: 48px;
+  position: absolute;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.navigation.active {
+  width: 232px;
+  background-color: #137b95;
+  height: calc(100% - 50px);
+  top: 50px;
+  position: absolute;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 120px;
+}
+
+.navigation .matMenuName,
+.navigation .mat-expansion-indicator {
+  display: none;
+}
+
+.navigation.active .matMenuName,
+.navigation.active .mat-expansion-indicator {
+  display: block;
+}
+
+.custom-padding{
+   padding-left: 14px !important;
+}
+
+.menu-name-hide{
+  display: none !important;
+}
+
+.mat-content {
+  position: relative;
+  left: 5px;
+}
+
+.navigation.active .mat-content {
+  left: inherit;
+}
+
+.navigation ul {
+  padding-left: 0 !important;
+}
+
+.navigation ul li {
+  padding-left: 0 !important;
+}
+
+.navigation ul li:hover {
+  background-color: #1b7492 !important;
+}
+
+.navigation ul li > div {
+  padding-left: 2rem;
+}
+
+.navigation ul li > div i{
+  padding-right: 6px;
+}
+
+.navigation ul li:last-child > div {
+  padding-left: 15px;
+}
+
+.navigation ul li:last-child > div .mat-expansion-indicator{
+  right: 8px;
+}
+
+
+.navigation li {
+  list-style: none;
+}
+
+.navigation li a {
+  color: #fff;
+}
+
+.matmenuicon{
+  display: inline-block;
+  width: 24px;
+}
+
+//material menu
+
+.mat-expansion-panel {
+  background: transparent !important;
+  color: #fff;
+}
+
+.mat-expansion-panel-header {
+  padding: 10px 8px !important;
+  height: fit-content !important;
+  border-bottom: 1px solid #278ea7;
+
+
+}
+
+.mat-expansion-panel-body {
+  .mat-expansion-panel-header {
+    border: none !important;
+    padding-left: 0 !important;
+  }
+}
+
+.mat-expansion-panel-header-title {
+  position: relative;
+  color: #fff !important;
+}
+
+.mat-expansion-panel-header-title,
+.mat-expansion-panel-header-description {
+  margin-right: 0 !important;
+}
+
+
+.mat-expansion-indicator {
+  position: absolute;
+  right: 12px;
+  top: 7px;
+}
+
+.mat-expanded .mat-expansion-indicator {
+  top: 11px;
+}
+
+.mat-expansion-panel-body .mat-expansion-indicator {
+  top: -2px;
+}
+
+.subMenuList {
+  position: relative;
+}
+
+.mat-content.mat-content-hide-toggle {
+  margin: 0 !important;
+}
+
+.matMenuIcon {
+  color: $color-white-100;
+}
+
+.matMenuName {
+  color: $color-white-100;
+  font-weight: 500;
+}
+
+.mat-expansion-panel-header:hover {
+  background-color: #186d8a !important;
+}
+
+.mat-expansion-panel-body .mat-expansion-panel-header {
+  background-color: transparent !important;
+}
+
+.mat-expansion-indicator::after {
+  color: $color-white-100 !important;
+  padding: 2.5px !important;
+}
+
+.mat-expansion-panel-body {
+  padding: 0 !important;
+}
+
+
+.mat-expansion-panel-body .mat-expansion-panel-body {
+  padding: 10px 0 0 0 !important;
+}
+
+.mat-expansion-panel-body .mat-expansion-panel-header {
+  padding: 0 !important;
+}
+
+
+.mat-expansion-panel {
+  box-shadow: none !important;
+}
+
+.subMenuListWrapper {
+  list-style: none;
+  border-left: 2px solid $color-white-100;
+  padding-left: 1rem;
+
+
+  .subMenuList {
+    color: $color-white-100;
+  }
+
+  .subMenuList:hover {
+    background-color: $color-blue-100;
+  }
+}
+
+.mat-expansion-panel-content li:last-child {
+  padding: 10px 4px !important;
+}
+
+.mat-expansion-panel-body li {
+  padding: 10px 0 10px 8px !important;
+
+}
+
+.sideNavWrapper {
+  //margin-top: 8rem;
+  background-color: $color-gray-100;
+}
+// .navigation ul li > div {
+//     padding-left: 1rem !important;
+// }
+
+
+
+.navigation::-webkit-scrollbar {
+    width: 6px;
+}
+
+.navigation::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px #10657a;
+    border-radius: 10px;
+}
+
+.navigation::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px #10657a;
+}
+
+
+
+@media only screen and (max-width: 767px) {
+  .sidebar-collapsed .sidebar__bottom {
+    margin-bottom: 40px;
+  }
+}
+
+@media only screen and (max-width: 406px) {
+  .sidebar-collapsed .sidebar__bottom {
+    margin-bottom: 60px;
+  }
+}

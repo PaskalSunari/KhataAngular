@@ -1,0 +1,47 @@
+<header class="page__header" style="display: flex; align-items: baseline; justify-content: space-between;">
+    <div class="container-fluid">
+        <div class="row  align-items-center justify-content-between">
+            <div class="col-6">
+                <div class="header-left d-flex align-items-center ">
+
+                    <div class="menu_toggle_icon" (click)="toggleMenu()">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
+                    <div class="top_nav_left_img">
+                        <a href=""> <img src="../../../../../../assets/img/khata-logo-name.png"> </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 d-flex justify-content-end">
+                <div class="header-right">
+                    <div ngbDropdown class="admin-dropdown">
+                        <button ngbDropdownToggle class="btn btn-primary d-flex align-items-center">
+                            <img src="../../../../../../assets/img/avatar.jpg" alt="admin" class="user-icon me-2" />
+                            <span>admin</span>
+                        </button>
+                        <div ngbDropdownMenu>
+                            <button ngbDropdownItem>
+                                <i class="fa fa-key me-2"></i> Change password
+                            </button>
+                            <button ngbDropdownItem>
+                                <i class="fa fa-lock me-2"></i> Lock Screen
+                            </button>
+                            <button ngbDropdownItem (click)="logout()">
+                                <i class="fa fa-sign-out-alt me-2"></i> Log out
+                            </button>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </div>
+
+</header>

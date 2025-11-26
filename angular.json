@@ -5,7 +5,11 @@
   "projects": {
     "khata-pos": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+          "@schematics/angular:component": {
+          "style": "none"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -25,9 +29,35 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "node_modules/ngx-toastr/toastr.css",
+                "node_modules/slick-carousel/slick/slick.css",
+                "node_modules/slick-carousel/slick/slick-theme.css",
+              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
+              "./node_modules/summernote/dist/summernote-lite.min.css",
+              "node_modules/@costlydeveloper/ngx-awesome-popup/styles/theme.css",
+              "node_modules/select2/dist/css/select2.min.css",
+             "node_modules/bootstrap/dist/css/bootstrap.min.css",
+             "src/assets/nepalidatepicker/nepali.datepicker.v4.0.1.min.css",
+              "src/sass/main.scss"
+
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/jquery/dist/jquery.min.js",
+              "node_modules/slick-carousel/slick/slick.min.js",
+              "src/assets/nepalidatepicker/custom/dateconverter.js",
+              "./node_modules/summernote/dist/summernote-lite.min.js",
+              "node_modules/select2/dist/js/select2.min.js",
+              "src/assets/validation/Select2.js",
+              "src/assets/validation/validation.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "src/assets/nepalidatepicker/nepali.datepicker.v4.0.1.min.js",
+              "src/assets/printer/JSPrintManager.js",
+              "src/assets/printer/printer.js",
+              "src/assets/newsticker/acmeticker.js",
+              "src/assets/fingerprint/morfinauth.js"
+              
+            ]
           },
           "configurations": {
             "production": {
@@ -94,5 +124,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "55e264da-8a64-4de3-b634-0c0818b3b974"
   }
 }

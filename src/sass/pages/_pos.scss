@@ -1,0 +1,135 @@
+.sales__form-box,
+.sales__footer-box {
+    background: #fff;
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+}
+
+.button__plus {
+    outline: none;
+    border: none;
+    border-radius: 50%;
+    background: $primary-500;
+    color: #fff;
+    height: 20px;
+    flex: 0 0 20px;
+    font-size: 10px;
+}
+
+.input-gap {
+    gap: 2px;
+}
+
+.select-wrap {
+    width: 100%;
+}
+
+.customer-details__container {
+    background: #F5F5F5;
+    padding: 4px;
+    border: 1px solid #ddd;
+    color: #333;
+
+    ul {
+        padding: 0;
+        margin: 0;
+
+        li {
+            list-style: none;
+            font-size: 11px;
+            font-weight: 600;
+        }
+    }
+
+}
+
+.bill-total__container {
+    background: #F5F5F5;
+    padding: 4px;
+    border: 1px solid #ddd;
+    color: #333;
+    height: 100%;
+    h6{
+        font-size: 1.25rem !important;
+    }
+}
+
+
+
+.sales-summary__top,
+.sales-summary__bottom {
+    background: #fff;
+    border: 1px solid #ddd;
+}
+
+.sales-summary__bottom h6,
+.sales-summary__top h6 {
+    font-size: 11px;
+    color: #000;
+    text-align: start;
+    font-weight: 700;
+}
+
+.sales-summary__bottom label {
+    font-size: 11px;
+
+}
+
+.summary-display__box {
+    background: #eee;
+    border: 1px solid #dddc;
+    padding: 2px 3px 0px;
+    color: #424242;
+    font-size: 13px;
+}
+
+.heading__box {
+    background: $primary-500;
+    color: #fff;
+    font-size: 13px;
+    padding: 3px 5px;
+    text-align: center;
+    margin: 0;
+}
+
+#sales-main-table__body {
+    max-height: 218px;
+    overflow-y: auto;
+}
+
+.table__container thead th {
+    background: $primary-500;
+    color: #fff;
+    position: sticky;
+    top: -1px;
+    text-align: center;
+    font-weight: normal;
+    z-index: 1;
+    font-size: 12px;
+    border-right: 1px solid #1493b3;
+}
+
+.sales-main-table__foot {
+    position: sticky;
+    left: 0;
+    bottom: 0;
+
+    td {
+        background: $primary-500;
+        color: #fff;
+    }
+}
+
+.sales__footer-container * {
+    font-size: 12px;
+}
+
+.btn-success {
+    color: #fff;
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+}
+.btn-container{
+    display: flex;
+    gap: 4px;
+}

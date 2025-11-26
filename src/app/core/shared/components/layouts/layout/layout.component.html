@@ -1,0 +1,22 @@
+<div class="root-layout">
+  <hms-page-header (menuToggled)="onMenuToggle()"></hms-page-header>
+
+  <hms-sidebar [isOpen]="isSidebarOpen"></hms-sidebar>
+
+  <main class="content-wrapper">
+    <router-outlet></router-outlet>
+   
+  </main>
+   <footer class="fotter_all">
+      <div class="fotter_all_left">
+        <label id="compName">Our Company1</label>
+        <label id="fiscalEnd"> | 2082/83</label>
+        <label id="BranchName">| Branch: Central Branch</label>
+      </div>
+      <div class="fotter_all_right">
+        <label>
+          © 2022 Search Technology . All Rights Reserved.
+        </label>
+      </div>
+    </footer>
+</div>

@@ -1,0 +1,78 @@
+/*************/
+/*---COLORS--*/
+/************/
+
+//BLUE
+$color-blue-400: #226ad6;
+$color-blue-500: #1f60bf;
+$color-blue-700: #1c56ac;
+$color-blue-800: #194d99;
+$color-blue-200: #CFE2F9;
+$color-blue-100: #E3EFFE;
+$color-blue-99: #D9E5E9;
+
+$border: #E7F2F4;
+$th-border: #1493b3;
+
+$color-cyan-500: #137b95;
+$color-cyan-600: #116f86;
+
+//DARK BLUE
+$color-blue-dark-700: #164386;
+
+//GRAY
+$color-gray-99: #EDEDED;
+$color-gray-100: #EDEEF1;
+$color-gray-200: #DDDDDD;
+$color-gray-300: #c5c5c5;
+$color-gray-700: #6B707C;
+$color-gray-800: #6E737F;
+$color-gray-900: #474A51;
+
+//WHITE
+$color-white-100: #FFFFFF;
+
+//BLACK
+$color-black-900: #111;
+
+//GREEN
+$color-green-700: #0dac50;
+
+//RED
+$color-red-700: #e74c3c;
+
+//ORANGE
+$color-orange-500: #f58730;
+$color-orange-600: #F58730;
+
+
+//Yellow
+$color-yellow-500: #FFC436;
+
+
+$primary-500: $color-cyan-500;
+$primary-600: $color-cyan-600;
+
+$accent-500: $color-orange-600;
+/*************/
+/*---FONT SIZES--*/
+/************/
+
+$primary-font-size: 1.4rem;
+$secondary-font-size: 1.3rem;
+$tertiary-font-size: 1.2rem;
+
+$font-size-sm: 1rem;
+$font-size-smd: 1.2rem;
+$font-size-md: 1.6rem;
+$font-size-lg: 2rem;
+$font-size-md1: 1.5rem;
+
+
+/**************/
+/*---CUSTOM INPUT FONT SIZES----*/
+
+$input-field-font-size: $secondary-font-size;
+$input-field-padding-y: .3rem;
+$input-field-padding-x: .8rem;
+$input-label-top: calc(.07333 * $primary-font-size);

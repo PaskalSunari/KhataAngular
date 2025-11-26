@@ -1,0 +1,358 @@
+.button {
+  outline: none;
+  border: none;
+  transition: all .3s ease;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: .8;
+    cursor: not-allowed;
+  }
+
+  &--extra-small {
+    padding: .2rem .5rem;
+    font-size: 1.2rem;
+
+    @media only screen and (max-width: 1200px) {
+      height: 30px;
+    }
+  }
+
+  &--small {
+    // padding: .5rem .8rem;
+    font-size: $tertiary-font-size;
+    padding: 0.4rem 1rem;
+    font-size: 1.35rem;
+    font-weight: 400;
+    line-height: 1.5;
+    border-radius: 0.4rem;
+    height: fit-content;
+
+
+  }
+
+  &--small-auto {
+    width: auto;
+  }
+
+  &--medium {
+    padding: .8rem 1rem;
+    font-size: $secondary-font-size;
+    border-radius: 0.4rem;
+  }
+
+  &--large {
+    padding: 1rem 1.3rem;
+    font-size: $primary-font-size;
+    border-radius: 0.4rem;
+  }
+
+  &__close {
+    padding: .3rem .8rem;
+    background: none;
+    color: $color-white-100;
+    font-size: $secondary-font-size;
+    font-weight: 400;
+    transition: all .2s ease;
+  }
+
+  // &__close:hover {
+  //   // background-color: rgba($color: $color-white-100, $alpha: .5);
+  // }
+
+  &--success,
+  &--danger,
+  &--edit,
+  &--add,
+  &--refresh {
+    color: $color-white-100;
+  }
+
+  &--primary {
+    background-color: $color-cyan-500;
+    color: #fff;
+  }
+
+  &--success {
+    background-color: $color-green-700;
+  }
+
+  &--danger {
+    background-color: $color-red-700;
+  }
+
+  &--warning {
+    background-color: $color-yellow-500;
+  }
+
+  &--edit {
+    background-color: $color-blue-500;
+  }
+
+  &--print {
+    background-color: $color-orange-600;
+  }
+
+  &--redirect {
+    background-color: $color-green-700;
+  }
+
+  &--add {
+    background-color: $color-orange-600;
+    color: #fff;
+    border: none;
+  }
+
+  &--add:hover {
+    background-color: rgba($color: $color-orange-600, $alpha: .9);
+    color: #fff;
+  }
+
+  &--refresh {
+    background-color: $color-orange-600;
+  }
+
+  &--refresh:hover {
+    background-color: rgba($color: $color-orange-600, $alpha: .9);
+  }
+
+
+  &--rounded-sm {
+    border-radius: 3px;
+  }
+
+  &:hover {
+    opacity: .8;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.15rem rgba($color: $color-black-900, $alpha: .9);
+  }
+}
+
+.buttonParentContainer {
+  height: 31px;
+
+}
+
+.buttonContainerTop {
+  top: 12px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-start;
+  gap: .5rem;
+  // width: fit-content;
+  position: absolute;
+  right: 0;
+  margin-bottom: .9rem;
+  // width: 16.66666667% !important;
+
+  @media only screen and (max-width: 1200px) {
+    & {
+      position: inherit;
+    }
+
+    .buttonContainerTop {
+      top: 12px;
+    }
+
+  }
+
+
+}
+
+
+
+.labbutton {
+  display: flex;
+  justify-content: flex-end;
+
+}
+
+.labbutton .button {
+  width: auto !important;
+  padding: 0.4rem 1rem;
+
+}
+
+.buttonContainer.alone {
+  right: 5px;
+}
+
+.buttonContainer.left {
+  left: 5px !important;
+  margin-top: 5px;
+}
+
+.bar {
+  border: 1px solid $color-blue-500;
+  color: $color-blue-500;
+  background-color: $color-white-100;
+  border-radius: 5px;
+  padding: .5rem 1rem;
+  margin: 0 2rem 0 0;
+  width: 20rem;
+}
+
+.bars {
+  padding: .5rem 1rem;
+  margin: 0 1rem 0 0;
+  // width: 12rem;
+  background-color: $color-blue-500;
+  color: $color-white-100;
+  border: none;
+}
+
+.buttonContainerpopUp {
+  display: flex;
+  width: 22% !important;
+  margin-right: 1.5rem;
+}
+
+.buttonContainerpopUpsmall {
+  display: flex;
+  width: 25% !important;
+  margin-right: 0.5rem;
+  height: 30.5px;
+}
+
+.plusbutton {
+  background-color: $color-blue-500;
+  border: none;
+  padding: .2rem .5rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.plusbutton:hover {
+  background-color: #2b88a0;
+  color: white;
+}
+
+.searchbtn {
+  background-color: #abb5c3;
+  border: none;
+  padding: 0 1rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 13px;
+  height: 28px;
+  line-height: 28px;
+}
+
+
+.searchbtn:hover {
+  background-color: #0756b9;
+  color: white;
+}
+
+
+
+.verifybutton {
+  background-color: #0756b9;
+}
+
+.labbutton {
+
+  position: absolute;
+  bottom: 5rem;
+  right: 5rem;
+  z-index: 100;
+}
+
+@media only screen and (max-width: 1024px) {
+  .labbutton {
+    position: inherit;
+    margin-top: 3rem !important;
+  }
+
+}
+
+
+.btn--slider {
+  position: absolute;
+  right: 50px;
+  bottom: 50px;
+  border-radius: 4px;
+  z-index: 100;
+  padding: 0 16px;
+  line-height: 32px;
+}
+
+.button-center {
+  width: 55px;
+  margin: 0 auto;
+}
+
+.buttons-center {
+  width: 200px;
+  margin: 0 auto;
+}
+
+.buttonBelow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+.button2 {
+  border: none
+}
+
+.button3 {
+  border: none
+}
+
+.button4 {
+  border: none
+}
+
+.button5 {
+  border: none
+}
+
+.button6 {
+  border: none
+}
+
+.button-info {
+  background: #f69446;
+  color: #fff;
+
+  &:hover {
+    background: #e98d42;
+    color: #fff;
+
+  }
+}
+
+.button-sm {
+  font-size: 11px;
+  padding: 1px 4px;
+}
+
+@media only screen and (max-width: 992px) {
+  .customPopup .buttonContainer {
+
+    width: 100% !important;
+  }
+
+
+}
+
+@media only screen and (max-width: 767px) {
+  .bar {
+    width: auto;
+    padding: 0.5rem 2rem;
+  }
+
+}
+
+.btnWidth {
+  width: 15.70% !important
+}

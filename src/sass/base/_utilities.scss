@@ -1,0 +1,116 @@
+.space-divider {
+  height: 3.5rem;
+  width: 100%;
+}
+
+.divider {
+  width: 100%;
+  height: .5rem;
+  background-color: $color-gray-200;
+}
+
+.hide {
+  display: none !important;
+}
+
+.line__element {
+  display: block;
+  height: 100%;
+  background: linear-gradient(180deg, transparent 45%, #fff 0, #fff 54%, transparent 0);
+  overflow: hidden;
+}
+
+.w-5 {
+  width: 5%;
+}
+
+.w-10 {
+  width: 10%;
+}
+
+.overflow-auto {
+  overflow: scroll;
+}
+
+.mw-p20 {
+  min-width: 20px;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.mw-p200 {
+  min-width: 200px;
+}
+
+.mw-p120 {
+  min-width: 120px;
+}
+
+.mw-p150 {
+  min-width: 150px;
+}
+
+.mw-p180 {
+  min-width: 180px;
+}
+
+.overflow-x-scroll {
+  overflow-x: scroll;
+}
+
+.ps-60 {
+  padding-left: 60px !important;
+}
+
+///mattree style
+html {
+  --mdc-checkbox-disabled-selected-icon-color: rgba(0, 0, 0, 0.38);
+  --mdc-checkbox-disabled-unselected-icon-color: rgba(0, 0, 0, 0.38);
+  --mdc-checkbox-selected-checkmark-color: #fff;
+  --mdc-checkbox-selected-focus-icon-color: #5aa3b4;
+  --mdc-checkbox-selected-hover-icon-color: #5aa3b4;
+  --mdc-checkbox-selected-icon-color: #5aa3b4;
+  --mdc-checkbox-selected-pressed-icon-color: #5aa3b4;
+  --mdc-checkbox-unselected-focus-icon-color: #212121;
+  --mdc-checkbox-unselected-hover-icon-color: #212121;
+  --mdc-checkbox-unselected-icon-color: rgba(0, 0, 0, 0.54);
+  --mdc-checkbox-unselected-pressed-icon-color: rgba(0, 0, 0, 0.54);
+  --mdc-checkbox-selected-focus-state-layer-color: #f2f3f2;
+  --mdc-checkbox-selected-hover-state-layer-color: #5aa3b4;
+  --mdc-checkbox-selected-pressed-state-layer-color: #5aa3b4;
+  --mdc-checkbox-unselected-focus-state-layer-color: black;
+  --mdc-checkbox-unselected-hover-state-layer-color: black;
+  --mdc-checkbox-unselected-pressed-state-layer-color: black;
+}
+
+.mat-tree-node,
+.mat-nested-tree-node {
+  color: #137b96;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+
+.bg-orange {
+  background-color: $color-orange-600;
+}
+
+.relative{
+  position: relative;
+}
+
+.Gap-10{
+  gap: 10px;
+}
+
+.gap-12{
+  gap: 12px;
+}
+
+.m-b-30{
+  margin-bottom: 30px;
+}

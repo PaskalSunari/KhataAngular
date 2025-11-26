@@ -1,0 +1,140 @@
+<div class="card-container">
+    <div class="dashboard-card">
+        <i class="fas fa-money-bill"></i>
+
+        <div class="dashboard-card-body">
+            <h4>Total Sales</h4>
+            <p id="nrsSales">{{nrsSale}}</p>
+        </div>
+
+    </div>
+    <div class="dashboard-card">
+        <i class="fas fa-shopping-cart"></i>
+
+        <div class="dashboard-card-body">
+            <h4>Total Purchase</h4>
+            <p id="nrsPurchase">{{nrsPurchase}}</p>
+        </div>
+
+    </div>
+    <div class="dashboard-card">
+        <i class="fas fa-university"></i>
+        <div class="dashboard-card-body">
+            <h4>Bank</h4>
+            <p id="nrsBank">{{nrsBank}}</p>
+        </div>
+
+    </div>
+    <div class="dashboard-card">
+        <i class="fas fa-money-bill-wave"></i>
+        <div class="dashboard-card-body">
+            <h4>Cash in Hand</h4>
+            <p id="nrsCashInHand">{{nrsCashInHand}}</p>
+        </div>
+
+    </div>
+</div>
+
+<div class="transaction-table">
+    <div class="transaction-inner">
+        <h3 class="mb-4">Recent Transactions (7 DAYS)</h3>
+        <div class="tabs">
+            <button (click)="tab = 'sales'" [class.active]="tab === 'sales'">Sales</button>
+
+            <button (click)="tab = 'purchase'" [class.active]="tab === 'purchase'">Purchase</button>
+
+            <button (click)="tab = 'payment'" [class.active]="tab === 'payment'">Payment</button>
+        </div>
+
+        <div class="transaction-content">
+            <!-- TAB CONTENT -->
+            <div *ngIf="tab === 'sales'">
+                <div class="table__wrapper table__wrapper-48 table_xxl-40 mt-1">
+                    <table class="table">
+                        <thead class="table__head">
+                            <tr>
+                                <th>S.N.</th>
+                                <th> Voucher Type</th>
+                                <th>Voucher No</th>
+                                <th>Amount</th>
+                                <th>User</th>
+                                <th>EntryDate</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table__body">
+                            <tr *ngFor="let item of salesList; let i = index;">
+                                <td>{{i+1}}</td>
+                                <td>{{item?.vouchertypename}}</td>
+                                <td>{{item?.voucherNo}}</td>
+                                <td>{{item?.Amount}}</td>
+                                <td>{{item?.Username}}</td>
+                                <td>{{ item?.EntryDate | date:'yyyy-MM-dd' }}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div *ngIf="tab === 'purchase'">
+                <div class="table__wrapper table__wrapper-48 table_xxl-40 mt-1">
+                    <table class="table">
+                        <thead class="table__head">
+                            <tr>
+                                <th>S.N.</th>
+                                <th> Voucher Type</th>
+                                <th>Voucher No</th>
+                                <th>Amount</th>
+                                <th>User</th>
+                                <th>EntryDate</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table__body">
+                            <tr *ngFor="let item of purchaseList; let i = index;">
+                                <td>{{i+1}}</td>
+                                <td>{{item?.vouchertypename}}</td>
+                                <td>{{item?.voucherNo}}</td>
+                                <td>{{item?.Amount}}</td>
+                                <td>{{item?.Username}}</td>
+                                <td>{{ item?.EntryDate | date:'yyyy-MM-dd' }}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div *ngIf="tab === 'payment'">
+                <div class="table__wrapper table__wrapper-48 table_xxl-40 mt-1">
+                    <table class="table">
+                        <thead class="table__head">
+                            <tr>
+                                <th>S.N.</th>
+                                <th> Voucher Type</th>
+                                <th>Voucher No</th>
+                                <th>Amount</th>
+                                <th>User</th>
+                                <th>EntryDate</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table__body">
+                            <tr *ngFor="let item of paymentList; let i = index;">
+                                <td>{{i+1}}</td>
+                                <td>{{item?.vouchertypename}}</td>
+                                <td>{{item?.voucherNo}}</td>
+                                <td>{{item?.Amount}}</td>
+                                <td>{{item?.Username}}</td>
+                                <td>{{ item?.EntryDate | date:'yyyy-MM-dd' }}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="loading" *ngIf="loading">
+    <img src="../../../assets/img/loding---img2.gif" alt="">
+</div>
