@@ -8,6 +8,7 @@ import { ProductCategoryComponent } from './Product/product-category/product-cat
 import { ProductUnitComponent } from './Product/product-unit/product-unit.component';
 import { ProductManufacturerComponent } from './Product/product-manufacturer/product-manufacturer.component';
 import { ProductBrandComponent } from './Product/product-brand/product-brand.component';
+import { DemandComponent } from './demand/demand.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ProductBrandComponent } from './Product/product-brand/product-brand.com
     ProductCategoryComponent,
     ProductUnitComponent,
     ProductManufacturerComponent,
-    ProductBrandComponent
+    ProductBrandComponent,
+    DemandComponent
   ],
   imports: [
     CommonModule,

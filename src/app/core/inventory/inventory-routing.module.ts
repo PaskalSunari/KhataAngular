@@ -5,6 +5,7 @@ import { ProductCategoryComponent } from './Product/product-category/product-cat
 import { ProductUnitComponent } from './Product/product-unit/product-unit.component';
 import { ProductManufacturerComponent } from './Product/product-manufacturer/product-manufacturer.component';
 import { ProductBrandComponent } from './Product/product-brand/product-brand.component';
+import { DemandComponent } from './demand/demand.component';
 
 const routes: Routes = [
  {
@@ -34,6 +35,10 @@ const routes: Routes = [
    {
     path: 'productSize',
     component: ProductManufacturerComponent,
+  },
+   {
+    path: 'demand',
+    component: DemandComponent,
   },
 ];
 
