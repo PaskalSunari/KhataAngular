@@ -7,7 +7,7 @@ import 'select2';
   selector: 'app-product-brand',
   templateUrl: './product-brand.component.html'
 })
-export class ProductBrandComponent {
+export class ProductBrandComponent implements AfterViewInit {
 showForm = true;
 
   toggleForm() {
