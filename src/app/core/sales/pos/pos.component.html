@@ -48,16 +48,19 @@
                                                 <div
                                                     class="custom__input-container d-flex align-items-center input-gap">
                                                     <div class="select-wrap">
-                                                        <select class="input-field custom__input  w-100 req">
-                                                            <option value="test1">test1</option>
-                                                            <option value="test2">test21</option>
+                                                        <select class="input-field custom__input w-100 req">
+                                                            <option *ngFor="let item of salesLedgerList"
+                                                                [value]="item.value">
+                                                                {{ item.text }}
+                                                            </option>
                                                         </select>
+
 
                                                         <label>Sales Ledger</label>
                                                     </div>
-                                                    <button class=" button__plus ms-1">
+                                                    <!-- <button class=" button__plus ms-1">
                                                         <i class="fa-solid fa-plus"></i>
-                                                    </button>
+                                                    </button> -->
                                                 </div>
                                             </div>
 
@@ -67,8 +70,8 @@
                                                     <div class="select-wrap">
                                                         <select class="input-field custom__input  w-100 req"
                                                             id="Clubbing">
-                                                             <option value="field1">field1</option>
-                                                            <option value="field2">field2</option>
+                                                            <option value="cash">Cash</option>
+                                                            <option value="credit">Credit</option>
                                                         </select>
 
                                                         <label>Mode</label>
@@ -77,7 +80,7 @@
                                                 </div>
                                             </div>
 
-
+                                            <!-- 
                                             <div class="col-6 col-sm-4 col-md-4 col-lg-4">
                                                 <div
                                                     class="custom__input-container d-flex align-items-center input-gap">
@@ -92,7 +95,7 @@
                                                         <i class="fa-solid fa-plus"></i>
                                                     </button>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
 
                                         </div>
@@ -134,7 +137,8 @@
                                         <div class="row">
                                             <div class=" col-sm-4 col-md-3 col-lg-3">
                                                 <div class="custom__input-container d-flex align-items-center">
-                                                    <input id="" type="text" class="form-control custom__input"
+                                                    <input [(ngModel)]="productCode" name="productCode" id="productCode"
+                                                        type="text" class="form-control custom__input"
                                                         autocomplete="off">
                                                     <label>Product Code</label>
                                                     <button type="button" id="" class="btn button-sm button-info ms-1">
@@ -145,16 +149,24 @@
                                             <div class="col-sm-4 col-md-4 col-lg-6">
 
                                                 <div class="custom__input-container">
-                                                    <select class="input-field custom__input  w-100 req" id="">
-                                                        <option></option>
+                                                    <select id="productSelect"
+                                                        class="input-field custom__input w-100 req">
+                                                        <option *ngFor="let item of productList"
+                                                            [value]="item.productCode">
+                                                            {{ item.productName }}
+                                                        </option>
                                                     </select>
+
+
                                                     <label>Product Name</label>
                                                 </div>
                                             </div>
                                             <div class="col-sm-4 col-md-4 col-lg-3">
                                                 <div class="custom__input-container">
-                                                    <select class="input-field custom__input  w-100 req" id="">
-                                                        <option></option>
+                                                    <select class="input-field custom__input w-100 req">
+                                                        <option *ngFor="let item of batch" [value]="item.branch">
+                                                            {{ item.batch }}
+                                                        </option>
                                                     </select>
                                                     <label>Batch</label>
 
@@ -166,9 +178,11 @@
                                         <div class="row">
                                             <div class="col-sm-3 col-md-2 col-lg-3">
                                                 <div class="custom__input-container">
-                                                    <select class="input-field custom__input  w-100 req" id="">
+                                                    <select class="input-field custom__input w-100 req">
                                                         <option></option>
+
                                                     </select>
+
                                                     <label>Unit</label>
 
                                                 </div>
@@ -183,8 +197,8 @@
                                             </div>
                                             <div class="col-sm-3 col-md-3 col-lg-2">
                                                 <div class="custom__input-container ">
-                                                    <input id="" type="text" autocomplete="off"
-                                                        class="form-control custom__input" disabled>
+                                                    <input name="vat" [(ngModel)]="vat" id="vat" type="text"
+                                                        autocomplete="off" class="form-control custom__input" disabled>
                                                     <label>Vat</label>
                                                 </div>
                                             </div>
@@ -305,12 +319,19 @@
                                         <div class="row">
 
                                             <div class="col-sm-4 col-md-3 col-lg-3">
-                                                <div class="custom__input-container">
-                                                    <select class="input-field custom__input  w-100 req" id="" disabled>
-                                                        <option></option>
-                                                    </select>
-                                                    <label>Customer</label>
+                                                <div
+                                                    class="custom__input-container d-flex align-items-center input-gap">
+                                                    <div class="select-wrap">
+                                                        <select class="input-field custom__input w-100 req">
+                                                            <option value=""></option>
+                                                        </select>
 
+
+                                                        <label>Customer</label>
+                                                    </div>
+                                                    <button (click)="customerPopup()" class=" button__plus ms-1">
+                                                        <i class="fa-solid fa-plus"></i>
+                                                    </button>
                                                 </div>
                                             </div>
 
@@ -521,9 +542,48 @@
 
                 </div>
 
+            </div>
+        </div>
+    </div>
+</div>
 
+<!--  Popup -->
+<div [hidden]="!IscustomerPopup">
+    <div class="customPopupContainer">
+        <div class="customPopup">
+            <div class="customPopupHeader"><span>Customer Ledger</span>
+                <span class="closeIcon" (click)="closecustomerPopup()">
+                    <i class="fa-solid fa-xmark"></i>
+                </span>
+            </div>
+            <div class="modal-body p-4">
+
+                <div class="transaction-table">
+                    <div class="transaction-inner">
+                        <div class="tabs">
+                            <button (click)="tab = 'main'" [class.active]="tab === 'main'">Main Details</button>
+
+                            <button (click)="tab = 'secondary'" [class.active]="tab === 'secondary'">Secondary Details</button>
+
+                        </div>
+
+                        <div class="transaction-content">
+                            <!-- TAB CONTENT -->
+                            <div *ngIf="tab === 'main'">
+                          main
+                            </div>
+
+                            <div *ngIf="tab === 'secondary'">
+                           secondary
+                            </div>
+
+                    
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
+
     </div>
 </div>
