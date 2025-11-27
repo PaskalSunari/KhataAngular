@@ -4,11 +4,12 @@ declare const setFocusOnNextElement: any;
 import 'select2';
 
 @Component({
-  selector: 'app-product-group',
-  templateUrl: './product-group.component.html'
+  selector: 'app-product-unit',
+  templateUrl: './product-unit.component.html'
 })
-export class ProductGroupComponent implements AfterViewInit {
-   showForm = true;
+export class ProductUnitComponent implements AfterViewInit {
+ showForm = true;
+ unitTypeStatus:boolean=true
 
   toggleForm() {
     this.showForm = !this.showForm;
@@ -17,6 +18,15 @@ export class ProductGroupComponent implements AfterViewInit {
   ngAfterViewInit(): void {
 this.enterFun();
     $(this.el.nativeElement).find('select').select2();
+     let self = this;
+       $('#unitType').on('change', function (event: any) {
+      if (event.target.value == "1"||event.target.value == "3") {
+       self.unitTypeStatus=true
+      }
+      else if (event.target.value == "2") {
+       self.unitTypeStatus=false
+      }
+    })
   }
     // Enter functon
   enterFun() {

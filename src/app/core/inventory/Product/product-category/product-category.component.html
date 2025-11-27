@@ -1,7 +1,7 @@
 <div  class="page-head-bar">
     <div class="container-fluid">
         <div class="row align-items-center flex-wrap">
-           <div class="col-9">Product Group</div>
+           <div class="col-9">Product Category</div>
            <div class="col-3">
             <div class="buttons-wrapper d-flex justify-content-end Gap-5">
                 <button class="btn btn-success button-sm" ><i class="fa-solid fa-file-pdf"></i></button>
@@ -32,7 +32,7 @@
                                         <div class="row">
                                             <div class=" col-sm-4 col-md-3 col-lg-2">
                                                 <div class="custom__input-container d-flex align-items-center">
-                                                    <input id="groupName" type="text" class="form-control custom__input"
+                                                    <input id="categoryName" type="text" class="form-control custom__input"
                                                         autocomplete="off">
                                                     <label>Name</label>
                                                 </div>
@@ -40,7 +40,7 @@
                                             <div class="col-sm-4 col-md-4 col-lg-2">
 
                                                 <div class="custom__input-container">
-                                                    <select class="input-field custom__input  w-100 req" id="groupUnder">
+                                                    <select class="input-field custom__input  w-100 req" id="categoryUnder">
                                                         <option>test1</option>
                                                          <option>test2</option>
                                                     </select>
@@ -51,7 +51,7 @@
 
                                              <div class=" col-sm-4 col-md-3 col-lg-3">
                                                 <div class="custom__input-container d-flex align-items-center">
-                                                    <input id="groupRemarks" type="text" class="form-control custom__input"
+                                                    <input id="categoryRemarks" type="text" class="form-control custom__input"
                                                         autocomplete="off">
                                                     <label>Remarks</label>
                                                 </div>
@@ -59,7 +59,7 @@
                                               <div class="col-sm-4 col-md-4 col-lg-2">
 
                                                 <div class="custom__input-container">
-                                                    <select class="input-field custom__input  w-100 req" id="groupStatus">
+                                                    <select class="input-field custom__input  w-100 req" id="categoryStatus">
                                                         <option value="1">Active</option>
                                                         <option value="0">InActive</option>
                                                     </select>
@@ -69,7 +69,7 @@
 
                                              <div class="col-sm-4 col-md-3 col-lg-1">
                                                 <div class="custom__input-container d-flex align-items-center">
-                                                    <button id="button1" class="button-sm btn btn-success ms-1"
+                                                    <button id="button" class="button-sm btn btn-success ms-1"
                                                         title="Insert Item">
                                                         <i class="fa-solid fa-plus"></i>
                                                     </button>
@@ -90,21 +90,21 @@
         <div class="col-sm-4 col-md-4 col-lg-2">
 
                                                 <div class="custom__input-container">
-                                                    <select class="input-field custom__input  w-100 req" id="filterByGroupName">
+                                                    <select class="input-field custom__input  w-100 req" id="filterByCategory">
                                                         <option value="1">All</option>
                                                         <option value="0">Medicine</option>
                                                     </select>
-                                                    <label>Group</label>
+                                                    <label>category</label>
                                                 </div>
                                             </div>
                                              <div class="col-sm-4 col-md-4 col-lg-2">
 
                                                 <div class="custom__input-container">
-                                                    <select class="input-field custom__input  w-100 req" id="filterByGroupUnder">
+                                                    <select class="input-field custom__input  w-100 req" id="filterByUnderCategory">
                                                         <option value="1">All</option>
                                                         <option value="0">Primary</option>
                                                     </select>
-                                                    <label>Under Group</label>
+                                                    <label>Under Category</label>
                                                 </div>
                                             </div>
     </div>
@@ -117,8 +117,8 @@
                                 <thead class="table__head">
                                     <tr>
                                         <th class="sales-main-table__sn">S.N.</th>
-                                        <th class="sales-main-table__item">Group</th>
-                                        <th class="sales-main-table__qty">Under Group</th>
+                                        <th class="sales-main-table__item">Category</th>
+                                        <th class="sales-main-table__qty">Under Category</th>
                                         <th class="sales-main-batch">Remarks</th>
                                         <th class="sales-main-expirydate">Status</th>
                                         <th class="sales-main-table__action">Action</th>

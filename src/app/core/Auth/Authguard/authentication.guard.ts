@@ -24,7 +24,7 @@ export class AuthGuardService implements CanActivate {
     const requestedRoute = state.url.split(/[?#]/)[0];
 
     // ✅ Define routes that are allowed only for logged-in users
-    const allowedRoutes = ['/dashboard', '/sales/pos', 'organization'];
+    const allowedRoutes = ['/dashboard', '/sales/pos', 'organization','/inventory/productgroup','/inventory/productcategory','/inventory/productunit','/inventory/productmanufacturer','/inventory/productbrand','/inventory/productmodel','/inventory/productsize'];
 
     // 🚫 If not logged in → redirect to login
     if (!this.loginservice.isLoggedIn()) {

@@ -1,7 +1,7 @@
 <div  class="page-head-bar">
     <div class="container-fluid">
         <div class="row align-items-center flex-wrap">
-           <div class="col-9">Product Group</div>
+           <div class="col-9">Product Unit</div>
            <div class="col-3">
             <div class="buttons-wrapper d-flex justify-content-end Gap-5">
                 <button class="btn btn-success button-sm" ><i class="fa-solid fa-file-pdf"></i></button>
@@ -28,25 +28,82 @@
                     <form class="">
                         <div class="container-fluid pt-0 px-1 pb-1">
                              <div class="sales__form-box m-2 pb-2 " *ngIf="showForm">
-                               
-                                        <div class="row">
-                                            <div class=" col-sm-4 col-md-3 col-lg-2">
-                                                <div class="custom__input-container d-flex align-items-center">
-                                                    <input id="groupName" type="text" class="form-control custom__input"
-                                                        autocomplete="off">
-                                                    <label>Name</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-4 col-md-4 col-lg-2">
+                                <div class="row">
+                                     <div class="col-sm-4 col-md-4 col-lg-2">
 
                                                 <div class="custom__input-container">
-                                                    <select class="input-field custom__input  w-100 req" id="groupUnder">
-                                                        <option>test1</option>
-                                                         <option>test2</option>
+                                                    <select class="input-field custom__input  w-100 req" id="unitType">
+                                                        <option value="1">Simple</option>
+                                                         <option value="2">Compound</option>
+                                                          <option value="3">Service</option>
                                                     </select>
-                                                    <label>Under</label>
+                                                    <label>Unit Type</label>
                                                 </div>
                                             </div>
+                                </div>
+                                        <div class="row">
+                                            <div class=" col-sm-4 col-md-3 col-lg-2" [hidden]="!unitTypeStatus">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="formalName" type="text" class="form-control custom__input"
+                                                        autocomplete="off">
+                                                    <label>Formal Name</label>
+                                                </div>
+                                            </div>
+
+                                             <div class=" col-sm-4 col-md-3 col-lg-2" [hidden]="!unitTypeStatus">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="symbol" type="text" class="form-control custom__input"
+                                                        autocomplete="off">
+                                                    <label>Symbol</label>
+                                                </div>
+                                            </div>
+
+                                              <div class=" col-sm-4 col-md-3 col-lg-2" [hidden]="!unitTypeStatus">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="decimalPlace" type="number" class="form-control custom__input"
+                                                        autocomplete="off">
+                                                    <label>No. of Decimal Place</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4 col-md-4 col-lg-2" [hidden]="unitTypeStatus">
+                                                <div class="d-flex">
+<div class="col-11">
+ <div class="custom__input-container" >
+                                                    <select class="input-field custom__input  w-100 req" id="firstUnit">
+                                                        <option>Box </option>
+                                                         <option>BTL</option>
+                                                    </select>
+                                                    <label>First Unit</label>
+                                                </div>
+</div>
+<div class="col-1 " style="justify-content: center; align-items: center; margin:10px">
+  <span >of</span>
+</div>
+                                                </div>
+                                               
+                                              
+                                            </div>
+
+                                              <div class=" col-sm-4 col-md-3 col-lg-2" [hidden]="unitTypeStatus">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="conversionFactor" type="text" class="form-control custom__input"
+                                                        autocomplete="off">
+                                                    <label>Conversion Factor</label>
+                                                </div>
+                                            </div>
+
+                                             <div class="col-sm-4 col-md-4 col-lg-2" [hidden]="unitTypeStatus">
+
+                                                <div class="custom__input-container">
+                                                    <select class="input-field custom__input  w-100 req" id="secondUnit">
+                                                        <option>Box </option>
+                                                         <option>BTL</option>
+                                                    </select>
+                                                    <label>Second Unit</label>
+                                                </div>
+                                            </div>
+
 
 
                                              <div class=" col-sm-4 col-md-3 col-lg-3">
@@ -87,24 +144,11 @@
 
 <div class="filter sales__form-box m-2 pb-2">
     <div class="row d-flex justify-content-between">
-        <div class="col-sm-4 col-md-4 col-lg-2">
-
-                                                <div class="custom__input-container">
-                                                    <select class="input-field custom__input  w-100 req" id="filterByGroupName">
-                                                        <option value="1">All</option>
-                                                        <option value="0">Medicine</option>
-                                                    </select>
-                                                    <label>Group</label>
-                                                </div>
-                                            </div>
-                                             <div class="col-sm-4 col-md-4 col-lg-2">
-
-                                                <div class="custom__input-container">
-                                                    <select class="input-field custom__input  w-100 req" id="filterByGroupUnder">
-                                                        <option value="1">All</option>
-                                                        <option value="0">Primary</option>
-                                                    </select>
-                                                    <label>Under Group</label>
+         <div class=" col-sm-4 col-md-3 col-lg-3">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="groupRemarks" type="text" class="form-control custom__input"
+                                                        autocomplete="off">
+                                                    <label>Search</label>
                                                 </div>
                                             </div>
     </div>
@@ -117,10 +161,10 @@
                                 <thead class="table__head">
                                     <tr>
                                         <th class="sales-main-table__sn">S.N.</th>
-                                        <th class="sales-main-table__item">Group</th>
-                                        <th class="sales-main-table__qty">Under Group</th>
-                                        <th class="sales-main-batch">Remarks</th>
-                                        <th class="sales-main-expirydate">Status</th>
+                                        <th class="sales-main-table__item">Unit Name</th>
+                                        <th class="sales-main-table__qty">Symbol</th>
+                                        <th class="sales-main-batch">Type</th>
+                                        <th class="sales-main-expirydate">Decimal Place</th>
                                         <th class="sales-main-table__action">Action</th>
                                     </tr>
                                 </thead>
