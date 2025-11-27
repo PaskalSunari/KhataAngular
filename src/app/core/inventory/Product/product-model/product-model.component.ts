@@ -4,11 +4,12 @@ declare const setFocusOnNextElement: any;
 import 'select2';
 
 @Component({
-  selector: 'app-product-manufacturer',
-  templateUrl: './product-manufacturer.component.html'
+  selector: 'app-product-model',
+  templateUrl: './product-model.component.html'
 })
-export class ProductManufacturerComponent implements AfterViewInit {
- showForm = true;
+export class ProductModelComponent implements AfterViewInit {
+
+  showForm = true;
 
   toggleForm() {
     this.showForm = !this.showForm;

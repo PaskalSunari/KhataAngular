@@ -6,6 +6,8 @@ import { ProductUnitComponent } from './Product/product-unit/product-unit.compon
 import { ProductManufacturerComponent } from './Product/product-manufacturer/product-manufacturer.component';
 import { ProductBrandComponent } from './Product/product-brand/product-brand.component';
 import { DemandComponent } from './demand/demand.component';
+import { ProductModelComponent } from './Product/product-model/product-model.component';
+import { ProductSizeComponent } from './Product/product-size/product-size.component';
 
 const routes: Routes = [
  {
@@ -29,12 +31,12 @@ const routes: Routes = [
     component: ProductBrandComponent,
   },
    {
-    path: 'productModel',
-    component: ProductManufacturerComponent,
+    path: 'productmodel',
+    component: ProductModelComponent,
   },
    {
-    path: 'productSize',
-    component: ProductManufacturerComponent,
+    path: 'productsize',
+    component: ProductSizeComponent,
   },
    {
     path: 'demand',
