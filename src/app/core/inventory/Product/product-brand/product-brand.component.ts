@@ -4,18 +4,21 @@ declare const setFocusOnNextElement: any;
 import 'select2';
 
 @Component({
-  selector: 'app-pos',
-  templateUrl: './pos.component.html',
+  selector: 'app-product-brand',
+  templateUrl: './product-brand.component.html'
 })
-export class PosComponent implements AfterViewInit {
+export class ProductBrandComponent implements AfterViewInit {
+showForm = true;
 
-
-  constructor(private el: ElementRef) {}
+  toggleForm() {
+    this.showForm = !this.showForm;
+  }
+ constructor(private el: ElementRef) {}
   ngAfterViewInit(): void {
-    this.enterFun();
+this.enterFun();
     $(this.el.nativeElement).find('select').select2();
   }
-  // Enter functon
+    // Enter functon
   enterFun() {
     $(document).ready(function () {
       // Keydown event handler for inputs and selects
