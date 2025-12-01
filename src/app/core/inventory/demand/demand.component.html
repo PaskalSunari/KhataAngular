@@ -26,8 +26,8 @@
                                     <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
                                             <select class="input-field custom__input  w-100 req" id="groupUnder">
-                                                <option>test1</option>
-                                                <option>test2</option>
+                                                <option>Choose</option>
+                                                <option *ngFor="let data of requestedByDropdownList" value="{{data.userID}}">{{data.userName}}</option>
                                             </select>
                                             <label>Requested By</label>
                                         </div>
@@ -35,8 +35,8 @@
                                     <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
                                             <select class="input-field custom__input  w-100 req" id="groupUnder">
-                                                <option>test1</option>
-                                                <option>test2</option>
+                                                 <option>Choose</option>
+                                                <option *ngFor="let data of requestedToDropdownList" value="{{data.userID}}">{{data.userName}}</option>
                                             </select>
                                             <label>Requested To</label>
                                         </div>
@@ -45,8 +45,8 @@
 
                                         <div class="custom__input-container">
                                             <select class="input-field custom__input  w-100 req" id="groupUnder">
-                                                <option>test1</option>
-                                                <option>test2</option>
+                                                <option>Choose</option>
+                                                <option *ngFor=" let data of getDepartmentList" [value] = "data.departmentID">{{data.departmentName}}</option>
                                             </select>
                                             <label>Requested Department</label>
                                         </div>
@@ -54,8 +54,8 @@
                                     <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
                                             <select class="input-field custom__input  w-100 req" id="groupUnder">
-                                                <option>test1</option>
-                                                <option>test2</option>
+                                                <option>Choose</option>
+                                                <option *ngFor="let data of productList" [value] = "data.productId">{{data.productName}}</option>
                                             </select>
                                             <label>Product</label>
                                         </div>
@@ -70,8 +70,7 @@
                                     <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
                                             <select class="input-field custom__input  w-100 req" id="groupUnder">
-                                                <option>test1</option>
-                                                <option>test2</option>
+                                                <option *ngFor="let data of unitList" [value] = "data.unitID">{{data.unitName}}</option>
                                             </select>
                                             <label>Unit</label>
                                         </div>
