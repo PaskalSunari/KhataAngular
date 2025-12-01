@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 declare var $: any;
 declare const setFocusOnNextElement: any;
 import 'select2';
@@ -9,6 +9,7 @@ import { error } from 'jquery';
   templateUrl: './demand.component.html'
 })
 export class DemandComponent {
+  @ViewChild('requestBy') requestBy!: ElementRef;
   showForm = true;
 requestedByDropdownList:any[]=[];
 requestedToDropdownList:any []=[];
@@ -20,18 +21,30 @@ unitList: any[]=[];
   }
  constructor(private el: ElementRef,public service: DemandService) {}
   ngAfterViewInit(): void {
+    $(this.el.nativeElement).find('select').select2();
      this.getRequestByDropdownList()
      this.getRequestToDropdownList()
      this.getDepartmentDropdownList()
      this.getProductList()
      this.getUnitList()
-this.enterFun();
-    $(this.el.nativeElement).find('select').select2();
+     this.enterFun();    
+  }
+  ngOnDestroy(): void{
+    try{
+      $(this.el.nativeElement).find('select').each(function (this: any){
+        if ($(this).hasClass('select2-hidden-accessible')){
+          $(this).select2('destroy');
+        }
+      });
+      $(document).off('keydown blur');
+      $(document).off('select2:close');
+    }catch(e){
+
+    }
   }
     // Enter functon
   enterFun() {
     $(document).ready(function () {
-      // Keydown event handler for inputs and selects
       $('input, select, .focussable, textarea ,button').on(
         'keydown blur',
        function (this: HTMLElement, event: any) {
@@ -47,7 +60,6 @@ this.enterFun();
 
       $('select').on('select2:close', function (this: HTMLElement, event: any) {
         const $this = $(this);
-        // Wait for Select2 dropdown to close completely
         setTimeout(() => {
           setFocusOnNextElement.call($this);
         }, 0);
@@ -55,19 +67,33 @@ this.enterFun();
     });
   }
   
-    getRequestByDropdownList() {
+     getRequestByDropdownList() {
     this.service.getRequestedByDropdownList().subscribe(
       (res) => {
-        let result: any = res;
+        const result: any = res;
         if (result) {
-          this.requestedByDropdownList = result?.result ;
-           
+          this.requestedByDropdownList = result?.result || [];
+          setTimeout(() => {
+            if (this.requestBy && this.requestBy.nativeElement) {
+              const $el = $(this.requestBy.nativeElement);
+              if (!$el.hasClass('select2-hidden-accessible')) {
+                $el.select2();
+              }
+
+              try {
+                $el.next('.select2-container').find('.select2-selection').trigger('focus').trigger('click');
+              } catch (e) {
+                try { (this.requestBy.nativeElement as HTMLElement).focus(); } catch {}
+              }
+            }
+          }, 0);
         }
       },
       (error) => {
       }
-    );    
+    );
   }
+
   getRequestToDropdownList() {
     this.service.getRequestedToDropdownList().subscribe(
       (res) => {
