@@ -233,7 +233,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         this.loadingDR = false;
         const code = data?.authResult?.code;
-
+        
         if (code == 200) {
           this.departmentBranch = data.departmentBranches;
           this.companyName = data.ownerCompanyList.companyName;
