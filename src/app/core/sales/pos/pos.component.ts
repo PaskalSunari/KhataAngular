@@ -21,10 +21,13 @@ export class PosComponent implements AfterViewInit {
     this.fetchSalesLedger();
     this.fetchProductList(); // <-- FIXED
     this.selectProductName();
+    this.selectMode();
     this.fetchUnit();
-
+    // this.fetchTableData();
     this.enterFun();
-    $(this.el.nativeElement).find('select').select2();
+    setTimeout(() => {
+      $(this.el.nativeElement).find('select').select2();
+    }, 10);
   }
   //=====================================================================
   // Enter functon
@@ -84,12 +87,24 @@ export class PosComponent implements AfterViewInit {
   selectProductName() {
     $('#productSelect').on('change', (event: any) => {
       const selectedValue = event.target.value;
-      console.log(selectedValue, 'code');
       this.productCode = selectedValue;
       this.fetchProductDetail(this.productCode); // <-- Pass selected product code here
     });
   }
 
+  //=====================================================================
+  fetchProductDetail(productCode: any) {
+    this.service.GetProductDetail(productCode).subscribe({
+      next: (data: any) => {
+        if (data.code === 200) {
+          this.ProductData = data.result;
+          console.log("object");
+        }
+      },
+    });
+  }
+
+  //=====================================================================
   fetchProductList() {
     this.service.GetAllProducts().subscribe({
       next: (data: any) => {
@@ -100,27 +115,6 @@ export class PosComponent implements AfterViewInit {
       },
       error: () => {
         this.toastr.error('Failed to load product list');
-      },
-    });
-  }
-
-  //=====================================================================
-  fetchProductDetail(productCode: any) {
-    this.service.GetProductDetail(productCode).subscribe({
-      next: (data: any) => {
-        if (data.code === 200) {
-          this.ProductData = data.result;
-
-          // // Filter productList to find the selected product
-          // const selectedProduct = this.productList.find(
-          //   (item) => item.productCode === productCode
-          // );
-
-          // // Store only the batch value
-          // this.skuunit = selectedProduct?.skuunit ? [selectedProduct.skuunit] : [];
-
-          // console.log('Product skuunit:', this.skuunit);
-        }
       },
     });
   }
@@ -137,8 +131,8 @@ export class PosComponent implements AfterViewInit {
         }
       },
       error: (err) => {
-        console.error('Error fetching customer data:', err);
-        this.toastr.error('Failed to load customer data');
+        console.error('Error fetching unit data:', err);
+        this.toastr.error('Failed to load unit data');
         this.loading = false;
       },
     });
@@ -173,13 +167,113 @@ export class PosComponent implements AfterViewInit {
   //   );
   // }
 
-IscustomerPopup:boolean= false;
+  IscustomerPopup: boolean = false;
   tab = 'main';
-customerPopup(){
-  this.IscustomerPopup = true
-}
-closecustomerPopup(){
-  this.IscustomerPopup = false
-}
+  customerPopup() {
+    this.IscustomerPopup = true;
+  }
+  closecustomerPopup() {
+    this.IscustomerPopup = false;
+  }
 
+  //=====================================================================
+
+  // tableData: any[] = [];
+  // sesessionId: string = localStorage.getItem('sessionId') || '';
+  // userId: string = localStorage.getItem('userId') || '';
+  // branch:string = localStorage.getItem('branch') || '';
+
+  // fetchTableData() {
+  //   this.loading = true;
+
+  //   const obj = {
+  //     dataFilterModel: {
+  //       tblName: 'Customer',
+  //       columnName: null,
+  //       strName: '',
+  //       underColumnName: null,
+  //       underIntID: 0,
+  //       filterColumnsString:
+  //         '["ledgerName","accountGroupName","address","phone","pan","openingBalance"]',
+  //       currentPageNumber: '1',
+  //       pageRowCount: '25',
+  //       StrlistNames: '',
+  //     },
+  //     mainInfoModel: {
+  //       userId: '1',
+  //       fiscalID: 2,
+  //       branchDepartmentId: 0,
+  //       branchId: this.branch,
+  //       dbName: 'string',
+  //       isEngOrNepaliDate: true,
+  //       isMenuVerified: true,
+  //       filterId: 0,
+  //       refId: 0,
+  //       mainId: 0,
+  //       strId: 'string',
+  //       startDate: '2025-07-17T00:00:00',
+  //       fromDate: '2025-07-17T00:00:00',
+  //       endDate: '2026-07-17T00:00:00',
+  //       toDate: '2026-07-17T00:00:00',
+  //       decimalPlace: '2',
+  //       bookClose: 0,
+  //       sessionId: this.sesessionId,
+  //       id: 0,
+  //       searchtext: '',
+  //       cid: 0,
+  //     },
+  //     print: false,
+  //   };
+
+  //   this.service.GetFilterAnyDataPagination(obj).subscribe(
+  //     (res: any) => {
+  //       console.log(res, 'tableData');
+  //       if (res.code == 200) {
+  //         this.tableData = res.result;
+  //       }
+  //       this.loading = false;
+  //     },
+  //     (err) => {
+  //       console.error('Error fetching Batch data:', err);
+  //       this.loading = false;
+  //       this.toastr.error('Failed to load Batch data');
+  //     }
+  //   );
+  // }
+  customerList: any[] = [];
+  mode: any;
+  selectMode() {
+    $('#modeSelect').on('change', (event: any) => {
+      const selectedValue = event.target.value;
+      if (selectedValue == 'cash') {
+        this.mode = 9;
+        this.fetchCustomerList(this.mode);
+      }
+
+      if (selectedValue == 'credit') {
+        this.mode = 2;
+        this.fetchCustomerList(this.mode);
+      }
+
+      // Mode अनुसार Customer list fetch गर्नुहोस्
+    });
+  }
+
+  fetchCustomerList(mode: string) {
+    this.loading = true;
+    this.service.GetCustomersByMode(mode).subscribe({
+
+      next: (data: any) => {
+        if (data.code == 200) {
+          this.customerList = data.result;
+        }
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching customers:', err);
+        this.toastr.error('Failed to load customer list');
+        this.loading = false;
+      },
+    });
+  }
 }

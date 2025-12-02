@@ -22,35 +22,41 @@ export class PosService {
     });
   }
   //================================================================================
-  Customer() {
-    const params = new HttpParams().set('flag', 9).set('branchId', 1001);
-    return this.http.get(`${this.baseurl}${this.endPoint.SalesLedger}`, {
+
+  GetCustomersByMode(mode: string) {
+    const params = new HttpParams()
+      .set('flag', mode) // existing parameter
+      .set('branchId', '1001'); // existing parameter
+
+    return this.http.get(`${this.baseurl}${this.endPoint.Customer}`, {
       params,
     });
   }
+
   //================================================================================
 
-GetAllProducts() {
-  const params = new HttpParams()
-    .set('flag', 1)
-    .set('productcode', '')
-    .set('branch', 1001);
+  GetAllProducts() {
+    const params = new HttpParams()
+      .set('flag', 1)
+      .set('productcode', '')
+      .set('branch', 1001);
 
-  return this.http.get(`${this.baseurl}${this.endPoint.GetProductByCode}`, { params });
-}
+    return this.http.get(`${this.baseurl}${this.endPoint.GetProductByCode}`, {
+      params,
+    });
+  }
 
-GetProductDetail(productCode: any) {
-  const params = new HttpParams()
-    .set('flag', 2)
-    .set('productcode', productCode)
-    .set('branch', 1001);
+  GetProductDetail(productCode: any) {
+    const params = new HttpParams()
+      .set('flag', 2)
+      .set('productcode', productCode)
+      .set('branch', 1001);
 
-  return this.http.get(`${this.baseurl}${this.endPoint.GetProductByCode}`, { params });
-}
+    return this.http.get(`${this.baseurl}${this.endPoint.GetProductByCode}`, {
+      params,
+    });
+  }
 
-
-
-  
   //================================================================================
   GetUnits(
     productId: number = 1,
@@ -71,4 +77,11 @@ GetProductDetail(productCode: any) {
   // GetBatch(data: any) {
   //   return this.http.post(`${this.baseurl}${this.endPoint.batch}`, data);
   // }
+
+  GetFilterAnyDataPagination(data: any) {
+    return this.http.post(
+      `${this.baseurl}${this.endPoint.GetFilterAnyDataPagination}`,
+      data
+    );
+  }
 }

@@ -9,4 +9,6 @@ export class posUrl {
   GetProductByCode: string='Inventory/Sales/GetProductByCode';
   GetUnits: string='Inventory/Sales/GetUnits';
   batch: string='Inventory/Sales/GetUnitByBatch';
+  GetFilterAnyDataPagination: string='Account/MyFunction/GetFilterAnyDataPagination';  
+ 
 }
