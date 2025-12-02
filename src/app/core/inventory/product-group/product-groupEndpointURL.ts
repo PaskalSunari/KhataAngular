@@ -7,7 +7,10 @@ export class productGroupUrl {
   
   getGroupUnderDropdownList: string = 'inventory/FIllList/GetList'
 
-  getProductGroupList: string = `Ministry/Organization/GetList/`;
+  getProductGroupList: string = `inventory/ProductGroup/GetAllProductGroup/`
 
-  insertProductGroup: string =`Ministry/GlobalDropdown/GenericAPI`
+  insertUpdateProductGroup: string =`inventory/ProductGroup/AddEditProductGroup`
+  getProductGroupDataByID:string='inventory/ProductGroup/GetProductGroupByID'
+  deleteProductGroup:string='inventory/ProductGroup/DeleteProductGroup'
+  productGroupFilteredData:string='inventory/CommonInventoryPagi/GetFilterAnyDataPaginationInventory'
 }

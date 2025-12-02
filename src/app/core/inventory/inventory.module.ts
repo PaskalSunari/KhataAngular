@@ -10,6 +10,7 @@ import { ProductManufacturerComponent } from './Product/product-manufacturer/pro
 import { ProductBrandComponent } from './Product/product-brand/product-brand.component';
 import { ProductModelComponent } from './Product/product-model/product-model.component';
 import { ProductSizeComponent } from './Product/product-size/product-size.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ProductSizeComponent } from './Product/product-size/product-size.compon
   imports: [
     CommonModule,
     InventoryRoutingModule,
-    SharedModule
+    SharedModule,
+     FormsModule,
   ]
 })
 export class InventoryModule { }
