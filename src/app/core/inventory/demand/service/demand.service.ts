@@ -29,4 +29,7 @@ baseurl = environment.appURL;
   getUnitLIst(){
     return this.http.get(`${this.baseurl}${this.endPoint.getUnitDropdownList}`);
   }
+  postDemand(payload:any){
+    return this.http.post(`${this.baseurl}${this.endPoint.postDemand}`,payload);
+  }
 }
