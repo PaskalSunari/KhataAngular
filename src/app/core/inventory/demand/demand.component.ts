@@ -21,12 +21,13 @@ export class DemandComponent {
   @ViewChild('expectedDate') expectedDate!: ElementRef;
   showForm = true;
   today = new Date().toISOString().split('T')[0];
-requestedByDropdownList:any[]=[];
-requestedToDropdownList:any []=[];
-getDepartmentList: any[]=[];
-productList: any[]=[];
-unitList: any[]=[];
-tableRows: any[] = [];
+  requestedByDropdownList:any[]=[];
+  requestedToDropdownList:any []=[];
+  getDepartmentList: any[]=[];
+  productList: any[]=[];
+  unitList: any[]=[];
+  tableRows: any[] = [];
+  selectedRequestById : number | null = null;
   toggleForm() {
     this.showForm = !this.showForm;
   }
@@ -34,11 +35,10 @@ tableRows: any[] = [];
   ngAfterViewInit(): void {
     setTimeout(() => {
       $(this.el.nativeElement).find('select').select2();
-      this.getRequestByDropdownList()
-      this.getRequestToDropdownList()
-      this.getDepartmentDropdownList()
-      this.getProductList()
-      this.getUnitList()
+      this.getRequestByDropdownList();
+      this.getDepartmentDropdownList();
+      this.getProductList();
+      this.getUnitList();
       this.enterFun();
     }, 0);
   }
@@ -79,6 +79,9 @@ tableRows: any[] = [];
                 }
               },0);
               return;
+            } else if (current.attr('id') === 'finalPostButton') {
+              component.FinalPost();
+              return;
             }
             if (!current.hasClass('select2-hidden-accessible')) {
               setFocusOnNextElement.call(current);
@@ -109,6 +112,19 @@ tableRows: any[] = [];
                 $el.select2();
               }
 
+              const component = this;
+              $el.off('change.demandRequestBy').on('change.demandRequestBy', function () {
+                const value = $(component.requestBy.nativeElement).val();
+                const userId = Number(value);
+                if (!isNaN(userId) && userId > 0) {
+                  component.selectedRequestById = userId;
+                  component.getRequestToDropdownList(userId);
+                } else {
+                  component.selectedRequestById = null;
+                  component.requestedToDropdownList = [];
+                }
+              });
+
               try {
                 $el.next('.select2-container').find('.select2-selection').trigger('focus').trigger('click');
               } catch (e) {
@@ -123,8 +139,12 @@ tableRows: any[] = [];
     );
   }
 
-  getRequestToDropdownList() {
-    this.service.getRequestedToDropdownList().subscribe(
+  getRequestToDropdownList(userId: number) {
+    if (!userId) {
+      this.requestedToDropdownList = [];
+      return;
+    }
+    this.service.getRequestedToDropdownList(userId).subscribe(
       (res) => {
         let result: any = res;
         if (result) {
@@ -202,6 +222,14 @@ tableRows: any[] = [];
       this.toastr.warning('Please fill all required fields.', 'Validation Error');
       return;
     }
+    if (!quantityValue || isNaN(Number(quantityValue)) || Number(quantityValue) <= 0){
+      this.toastr.warning('Please enter the valid quantity greater than zero.', 'Validation Eror');
+      return;
+    }
+    if(!availableQuantityValue || isNaN(Number(availableQuantityValue)) || Number(availableQuantityValue) < 0){
+      this.toastr.warning('Please enter the valid availabel quantity.', 'Validation Eroor');
+      return;
+    }
     const rowData = {
       sn: this.tableRows.length + 1,
       date: new Date().toLocaleDateString(),
@@ -224,9 +252,8 @@ tableRows: any[] = [];
     $(this.department.nativeElement).val('Choose').trigger('change');
     $(this.product.nativeElement).val('Choose').trigger('change');
     (this.quantity.nativeElement as HTMLInputElement).value = '';
-    $(this.unit.nativeElement).val(null).trigger('change');
-    (this.availableQuantity.nativeElement as HTMLInputElement).value = '';
-    
+    $(this.unit.nativeElement).val('Choose').trigger('change');
+    (this.availableQuantity.nativeElement as HTMLInputElement).value = '';    
     this.toastr.success('Item added to table successfully.', 'Success');
   }
   
@@ -247,6 +274,10 @@ tableRows: any[] = [];
       this.toastr.warning('Please add at least one item to the table.', 'Validation Error');
       return;
     }
+    if (!remarks || remarks.trim() === ''){
+      this.toastr.warning('Please add the remarks.', 'Validation Error');
+      return;
+    }   
     const items = this.tableRows.map(row => ({
       productId: +row.productValue,
       departmentID: +row.departmentValue,
@@ -274,54 +305,13 @@ tableRows: any[] = [];
       res => {
         this.toastr.success('Demand posted successfully.', 'Success');
         this.tableRows = [];
+        try {
+          (this.remarks.nativeElement as HTMLInputElement).value = '';
+        } catch {}
       },
       err =>{
         console.error('Error in posting demand', err);
       }
     )
   }
-  // FinalPost(){
-  //   if (this.tableRows.length === 0) {
-  //     this.toastr.warning('Please add at least one item to the table.', 'Validation Error');
-  //     return;
-  //   }
-    
-  //   const payload = {
-  //     userID: 0,
-  //     userName: "string",
-  //     flag: "string",
-  //     productId: 0,
-  //     productName: "string",
-  //     departmentID: 0,
-  //     departmentName: "string",
-  //     unitName: "string",
-  //     unitID: 0,
-  //     invoiceNo: "string",
-  //     voucherNo: "string",
-  //     requestBy: 0,
-  //     requestedToDept: 0,
-  //     requestedTo: 0,
-  //     estimatedDate: "2025-12-01T11:03:32.537Z",
-  //     fiscalYearID: 0,
-  //     remarks: "string",
-  //     status: true,
-  //     entryDate: "2025-12-01T11:03:32.537Z",
-  //     entryBy: 0,
-  //     demandMasterID: 0,
-  //     transactionUnitID: 0,
-  //     sku: "string",
-  //     transactionQty: 0,
-  //     skuQty: 0,
-  //     packageID: 0
-  //   };
-  //   this.service.postDemand(payload).subscribe(
-  //     (res) => {
-  //       this.toastr.success('Demand posted successfully.', 'Success');
-  //       this.tableRows = []; // Clear table after successful post
-  //     },
-  //     (err) => {
-  //       console.error('Error in posting demand', err);
-  //     }
-  //   )
-  // }
 }
