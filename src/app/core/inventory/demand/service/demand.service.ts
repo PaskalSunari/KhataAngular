@@ -23,11 +23,13 @@ baseurl = environment.appURL;
   getDepartmentDropdownList() {
     return this.http.get(`${this.baseurl}${this.endPoint.getDepartmentDropdownList}`);
   }
-  getProductList(){
+  getProductList() {
     return this.http.get(`${this.baseurl}${this.endPoint.getProductDropdownList}`);
   }
-  getUnitLIst(){
-    return this.http.get(`${this.baseurl}${this.endPoint.getUnitDropdownList}`);
+
+  getUnitList(productId: number) {
+    const params = { productId: productId.toString() };
+    return this.http.get(`${this.baseurl}${this.endPoint.getUnitDropdownList}`, { params });
   }
   postDemand(payload:any){
     return this.http.post(`${this.baseurl}${this.endPoint.postDemand}`,payload);

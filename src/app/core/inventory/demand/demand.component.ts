@@ -28,6 +28,8 @@ export class DemandComponent {
   unitList: any[]=[];
   tableRows: any[] = [];
   selectedRequestById : number | null = null;
+  // ⭐ ADDED FLAG – this locks the three dropdowns after 1st addRowToTable()
+  lockDropdown = false;
   toggleForm() {
     this.showForm = !this.showForm;
   }
@@ -38,7 +40,6 @@ export class DemandComponent {
       this.getRequestByDropdownList();
       this.getDepartmentDropdownList();
       this.getProductList();
-      this.getUnitList();
       this.enterFun();
     }, 0);
   }
@@ -66,18 +67,6 @@ export class DemandComponent {
             const current = $(event.target);
             if (current.attr('id') === 'button1'){
               component.addRowToTable();
-              setTimeout(() =>{
-                if (component.requestBy && component.requestBy.nativeElement){
-                  const $el = $(component.requestBy.nativeElement);
-                  try{
-                    $el.next('.select2-container').find('.select2-selection').trigger('focus').trigger('click');
-                  }catch (e){
-                    try{
-                      (component.requestBy.nativeElement as HTMLElement).focus(); 
-                    }catch{}
-                  }
-                }
-              },0);
               return;
             } else if (current.attr('id') === 'finalPostButton') {
               component.FinalPost();
@@ -114,6 +103,7 @@ export class DemandComponent {
 
               const component = this;
               $el.off('change.demandRequestBy').on('change.demandRequestBy', function () {
+                if (component.lockDropdown) return; // ⭐ BLOCK CHANGES WHEN LOCKED
                 const value = $(component.requestBy.nativeElement).val();
                 const userId = Number(value);
                 if (!isNaN(userId) && userId > 0) {
@@ -140,10 +130,7 @@ export class DemandComponent {
   }
 
   getRequestToDropdownList(userId: number) {
-    if (!userId) {
-      this.requestedToDropdownList = [];
-      return;
-    }
+    if (!userId || this.lockDropdown) return;   // ⭐ PREVENT CHANGES IF LOCKED
     this.service.getRequestedToDropdownList(userId).subscribe(
       (res) => {
         let result: any = res;
@@ -160,7 +147,6 @@ export class DemandComponent {
       (res) => {
         let result: any = res;
         if (result){
-          console.log(result);
           this.getDepartmentList = result?.result;
         }
       },
@@ -175,6 +161,25 @@ export class DemandComponent {
       let result: any = res;
       if (result){
         this.productList = result?.result;
+        setTimeout(() => {
+          if (this.product && this.product.nativeElement) {
+            const $el = $(this.product.nativeElement);
+            if (!$el.hasClass('select2-hidden-accessible')) {
+              $el.select2();
+            }
+
+            const component = this;
+            $el.off('change.demandProduct').on('change.demandProduct', function () {
+              const value = $(component.product.nativeElement).val();
+              const productId = Number(value);
+              if (!isNaN(productId) && productId > 0) {
+                component.getUnitList(productId);
+              } else {
+                component.unitList = [];
+              }
+            });
+          }
+        }, 0);
       }
     },
     (error) => {
@@ -182,9 +187,14 @@ export class DemandComponent {
     }
    )
   }
-  getUnitList(){
-    this.service.getUnitLIst().subscribe(
-      (res) =>{
+  getUnitList(productId: number){
+    if (!productId) {
+      this.unitList = [];
+      return;
+    }
+
+    this.service.getUnitList(productId).subscribe(
+      (res) => {
         let result: any = res;
         if (result){
           this.unitList = result?.result;
@@ -193,7 +203,7 @@ export class DemandComponent {
       (error) => {
 
       }
-    )
+    );
   }
   addRowToTable() {
     const requestByValue = $(this.requestBy.nativeElement).val();
@@ -244,12 +254,29 @@ export class DemandComponent {
       quantity: quantityValue,
       unit: unitText,
       unitValue: unitValue,
+      unitID: Number(unitValue),
       availableQuantity: availableQuantityValue || '0'
     };
     this.tableRows.push(rowData);
-    $(this.requestBy.nativeElement).val('Choose').trigger('change');
-    $(this.requestTo.nativeElement).val('Choose').trigger('change');
-    $(this.department.nativeElement).val('Choose').trigger('change');
+    const shouldLockDropdowns = !this.lockDropdown;
+    if (shouldLockDropdowns){
+      this.lockDropdown = true;
+    }
+    setTimeout(() => {
+      if (shouldLockDropdowns){
+        $(this.requestBy.nativeElement).prop('disabled', true).trigger('change.select2');
+        $(this.requestTo.nativeElement).prop('disabled', true).trigger('change.select2');
+        $(this.department.nativeElement).prop('disabled', true).trigger('change.select2');
+      }
+      if (this.product && this.product.nativeElement){
+        const $product =  $(this.product.nativeElement);
+        try{
+          $product.next('.select2-container').find('.select2-selection').trigger('focus').trigger('click');
+        }catch{
+          (this.product.nativeElement as HTMLElement).focus();
+        }
+      }
+    }, 0);
     $(this.product.nativeElement).val('Choose').trigger('change');
     (this.quantity.nativeElement as HTMLInputElement).value = '';
     $(this.unit.nativeElement).val('Choose').trigger('change');
@@ -262,6 +289,12 @@ export class DemandComponent {
     this.tableRows.forEach((row, idx) => {
       row.sn = idx + 1;
     });
+    if (this.tableRows.length === 0 && this.lockDropdown){
+      this.lockDropdown = false;
+      $(this.requestBy.nativeElement).prop('disabled', false).trigger('change.select2');
+      $(this.requestTo.nativeElement).prop('disabled', false).trigger('change.select2');
+      $(this.department.nativeElement).prop('disabled', false).trigger('change.select2');
+    }
     this.toastr.success('Item removed from table.', 'Success');
   }
   FinalPost(){
@@ -281,7 +314,7 @@ export class DemandComponent {
     const items = this.tableRows.map(row => ({
       productId: +row.productValue,
       departmentID: +row.departmentValue,
-      unitID: +row.unitValue,
+      unitID: +row.unitID,
       transactionQty: +row.quantity,
       skuQty: 0,              // set as needed
       requestBy: +row.requestedByValue,
@@ -305,6 +338,21 @@ export class DemandComponent {
       res => {
         this.toastr.success('Demand posted successfully.', 'Success');
         this.tableRows = [];
+        this.lockDropdown = false;
+        $(this.requestBy.nativeElement).val('Choose').trigger('change');
+        $(this.requestTo.nativeElement).val('Choose').trigger('change');
+        $(this.department.nativeElement).val('Choose').trigger('change');
+        $(this.requestBy.nativeElement).prop('disabled', false).trigger('change.select2');
+        $(this.requestTo.nativeElement).prop('disabled', false).trigger('change.select2');
+        $(this.department.nativeElement).prop('disabled', false).trigger('change.select2');
+        try {
+          const $reqBy = $(this.requestBy.nativeElement);
+          $reqBy.next('.select2-container').find('.select2-selection').trigger('focus').trigger('click');
+        } catch {
+          try {
+            (this.requestBy.nativeElement as HTMLElement).focus();
+          } catch {}
+        }
         try {
           (this.remarks.nativeElement as HTMLInputElement).value = '';
         } catch {}
