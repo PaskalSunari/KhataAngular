@@ -16,9 +16,9 @@ baseurl = environment.appURL;
    
     return this.http.get(`${this.baseurl}${this.endPoint.getRequestedByDropdownList}`);
   }
-  getRequestedToDropdownList() {
-   
-    return this.http.get(`${this.baseurl}${this.endPoint.getRequestedToDropdownList}`);
+  getRequestedToDropdownList(userId: number) {
+    const params = { userId: userId.toString() };
+    return this.http.get(`${this.baseurl}${this.endPoint.getRequestedToDropdownList}`, { params });
   }
   getDepartmentDropdownList() {
     return this.http.get(`${this.baseurl}${this.endPoint.getDepartmentDropdownList}`);
