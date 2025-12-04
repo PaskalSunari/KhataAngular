@@ -26,7 +26,7 @@
                                     <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
                                             <select #requestBy class="input-field custom__input  w-100 req" id="requestBY">
-                                                <option>Choose</option>
+                                                <option disabled selected>Choose</option>
                                                 <option *ngFor="let data of requestedByDropdownList" value="{{data.userID}}">{{data.userName}}</option>
                                             </select>
                                             <label>Requested By</label>
@@ -35,7 +35,7 @@
                                     <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
                                             <select #requestTo class="input-field custom__input  w-100 req" id="requestTo">
-                                                 <option>Choose</option>
+                                                 <option disabled selected>Choose</option>
                                                 <option *ngFor="let data of requestedToDropdownList" value="{{data.userID}}">{{data.userName}}</option>
                                             </select>
                                             <label>Requested To</label>
@@ -45,7 +45,7 @@
 
                                         <div class="custom__input-container">
                                             <select #department class="input-field custom__input  w-100 req" id="department">
-                                                <option>Choose</option>
+                                                <option disabled selected>Choose</option>
                                                 <option *ngFor=" let data of getDepartmentList" [value] = "data.departmentID">{{data.departmentName}}</option>
                                             </select>
                                             <label>Requested Department</label>
@@ -54,7 +54,7 @@
                                     <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
                                             <select #product class="input-field custom__input  w-100 req" id="product">
-                                                <option>Choose</option>
+                                                <option disabled selected>Choose</option>
                                                 <option *ngFor="let data of productList" [value] = "data.productId">{{data.productName}}</option>
                                             </select>
                                             <label>Product</label>
@@ -63,24 +63,26 @@
                                     <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
                                             <select #unit class="input-field custom__input  w-100 req" id="unit">
-                                                <option>Choose</option>
+                                                <option disabled selected>Choose</option>
                                                 <option *ngFor="let data of unitList" [value] = "data.unitID">{{data.unitName}}</option>
                                             </select>
                                             <label>Unit</label>
                                         </div>
                                     </div>
-                                    <div class=" col-sm-4 col-md-3 col-lg-2">
-                                        <div class="custom__input-container d-flex align-items-center">
-                                            <input #quantity id="quantity" type="text" class="form-control custom__input"
-                                                autocomplete="off">
+                                    <div class=" col-sm-4 col-md-3 col-lg-1">
+                                        <div class="custom__input-container d-flex align-items-start flex-column">
+                                            <div class="d-flex align-items-center w-100">
+                                                <input #quantity id="quantity" type="text" class="form-control custom__input"
+                                                    autocomplete="off" style="height: 28px;">
+                                                <span *ngIf="lastAvailableQty !== null" 
+                                                    #availableQtyInfo
+                                                    class="ms-2 text-info"
+                                                    style="cursor: pointer; font-size: 16px;"
+                                                    title="">
+                                                    <i class="fa-solid fa-circle-info"></i>
+                                                </span>
+                                            </div>
                                             <label>Quantity</label>
-                                        </div>
-                                    </div>                                    
-                                    <div class=" col-sm-4 col-md-3 col-lg-2">
-                                        <div class="custom__input-container d-flex align-items-center">
-                                            <input #availableQuantity id="availableQuantity" type="text" class="form-control custom__input"
-                                                autocomplete="off">
-                                            <label>Available Quantity</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-4 col-md-3 col-lg-1">

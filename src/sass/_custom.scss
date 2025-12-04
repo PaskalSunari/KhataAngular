@@ -152,4 +152,78 @@ input[type=checkbox]~label {
     display: flex;
 }
 
+/* Enterprise Available Quantity Info Icon */
+.available-qty-info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    color: #137b95;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    border-radius: 50%;
+    position: relative;
 
+    &:hover {
+        color: #116f86;
+        transform: scale(1.1);
+        background-color: rgba(19, 123, 149, 0.08);
+    }
+
+    &:focus {
+        outline: 2px solid #137b95;
+        outline-offset: 2px;
+    }
+
+    i {
+        transition: all 0.2s ease;
+    }
+}
+
+/* Enterprise Popover Styling */
+.enterprise-available-qty-popover {
+    --bs-popover-border-color: #e3effe;
+    --bs-popover-bg: #ffffff;
+    --bs-popover-border-width: 1px;
+    --bs-popover-border-radius: 10px;
+    --bs-popover-header-bg: transparent;
+    --bs-popover-header-padding-y: 0;
+    --bs-popover-header-padding-x: 0;
+    --bs-popover-body-padding-y: 0;
+    --bs-popover-body-padding-x: 0;
+    
+    border: 1px solid #e3effe !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 16px rgba(19, 123, 149, 0.12), 0 2px 4px rgba(19, 123, 149, 0.08) !important;
+    padding: 16px !important;
+    max-width: 280px !important;
+    background: #ffffff !important;
+
+    .popover-arrow {
+        &::before {
+            border-top-color: #e3effe !important;
+        }
+        &::after {
+            border-top-color: #ffffff !important;
+        }
+    }
+}
+
+.enterprise-available-qty-popover .popover-body {
+    padding: 0 !important;
+}
+
+
+.popover{
+    text-align: center;
+    font-size: 13px;
+}
+
+.date-picker__input{
+    width: 100%;
+    border: 1px solid #dee2e6;
+
+
+}

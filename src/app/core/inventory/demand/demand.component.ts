@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 declare var $: any;
+declare var bootstrap: any;
 declare const setFocusOnNextElement: any;
 import 'select2';
 import { DemandService } from './service/demand.service';
@@ -9,16 +10,16 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'app-demand',
   templateUrl: './demand.component.html'
 })
-export class DemandComponent {
+export class DemandComponent implements AfterViewInit, OnDestroy {
   @ViewChild('requestBy') requestBy!: ElementRef;
   @ViewChild('requestTo') requestTo!: ElementRef;
   @ViewChild('department') department!: ElementRef;
   @ViewChild('product') product!: ElementRef;
   @ViewChild('quantity') quantity!: ElementRef;
   @ViewChild('unit') unit!: ElementRef;
-  @ViewChild('availableQuantity') availableQuantity!: ElementRef;
   @ViewChild('remarks') remarks!: ElementRef;
   @ViewChild('expectedDate') expectedDate!: ElementRef;
+  @ViewChild('availableQtyInfo') availableQtyInfo!: ElementRef;
   showForm = true;
   today = new Date().toISOString().split('T')[0];
   requestedByDropdownList:any[]=[];
@@ -28,8 +29,9 @@ export class DemandComponent {
   unitList: any[]=[];
   tableRows: any[] = [];
   selectedRequestById : number | null = null;
-  // ⭐ ADDED FLAG – this locks the three dropdowns after 1st addRowToTable()
+  lastAvailableQty: number | null = null;
   lockDropdown = false;
+  availableQtyPopover: any = null;
   toggleForm() {
     this.showForm = !this.showForm;
   }
@@ -52,8 +54,40 @@ export class DemandComponent {
       });
       $(document).off('keydown blur');
       $(document).off('select2:close');
+      this.destroyAvailableQtyPopover();
     }catch(e){
 
+    }
+  }
+
+  initAvailableQtyPopover() {
+    setTimeout(() => {
+      if (this.availableQtyInfo && this.availableQtyInfo.nativeElement && this.lastAvailableQty !== null) {
+        this.destroyAvailableQtyPopover();
+        try {
+          const element = this.availableQtyInfo.nativeElement;
+          this.availableQtyPopover = new bootstrap.Popover(element, {
+            trigger: 'hover focus',
+            placement: 'bottom',
+            title: '',
+            content: `Current available quantity is ${this.lastAvailableQty}.`,
+            html: false
+          });
+        } catch (e) {
+          console.error('Error initializing popover:', e);
+        }
+      }
+    }, 100);
+  }
+
+  destroyAvailableQtyPopover() {
+    if (this.availableQtyPopover) {
+      try {
+        this.availableQtyPopover.dispose();
+        this.availableQtyPopover = null;
+      } catch (e) {
+        console.error('Error destroying popover:', e);
+      }
     }
   }
   enterFun() {
@@ -174,8 +208,28 @@ export class DemandComponent {
               const productId = Number(value);
               if (!isNaN(productId) && productId > 0) {
                 component.getUnitList(productId);
+                component.service.AvailableQuantity(productId).subscribe(
+                  (res) => {
+                    const result: any = res;
+                    const qty =
+                      result &&
+                      Array.isArray(result.result) &&
+                      result.result.length > 0 &&
+                      typeof result.result[0].transactionQty === 'number'
+                        ? result.result[0].transactionQty
+                        : 0;
+                    component.lastAvailableQty = qty;
+                    component.initAvailableQtyPopover();
+                  },
+                  (error) => {
+                    component.lastAvailableQty = null;
+                    component.destroyAvailableQtyPopover();
+                  }
+                );
               } else {
                 component.unitList = [];
+                component.lastAvailableQty = null;
+                component.destroyAvailableQtyPopover();
               }
             });
           }
@@ -221,8 +275,6 @@ export class DemandComponent {
     const quantityValue = (this.quantity.nativeElement as HTMLInputElement).value;
     const unitValue = $(this.unit.nativeElement).val();
     const unitText = $(this.unit.nativeElement).find('option:selected').text();
-    
-    const availableQuantityValue = (this.availableQuantity.nativeElement as HTMLInputElement).value;
 
     if (!requestByValue || requestByValue === 'Choose' || 
         !requestToValue || requestToValue === 'Choose' ||
@@ -234,10 +286,6 @@ export class DemandComponent {
     }
     if (!quantityValue || isNaN(Number(quantityValue)) || Number(quantityValue) <= 0){
       this.toastr.warning('Please enter the valid quantity greater than zero.', 'Validation Eror');
-      return;
-    }
-    if(!availableQuantityValue || isNaN(Number(availableQuantityValue)) || Number(availableQuantityValue) < 0){
-      this.toastr.warning('Please enter the valid availabel quantity.', 'Validation Eroor');
       return;
     }
     const rowData = {
@@ -255,7 +303,7 @@ export class DemandComponent {
       unit: unitText,
       unitValue: unitValue,
       unitID: Number(unitValue),
-      availableQuantity: availableQuantityValue || '0'
+      availableQuantity: this.lastAvailableQty != null ? this.lastAvailableQty : 0
     };
     this.tableRows.push(rowData);
     const shouldLockDropdowns = !this.lockDropdown;
@@ -280,7 +328,6 @@ export class DemandComponent {
     $(this.product.nativeElement).val('Choose').trigger('change');
     (this.quantity.nativeElement as HTMLInputElement).value = '';
     $(this.unit.nativeElement).val('Choose').trigger('change');
-    (this.availableQuantity.nativeElement as HTMLInputElement).value = '';    
     this.toastr.success('Item added to table successfully.', 'Success');
   }
   
@@ -324,7 +371,7 @@ export class DemandComponent {
     }))
     const payload = {
       userID: userId,
-      userName: "string",
+      userName: "",
       flag: "Insert",
       estimatedDate:expectedDate ? new Date(expectedDate): new Date(),     
       fiscalYearID: fiscalYearId,
