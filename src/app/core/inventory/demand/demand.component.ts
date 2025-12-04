@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy, OnChanges, SimpleChanges, numberAttribute } from '@angular/core';
 declare var $: any;
 declare var bootstrap: any;
 declare const setFocusOnNextElement: any;
@@ -136,8 +136,14 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
               }
 
               const component = this;
+              const userID = localStorage.getItem('userId');
+              if (userID){
+                $el.val(userID).trigger('change.select2');
+                component.selectedRequestById = Number(userID);
+                component.getRequestToDropdownList(Number(userID));
+              }
               $el.off('change.demandRequestBy').on('change.demandRequestBy', function () {
-                if (component.lockDropdown) return; // ⭐ BLOCK CHANGES WHEN LOCKED
+                if (component.lockDropdown) return;
                 const value = $(component.requestBy.nativeElement).val();
                 const userId = Number(value);
                 if (!isNaN(userId) && userId > 0) {
@@ -386,7 +392,25 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
         this.toastr.success('Demand posted successfully.', 'Success');
         this.tableRows = [];
         this.lockDropdown = false;
-        $(this.requestBy.nativeElement).val('Choose').trigger('change');
+        if (this.requestBy?.nativeElement) {
+          const $reqBy = $(this.requestBy.nativeElement);
+  
+          // Set requestBy Select2 using userId
+          $reqBy.val(userId).trigger('change.select2');
+          this.selectedRequestById = userId;
+  
+          // Refresh Requested To dropdown for this user
+          this.getRequestToDropdownList(userId);
+  
+          // Move focus to requestBy Select2
+          try {
+            $reqBy.next('.select2-container').find('.select2-selection').trigger('focus').trigger('click');
+          } catch {
+            try {
+              (this.requestBy.nativeElement as HTMLElement).focus();
+            } catch {}
+          }
+        }
         $(this.requestTo.nativeElement).val('Choose').trigger('change');
         $(this.department.nativeElement).val('Choose').trigger('change');
         $(this.requestBy.nativeElement).prop('disabled', false).trigger('change.select2');
