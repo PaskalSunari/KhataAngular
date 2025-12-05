@@ -394,15 +394,9 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
         this.lockDropdown = false;
         if (this.requestBy?.nativeElement) {
           const $reqBy = $(this.requestBy.nativeElement);
-  
-          // Set requestBy Select2 using userId
           $reqBy.val(userId).trigger('change.select2');
           this.selectedRequestById = userId;
-  
-          // Refresh Requested To dropdown for this user
           this.getRequestToDropdownList(userId);
-  
-          // Move focus to requestBy Select2
           try {
             $reqBy.next('.select2-container').find('.select2-selection').trigger('focus').trigger('click');
           } catch {
