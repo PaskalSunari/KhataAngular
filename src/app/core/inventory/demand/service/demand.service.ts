@@ -34,8 +34,8 @@ baseurl = environment.appURL;
   postDemand(payload:any){
     return this.http.post(`${this.baseurl}${this.endPoint.postDemand}`,payload);
   }
-  AvailableQuantity(productId: number) {
-    const params = { productId: productId.toString() };
-    return this.http.get(`${this.baseurl}${this.endPoint.availableQuantity}`, { params });
+  AvailableQuantity(productId: number,unitId:any) {
+    // const params = { productId: productId.toString(), unitId:unitId.toString() };
+    return this.http.get(`${this.baseurl}${this.endPoint.availableQuantity}${productId}&unitId=${unitId}`);
   }
 }

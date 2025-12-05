@@ -11,5 +11,5 @@ export class DemandUrl {
   getProductDropdownList: string = 'inventory/Demand/ProductList'
   getUnitDropdownList: string = 'inventory/Demand/UnitList'
   postDemand: string = 'inventory/Demand/PostDemand'
-  availableQuantity: string = 'inventory/Demand/AvailableQuantity'
+  availableQuantity: string = 'inventory/Demand/AvailableQuantity?productId='
 }
