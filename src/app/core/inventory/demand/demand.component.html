@@ -120,7 +120,7 @@
                                                 <tr *ngIf="tableRows.length === 0">
                                                     <td colspan="9" class="text-center">No items added yet</td>
                                                 </tr>
-                                                <tr *ngFor="let row of tableRows; let i = index">
+                                                <tr *ngFor="let row of tableRows; let i = index" [ngClass]="{'row-removing' : row.removing}">
                                                     <td>{{row.sn}}</td>
                                                     <td>{{row.date}}</td>
                                                     <td>{{row.requestedBy}}</td>
@@ -129,7 +129,7 @@
                                                     <td>{{row.particulars}}</td>
                                                     <td>{{row.quantity}} {{row.unit}}</td>
                                                     <td>{{row.availableQuantity}}</td>
-                                                    <td>
+                                                    <td style="position: relative;">
                                                         <button class="button-sm btn btn-danger" title="Remove" (click)="removeRowFromTable(i)">
                                                             <i class="fa-solid fa-trash"></i>
                                                         </button>

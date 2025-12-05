@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy, OnChanges, SimpleChanges, numberAttribute } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy, OnChanges, SimpleChanges, numberAttribute, ChangeDetectorRef } from '@angular/core';
 declare var $: any;
 declare var bootstrap: any;
 declare const setFocusOnNextElement: any;
@@ -32,10 +32,11 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
   lastAvailableQty: number | null = null;
   lockDropdown = false;
   availableQtyPopover: any = null;
+  unitName: string = '';
   toggleForm() {
     this.showForm = !this.showForm;
   }
-  constructor(private el: ElementRef, public service: DemandService, private toastr: ToastrService) { }
+  constructor(private el: ElementRef, public service: DemandService, private toastr: ToastrService, private cdRef: ChangeDetectorRef) { }
   ngAfterViewInit(): void {
     setTimeout(() => {
       $(this.el.nativeElement).find('select').select2();
@@ -49,6 +50,7 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
       if (event.target.value) {
         self.service.AvailableQuantity($('#product').val(), $('#unit').val()).subscribe((res) => {
           const result: any = res;
+          console.log('Available Quantity Result:', result);
           const qty =
             result &&
               Array.isArray(result.result) &&
@@ -57,6 +59,10 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
               ? result.result[0].transactionQty
               : 0;
           self.lastAvailableQty = qty;
+          self.unitName = 
+          result && Array.isArray(result.result)
+          && result.result.length > 0 
+          && result.result[0].unitName ? result.result[0].unitName : '';
           self.initAvailableQtyPopover();
         },
           (error) => {
@@ -88,11 +94,22 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
         try {
           const element = this.availableQtyInfo.nativeElement;
           this.availableQtyPopover = new bootstrap.Popover(element, {
-            trigger: 'hover focus',
+            trigger: 'click hover focus',
             placement: 'bottom',
-            title: '',
-            content: `Current available quantity is ${this.lastAvailableQty}.`,
-            html: false
+            html: true,
+            customClass: 'stock-popover-modern',
+            content: ` <div class="popover-content-modern">
+            <div class="popover-info-line">
+                <span class="stock-icon fancy-chart-icon">
+                    <i class="fas fa-chart-line"></i>
+                </span>
+                <strong>Available Stocks</strong>
+            </div>
+            <div class="stock-qty">
+                ${this.lastAvailableQty}
+                <span class="unit-name">${this.unitName}</span>
+            </div>
+        </div>`,
           });
         } catch (e) {
           console.error('Error initializing popover:', e);
@@ -313,7 +330,8 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
       unit: unitText,
       unitValue: unitValue,
       unitID: Number(unitValue),
-      availableQuantity: this.lastAvailableQty != null ? this.lastAvailableQty : 0
+      availableQuantity: this.lastAvailableQty != null ? this.lastAvailableQty : 0,
+      removing: false
     };
     this.tableRows.push(rowData);
     const shouldLockDropdowns = !this.lockDropdown;
@@ -342,10 +360,60 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
   }
 
   removeRowFromTable(index: number) {
-    this.tableRows.splice(index, 1);
-    this.tableRows.forEach((row, idx) => {
-      row.sn = idx + 1;
-    });
+    this.tableRows[index].removing = true;
+    this.cdRef.detectChanges();
+    const particleCount = 100;
+    const animationDuration = 1000;
+    setTimeout(() => {
+        const tableBody = document.getElementById('sales-main-table__body');
+        const trElements = tableBody?.querySelectorAll('tr');
+        
+        if (!trElements || index >= trElements.length) {
+            console.error('TR element not found or index out of bounds:', index);
+            return;
+        }
+
+        const trElement = trElements[index] as HTMLElement;
+        
+        // ⭐ CRITICAL CHANGE: Get the bounding box of the entire table row
+        const rowRect = trElement.getBoundingClientRect();
+        
+        // Ensure to remove the particle-container element if it was still in the HTML
+        trElement.querySelector('.particle-container')?.remove(); 
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+
+            // Calculate random coordinates (x, y) within the row's bounding box
+            const randXOffset = rowRect.width * Math.random();
+            const randYOffset = rowRect.height * Math.random();
+
+            const startX = rowRect.left + randXOffset;
+            const startY = rowRect.top + randYOffset;
+
+            // CRITICAL CHANGE: Set starting position to a random point in the row
+            particle.style.position = 'fixed'; 
+            particle.style.left = `${startX}px`; 
+            particle.style.top = `${startY}px`; 
+
+            const randX = Math.random(); 
+            particle.style.setProperty('--randX', randX.toString());
+            particle.style.animation = `fly-ashes ${animationDuration}ms forwards`;
+
+            document.body.appendChild(particle);
+
+            // Ensure particle cleanup after animation
+            setTimeout(() => {
+                if (document.body.contains(particle)) {
+                    document.body.removeChild(particle);
+                }
+            }, animationDuration); 
+        }
+    }, 0);
+    setTimeout(() => {
+      this.tableRows.splice(index, 1);
+    this.tableRows.forEach((row, idx) => { row.sn = idx + 1;});
     if (this.tableRows.length === 0 && this.lockDropdown) {
       this.lockDropdown = false;
       $(this.requestBy.nativeElement).prop('disabled', false).trigger('change.select2');
@@ -353,6 +421,7 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
       $(this.department.nativeElement).prop('disabled', false).trigger('change.select2');
     }
     this.toastr.success('Item removed from table.', 'Success');
+    }, 1000);    
   }
   FinalPost() {
     const fiscalYear = localStorage.getItem('fiscalYear');
