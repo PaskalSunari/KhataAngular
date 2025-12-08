@@ -112,7 +112,7 @@
                                                     <th class="sales-main-expirydate">Department</th>
                                                     <th class="sales-main-table__action">Particulars</th>
                                                     <th class="sales-main-table__action">Quantity</th>
-                                                    <th class="sales-main-table__action">Available Quantity</th>
+                                                    <!-- <th class="sales-main-table__action">Available Quantity</th> -->
                                                     <th class="sales-main-table__action">Action</th>
                                                 </tr>
                                             </thead>
@@ -128,7 +128,7 @@
                                                     <td>{{row.category}}</td>
                                                     <td>{{row.particulars}}</td>
                                                     <td>{{row.quantity}} {{row.unit}}</td>
-                                                    <td>{{row.availableQuantity}}</td>
+                                                    <!-- <td>{{row.availableQuantity}}</td> -->
                                                     <td style="position: relative;">
                                                         <button class="button-sm btn btn-danger" title="Remove" (click)="removeRowFromTable(i)">
                                                             <i class="fa-solid fa-trash"></i>
@@ -154,7 +154,7 @@
                             <label>Expected Date</label>
                         </div>
                     </div>
-                    <div class=" col-sm-4 col-md-3 col-lg-3">
+                    <div class=" col-sm-6 col-md-4 col-lg-4">
                         <div class="custom__input-container d-flex align-items-center">
                             <input #remarks id="groupRemarks" type="text" class="form-control custom__input" autocomplete="off">
                             <label>Remarks</label>
