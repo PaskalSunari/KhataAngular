@@ -362,53 +362,42 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
   removeRowFromTable(index: number) {
     this.tableRows[index].removing = true;
     this.cdRef.detectChanges();
-    const particleCount = 100;
-    const animationDuration = 1000;
-    setTimeout(() => {
+    const particleCount = 120;
+    const animationDuration = 1200;
+     setTimeout(() => {
         const tableBody = document.getElementById('sales-main-table__body');
         const trElements = tableBody?.querySelectorAll('tr');
-        
+
         if (!trElements || index >= trElements.length) {
             console.error('TR element not found or index out of bounds:', index);
             return;
         }
 
         const trElement = trElements[index] as HTMLElement;
-        
-        // ⭐ CRITICAL CHANGE: Get the bounding box of the entire table row
         const rowRect = trElement.getBoundingClientRect();
-        
-        // Ensure to remove the particle-container element if it was still in the HTML
-        trElement.querySelector('.particle-container')?.remove(); 
-
+        trElement.querySelector('.particle-container')?.remove();
         for (let i = 0; i < particleCount; i++) {
             const particle = document.createElement('div');
             particle.className = 'particle';
+            if (Math.random() < 0.1) {
+                particle.classList.add('ember');
+            }
+            const startX = rowRect.left + Math.random() * rowRect.width;
+            const startY = rowRect.top + Math.random() * rowRect.height;
 
-            // Calculate random coordinates (x, y) within the row's bounding box
-            const randXOffset = rowRect.width * Math.random();
-            const randYOffset = rowRect.height * Math.random();
-
-            const startX = rowRect.left + randXOffset;
-            const startY = rowRect.top + randYOffset;
-
-            // CRITICAL CHANGE: Set starting position to a random point in the row
-            particle.style.position = 'fixed'; 
-            particle.style.left = `${startX}px`; 
-            particle.style.top = `${startY}px`; 
-
-            const randX = Math.random(); 
-            particle.style.setProperty('--randX', randX.toString());
+            particle.style.position = 'fixed';
+            particle.style.left = `${startX}px`;
+            particle.style.top = `${startY}px`;
+            particle.style.setProperty('--randX', Math.random().toString());
+            particle.style.setProperty('--randY', Math.random().toString());
             particle.style.animation = `fly-ashes ${animationDuration}ms forwards`;
 
             document.body.appendChild(particle);
-
-            // Ensure particle cleanup after animation
             setTimeout(() => {
                 if (document.body.contains(particle)) {
                     document.body.removeChild(particle);
                 }
-            }, animationDuration); 
+            }, animationDuration);
         }
     }, 0);
     setTimeout(() => {
@@ -442,7 +431,7 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
       departmentID: +row.departmentValue,
       unitID: +row.unitID,
       transactionQty: +row.quantity,
-      skuQty: 0,              // set as needed
+      skuQty: 0,            
       requestBy: +row.requestedByValue,
       requestedTo: +row.requestedToValue,
       requestedToDept: +row.departmentValue,

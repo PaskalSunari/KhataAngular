@@ -3,9 +3,9 @@
   border-radius: 16px !important; 
   border: none !important;
   background: radial-gradient(circle at top left, #2c3e50 0%, #1c2833 100%) !important;
-  color: #e0f7fa !important; /* Light text color */
-  max-width: 300px; /* More room for clarity */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Clean, professional font */
+  color: #e0f7fa !important; 
+  max-width: 300px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
   
   box-shadow: 0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(204, 51, 255, 0.1); 
   transition: all 0.3s ease-in-out; 
@@ -17,7 +17,7 @@
 
 .stock-popover-modern:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 25px rgba(0, 240, 255, 0.5), 0 0 50px rgba(204, 51, 255, 0.2); 
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.5), 0 0 50px rgba(101, 61, 114, 0.2); 
 }
 
 .stock-popover-modern .popover-arrow::before {
@@ -67,34 +67,62 @@
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); 
 }
 .row-removing{
-   transition: all 1s ease; /* Must match JS timeout */
+   transition: all 1s ease; 
   opacity: 0;
   transform: translateX(100%);
-  height: 0; /* Optional: collapse height for smooth effect */
+  height: 0; 
   padding: 0;
   margin: 0;
   position: relative;
 }
 .particle {
     position: fixed;
-    width: 10px;
-    height: 10px;
-    background: #FF8C42;;
+    width: 5px;
+    height: 5px;
+    background: #6E6E6E; 
     border-radius: 50%;
+    opacity: 0.9;
+    filter: blur(1px);
+}
+
+.particle.ember {
+    background: #ff7a38; 
     opacity: 1;
 }
 
 @keyframes fly-ashes {
     0% {
-        transform: translate(0, 0) scale(1);
+        transform: translate(0, 0) scale(1) rotate(0deg);
         opacity: 1;
     }
-    50% {
-        transform: translate(calc(-30vw + 60vw * var(--randX)), -30vh) scale(0.5);
-        opacity: 0.7;
+
+    25% {
+        transform: translate(
+            calc(-20px + 60px * var(--randX)),
+            calc(-10px - 50px * var(--randY))
+        )
+        rotate(calc(80deg * var(--randX)))
+        scale(0.9);
+        opacity: 0.85;
     }
+
+    55% {
+        transform: translate(
+            calc(-100px + 200px * var(--randX)),
+            calc(-70px - 180px * var(--randY))
+        )
+        rotate(calc(260deg * var(--randY)))
+        scale(0.6);
+        opacity: 0.55;
+    }
+
     100% {
-        transform: translate(calc(-50vw + 100vw * var(--randX)), -50vh) scale(0);
+        transform: translate(
+            calc(-220px + 420px * var(--randX)), 
+            calc(-160px - 380px * var(--randY)) 
+        )
+        rotate(calc(600deg * var(--randX)))    
+        scale(0);
         opacity: 0;
     }
 }
