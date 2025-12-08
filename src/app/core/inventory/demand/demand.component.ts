@@ -315,6 +315,24 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
       this.toastr.warning('Please enter the valid quantity greater than zero.', 'Validation Eror');
       return;
     }
+    const isDuplilcate = this.tableRows.some(row =>
+      row.requestedByValue === requestByValue &&
+      row.requestedToValue === requestToValue &&
+      row.departmentValue === departmentValue &&
+      row.productValue === productValue &&
+      row.unitValue === unitValue
+    );
+    if (isDuplilcate) {
+      this.toastr.warning('This item is already added to the table.', 'Duplicate Item');
+      return;
+    }
+    const todayDate = new Date().toLocaleDateString();
+    const todayTime = new Date().toLocaleTimeString();
+  
+    const autoRemarks = `Demanded by ${requestByText} to ${requestToText} on ${todayDate} at ${todayTime}`;
+    if (!this.remarks.nativeElement.value || this.remarks.nativeElement.value.trim() === '') {
+      this.remarks.nativeElement.value = autoRemarks;
+    }
     const rowData = {
       sn: this.tableRows.length + 1,
       date: new Date().toLocaleDateString(),
