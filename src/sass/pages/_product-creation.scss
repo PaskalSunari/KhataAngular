@@ -1,0 +1,42 @@
+.product-creation {
+    background: #fff;
+    padding: 8px;
+    border: 1px solid #ddd;
+
+}
+
+.table-wrapper {
+    position: relative;
+    overflow-y: scroll;
+    height: 140px;
+    max-height: 140px;
+    width: 100%;
+    scroll-behavior: smooth;
+    border: 1px solid #ddd;
+
+    &__head {
+        position: sticky;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+
+        th {
+            background-color: $primary-500 !important;
+            color: $color-white-100 !important;
+            letter-spacing: 0.5px;
+            font-size: 11px;
+            font-weight: 500;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        th:not(last-child) {
+            border-right: 1px solid $th-border;
+        }
+    }
+}
+
+.table-wrapper-72{
+    height: 72px;
+    max-height: 72px;
+}

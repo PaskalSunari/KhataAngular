@@ -7,6 +7,7 @@ import { ProductManufacturerComponent } from './Product/product-manufacturer/pro
 import { ProductBrandComponent } from './Product/product-brand/product-brand.component';
 import { ProductModelComponent } from './Product/product-model/product-model.component';
 import { ProductSizeComponent } from './Product/product-size/product-size.component';
+import { ProductCreationComponent } from './Product/product-creation/product-creation.component';
 
 const routes: Routes = [
  {
@@ -36,6 +37,10 @@ const routes: Routes = [
    {
     path: 'productsize',
     component: ProductSizeComponent,
+  },
+    {
+    path: 'productcreate',
+    component: ProductCreationComponent,
   },
 ];
 

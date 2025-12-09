@@ -1,0 +1,498 @@
+<div class="page-head-bar">
+    <div class="container-fluid">
+        <h1>Product Creation</h1>
+
+    </div>
+</div>
+
+<div class="page-body">
+    <div class="container-fluid px-0">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-0">
+                <div class="product-creation-page">
+                    <form class="product-creation-form">
+                        <div class="container-fluid pt-0 px-1 pb-1">
+
+                            <div class="product-creation">
+                                <div class="product-creation-inner">
+
+                                    <div class="tabs">
+                                        <button (click)="tab = 'General'"
+                                            [class.active]="tab === 'General'">General</button>
+
+                                        <button (click)="tab = 'Details'"
+                                            [class.active]="tab === 'Details'">Details</button>
+
+                                        <button (click)="tab = 'additionalInformation'"
+                                            [class.active]="tab === 'additionalInformation'">Additional
+                                            Information</button>
+                                    </div>
+
+                                    <div class="product-creation-content">
+                                        <!-- TAB CONTENT -->
+                                        <div [hidden]="tab !== 'General'">
+                                            <div class="row">
+
+                                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                                    <div class="row flex-column">
+                                                        <div class="custom__input-container">
+                                                            <input id="productCode" type="text" name="productCode"
+                                                                autocomplete="off" class="form-control custom__input">
+                                                            <label>Product Code</label>
+                                                        </div>
+                                                        <div class="custom__input-container">
+                                                            <input id="" type="text" name="" autocomplete="off"
+                                                                class="form-control custom__input">
+                                                            <label>Name</label>
+                                                        </div>
+                                                        <div
+                                                            class="custom__input-container d-flex align-items-center input-gap">
+                                                            <div class="select-wrap">
+                                                                <select class="input-field custom__input w-100 req">
+                                                                    <option value="">Primary</option>
+
+                                                                </select>
+
+                                                                <label>Group </label>
+                                                            </div>
+                                                            <button class=" button__plus ms-1">
+                                                                <i class="fa-solid fa-plus"></i>
+                                                            </button>
+                                                        </div>
+
+                                                        <div
+                                                            class="custom__input-container d-flex align-items-center input-gap">
+                                                            <div class="select-wrap">
+                                                                <select id=""
+                                                                    class="input-field custom__input w-100 req">
+                                                                    <option value="">Yes</option>
+                                                                    <option value="">No</option>
+
+                                                                </select>
+
+                                                                <label>Category</label>
+                                                            </div>
+
+                                                            <button class=" button__plus ms-1">
+                                                                <i class="fa-solid fa-plus"></i>
+                                                            </button>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                                    <div class="row flex-column">
+                                                        <div
+                                                            class="custom__input-container d-flex align-items-center input-gap">
+                                                            <div class="select-wrap">
+                                                                <select id=""
+                                                                    class="input-field custom__input w-100 req">
+                                                                    <option value="">Select</option>
+
+                                                                </select>
+
+
+                                                                <label>SKU</label>
+                                                            </div>
+                                                            <button class=" button__plus ms-1">
+                                                                <i class="fa-solid fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="custom__input-container ">
+
+                                                            <select id="" class="input-field custom__input w-100 req">
+
+                                                            </select>
+
+                                                            <label>Alternate Unit</label>
+
+
+                                                        </div>
+                                                        <div class="custom__input-container">
+
+                                                            <select id="" class="input-field custom__input w-100 req">
+                                                                <option value="">Yes</option>
+                                                                <option value="">No</option>
+
+                                                            </select>
+
+                                                            <label>Variable</label>
+
+                                                        </div>
+                                                        <div class="custom__input-container">
+
+                                                            <select id="" class="input-field custom__input w-100 req">
+                                                                <option value=""></option>
+
+                                                            </select>
+
+                                                            <label>Assets Type</label>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                                    <div class="row flex-column">
+                                                        <div class="custom__input-container ">
+
+                                                            <select id="" class="input-field custom__input w-100 req">
+                                                                <option value="">No</option>
+                                                                <option value="">Yes</option>
+
+                                                            </select>
+
+                                                            <label>Consumable</label>
+
+                                                        </div>
+                                                        <div class="custom__input-container">
+
+                                                            <select id="" class="input-field custom__input w-100 req">
+                                                                <option value="">Yes</option>
+                                                                <option value="">No</option>
+
+                                                            </select>
+
+                                                            <label>Allow Batch</label>
+
+                                                        </div>
+                                                        <div class="custom__input-container">
+
+                                                            <select id="" class="input-field custom__input w-100 req">
+                                                                <option value="">Yes</option>
+                                                                <option value="">No</option>
+
+                                                            </select>
+
+                                                            <label>IsExpirable</label>
+
+                                                        </div>
+                                                        <div class="custom__input-container">
+
+                                                            <select id=""
+                                                                class="input-field custom__input w-100 req required">
+                                                                <option value="">Yes</option>
+                                                                <option value="">No</option>
+
+                                                            </select>
+
+                                                            <label>Public</label>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                                    <div class="row flex-column">
+                                                        <div class="custom__input-container">
+
+                                                            <select id="" class="input-field custom__input w-100 req">
+                                                                <option value="">No</option>
+                                                                <option value="">Yes</option>
+
+                                                            </select>
+
+                                                            <label>BOM</label>
+
+
+                                                        </div>
+                                                        <div
+                                                            class="custom__input-container d-flex align-items-center input-gap">
+                                                            <div class="select-wrap">
+                                                                <select id=""
+                                                                    class="input-field custom__input w-100 req">
+                                                                    <option value="">Active</option>
+                                                                    <option value="">InActive</option>
+                                                                    <option value="">Hold</option>
+
+                                                                </select>
+                                                                <label>Status </label>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+
+                                            </div>
+                                        </div>
+
+                                        <div [hidden]="tab !== 'Details'">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-4 col-sm-6 ">
+                                                    <div class="row flex-column">
+                                                        <div class="custom__input-container">
+                                                            <input id="" type="text" name="" autocomplete="off"
+                                                                class="form-control custom__input">
+                                                            <label>UUID</label>
+                                                        </div>
+                                                        <div
+                                                            class="custom__input-container d-flex align-items-center input-gap">
+                                                            <div class="select-wrap">
+                                                                <select id=""
+                                                                    class="input-field custom__input w-100 req">
+                                                                    <option value=""></option>
+                                                                </select>
+                                                                <label>Manufacturer</label>
+                                                            </div>
+                                                            <button class=" button__plus ms-1">
+                                                                <i class="fa-solid fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div
+                                                            class="custom__input-container d-flex align-items-center input-gap">
+                                                            <div class="select-wrap">
+                                                                <select id=""
+                                                                    class="input-field custom__input w-100 req">
+                                                                    <option value=""></option>
+                                                                </select>
+                                                                <label>Brand</label>
+                                                            </div>
+                                                            <button class=" button__plus ms-1">
+                                                                <i class="fa-solid fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div
+                                                            class="custom__input-container d-flex align-items-center input-gap">
+                                                            <div class="select-wrap">
+                                                                <select id=""
+                                                                    class="input-field custom__input w-100 req">
+                                                                    <option value=""></option>
+                                                                </select>
+                                                                <label>Model</label>
+                                                            </div>
+                                                            <button class=" button__plus ms-1">
+                                                                <i class="fa-solid fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-sm-4 col-md-3 col-lg-3">
+                                                    <div class="row flex-column">
+                                                        <div
+                                                            class="custom__input-container d-flex align-items-center input-gap">
+                                                            <div class="select-wrap">
+                                                                <select id=""
+                                                                    class="input-field custom__input w-100 req">
+                                                                    <option value="">N/A</option>
+
+                                                                </select>
+
+
+                                                                <label>Size</label>
+                                                            </div>
+                                                            <button class=" button__plus ms-1">
+                                                                <i class="fa-solid fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="custom__input-container">
+                                                            <input id="" type="text" name="" autocomplete="off"
+                                                                class="form-control custom__input">
+                                                            <label>Min Stock</label>
+                                                        </div>
+                                                        <div class="custom__input-container">
+                                                            <input id="" type="text" name="" autocomplete="off"
+                                                                class="form-control custom__input">
+                                                            <label>Max Stock</label>
+                                                        </div>
+                                                        <div class="custom__input-container">
+                                                            <input id="" type="text" name="" autocomplete="off"
+                                                                class="form-control custom__input">
+                                                            <label>Reorder Level</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 col-sm-6 ">
+                                                    <div class="row flex-column">
+                                                        <div class="custom__input-container">
+                                                            <input id="" type="text" name="" autocomplete="off"
+                                                                class="form-control custom__input">
+                                                            <label>HS Code</label>
+                                                        </div>
+                                                        <div class="custom__input-container">
+                                                            <input id="" type="text" name="" autocomplete="off"
+                                                                class="form-control custom__input">
+                                                            <label>Product Description</label>
+                                                        </div>
+                                                        <div class="row mt-3">
+                                                            <label>Product Image</label>
+
+                                                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                                                <button class="btn btn-success ">Profile</button>
+                                                                <input type="file" id="profile-image-input" hidden="">
+                                                            </div>
+
+                                                            <div
+                                                                class="col-lg-9 col-md-6 col-sm-6 d-flex justify-content-between">
+                                                                <input type="text" class="form-control  custom__input">
+                                                                <button class="btn  ms-2 btn-success">Others</button>
+                                                                <input type="file" id="others-image-input" hidden="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                                    <div class="row flex-column">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                                            <div class="table-wrapper" id="formTable">
+                                                                <table id="image-table" class="table">
+                                                                    <thead class="table-wrapper__head">
+                                                                        <tr>
+                                                                            <th>Image Name</th>
+                                                                            <th>Image Preview</th>
+                                                                            <th>Action</th>
+                                                                        </tr>
+                                                                    </thead>
+
+                                                                    <tbody id="formTablebody">
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div [hidden]="tab !== 'additionalInformation'">
+                                            <div class="row">
+                                                <div class="col-lg-5 col-md-4 col-sm-6">
+
+
+                                                    <div class="custom__input-container d-flex align-items-center">
+                                                        <button id="" type="button" class="btn  button--primary ">Add
+                                                            Variable</button>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-6 col-md-4 col-sm-6">
+                                                            <div class="custom__input-container">
+
+                                                                <select id=""
+                                                                    class="input-field custom__input w-100 req required">
+                                                                    <option value=""></option>
+                                                                    <option value=""></option>
+
+                                                                </select>
+
+                                                                <label>Variable</label>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-4 col-sm-6">
+                                                            <div class="d-flex gap-3 align-items-center">
+                                                                <div class="custom__input-container">
+                                                                    <input id="" type="text" name="" autocomplete="off"
+                                                                        class="form-control custom__input">
+                                                                    <label>Value</label>
+                                                                </div>
+                                                                <button type="button" class="btn btn-success"
+                                                                    style="margin-top: 10px;">
+                                                                    <i class="fa-solid fa-plus"></i>
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+
+
+
+                                                </div>
+
+                                                <div class="col-lg-6 col-md-4 col-sm-6">
+                                                    <div class="table-wrapper table-wrapper-72">
+                                                        <table class="table ">
+                                                            <thead class="table-wrapper__head">
+                                                                <tr>
+                                                                    <th style="width: 10%;">S.N</th>
+                                                                    <th style="width: 40%;">Variable Name</th>
+                                                                    <th style="width: 30%;">Value</th>
+                                                                    <th style="width: 20%;">Action</th>
+                                                                </tr>
+                                                            </thead>
+
+                                                            <tbody>
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="custom__input-container d-flex justify-content-end align-items-center">
+                                        <button id="" title="Insert Item" class="button-sm btn btn-success ms-1">
+                                            <i class="fa-solid fa-floppy-disk"></i>
+                                        </button>
+                                        <button title="Reset" id="" href="" class="button-sm btn btn-danger ms-1">
+                                            <i class="fa-solid fa-rotate-left"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="search-wrap mt-1">
+                        <div class="d-flex col-12 search-wrap-inner justify-content-between align-items-center gap-3">
+                            <div class="col-sm-4 col-md-3 col-lg-3">
+                                <div class="d-flex py-3 align-items-center input-gap">
+                                    <span>Group</span>
+                                    <select id="" class="input-field custom__input w-100 req">
+                                        <option value="">All</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-3 col-lg-3">
+                                <div class="d-flex py-3 align-items-center input-gap">
+                                    <span>Category</span>
+                                    <select id="" class="input-field custom__input w-100 req">
+                                        <option value="">All</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-3 col-lg-2">
+                                <div class="search-container">
+                                    <input id="" type="text" class="search-input form-control" placeholder="Search...">
+                                    <button class="search-icon"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table__wrapper  table__wrapper-40 table_xxl-65 mt-3">
+                        <table class="table">
+                            <thead class="table__head">
+                                <tr>
+                                    <th>S.N.</th>
+                                    <th>Product Code</th>
+                                    <th>Product Name</th>
+                                    <th>Group</th>
+                                    <th>Category</th>
+                                    <th>Manufacturer</th>
+                                    <th>Unit[sku(alt)]</th>
+                                    <th>Reorder Level </th>
+                                    <th>Public</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table__body">
+
+                            </tbody>
+
+
+                        </table>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -73,8 +73,7 @@ input[type="date"]~.input-label {
 
 input:required~label::after,
 select:required~label::after,
-textarea:required~label::after
-{
+textarea:required~label::after {
   content: '*';
   color: red;
   position: absolute;
@@ -93,18 +92,6 @@ textarea:required~label::after
   // right: -.5rem;
   transform: translateY(-50%);
 }
-
-
-
-
-// input:required.input-field::before {
-//   content: '*';
-//   color: red;
-//   position: absolute;
-//   top: 50%;
-//   right: -.6rem;
-//   transform: translateY(-50%);
-// }
 
 
 .input-field {
@@ -246,114 +233,36 @@ ng-multiselect-dropdown[required]+label::after {
 .select2-container {
   display: block !important;
   width: 100% !important;
-  z-index: 9999999;
+  z-index: 9999999999;
 }
 
-#patientEdit .select2-container,
-#patientEdit1 .select2-container {
-  z-index: 0;
+.custom__input-container label {
+  z-index: 9999999999;
 }
 
-
-div.hms-input label.input-label.dropDownDisbaleLabel {
-  background-image: linear-gradient(to top, rgb(230, 230, 230), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
-}
-
-
-
-/* Style for the select element */
-.custom-select {
-  width: fit-content;
-  padding: 0px;
+.search-wrap-inner {
   border: 1px solid #ccc;
-  border-radius: 3px;
-  outline: none;
+  padding: 3px 4px;
+  background: #fff;
+}
+
+.search-container {
+  position: relative;
+}
+
+.search-input {
+  padding-left: 26px;
+}
+
+//search
+.search-icon {
+  background: transparent;
+  color: gray;
   font-size: 12px;
-  /* Set a fixed height and overflow-y to create a scrollbar */
-  height: 25px;
-  //background-color: #f4f4f4;
-  color: #333;
-  /* Add any other desired styles */
+  position: absolute;
+  left: 0;
+  top: 19%;
+  border: none;
+  outline: none;
+  padding: 0 5px;
 }
-
-/* Style for the options within the select */
-.custom-select option[value=""] {
-  background-color: #e0e0e0;
-  color: #030303;
-  padding: 10px;
-  height: 10px;
-  /* Add any other desired styles */
-  max-height: 5px !important;
-  overflow-y: scroll;
-}
-
-/* Alternate color for even options */
-// .custom-select option:nth-child(even) {
-//   background-color: #ccc;
-//   /* Add any other desired styles */
-// }
-
-/* Hover effect for options */
-select option:hover {
-  background-color: #5aa3b5 !important;
-  /* Add any other desired styles */
-}
-
-/* Selected option style */
-.custom-select option:checked {
-  background-color: #5aa3b5;
-  color: white;
-  /* Add any other desired styles */
-}
-
-
-
-
-//ng multiselect dropdown
-ng-multiselect-dropdown .multiselect-dropdown {
-
-  .dropdown-btn {
-    padding: 3px 3px !important;
-    height: 28px;
-
-    .selected-item {
-
-      max-width: 143px !important;
-      display: flex;
-      flex-wrap: nowrap;
-
-
-      span {
-
-        max-width: 108px !important;
-        text-wrap: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-
-
-      }
-
-      a {
-        margin-left: 5px;
-
-      }
-    }
-  }
-}
-
-
-//multiselect
-.multiselect-dropdown[_ngcontent-ng-c1411523848] .dropdown-btn[_ngcontent-ng-c1411523848] .dropdown-multiselect__caret[_ngcontent-ng-c1411523848]:before {
-
-  top: 55% !important;
-  border-width: 5px 5px 0 5px !important;
-
-}
-
-
-.multiselect-dropdown[_ngcontent-ng-c1411523848] .dropdown-btn[_ngcontent-ng-c1411523848] .dropdown-multiselect__caret[_ngcontent-ng-c1411523848] {
-  width: 23px !important;
-  height: 30px !important;
-}
-
-

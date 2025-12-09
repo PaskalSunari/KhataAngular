@@ -11,6 +11,7 @@ import { ProductBrandComponent } from './Product/product-brand/product-brand.com
 import { ProductModelComponent } from './Product/product-model/product-model.component';
 import { ProductSizeComponent } from './Product/product-size/product-size.component';
 import { FormsModule } from '@angular/forms';
+import { ProductCreationComponent } from './Product/product-creation/product-creation.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FormsModule } from '@angular/forms';
     ProductManufacturerComponent,
     ProductBrandComponent,
     ProductModelComponent,
-    ProductSizeComponent
+    ProductSizeComponent,
+    ProductCreationComponent
   ],
   imports: [
     CommonModule,

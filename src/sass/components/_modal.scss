@@ -68,8 +68,7 @@
   overflow-y: scroll;
   top: 0;
   left: 0;
-  z-index: 100000000
-  ;
+  z-index: 9999999999;
   width: 100%;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
@@ -303,9 +302,9 @@ span .select2-conatiner {
 }
 
 
-.select2-container--open {
-  z-index: 99999999999 !important;
-}
+// .select2-container--open {
+//   z-index: 99999999999 !important;
+// }
 
 .pRPatientDetails {
   animation: fadeInAnimation ease 1s;
@@ -536,3 +535,34 @@ span .select2-conatiner {
 
 
 }
+
+/* ===== ENTER ANIMATION ===== */
+.modal-enter {
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  animation: modalIn 0.35s ease-out forwards;
+}
+
+@keyframes modalIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -65%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* ===== EXIT ANIMATION ===== */
+.modal-exit {
+  animation: modalOut 0.25s ease-in forwards;
+}
+
+@keyframes modalOut {
+  to {
+    opacity: 0;
+  }
+}
+
