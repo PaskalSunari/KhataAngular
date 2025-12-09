@@ -11,6 +11,7 @@ import { ProductBrandComponent } from './Product/product-brand/product-brand.com
 import { ProductModelComponent } from './Product/product-model/product-model.component';
 import { ProductSizeComponent } from './Product/product-size/product-size.component';
 import { FormsModule } from '@angular/forms';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     InventoryRoutingModule,
     SharedModule,
-     FormsModule,
-  ]
+    FormsModule,
+    MatPaginatorModule,
+]
 })
 export class InventoryModule { }

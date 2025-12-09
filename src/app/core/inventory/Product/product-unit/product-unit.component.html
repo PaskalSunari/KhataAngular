@@ -1,20 +1,20 @@
-<div  class="page-head-bar">
+<div class="page-head-bar">
     <div class="container-fluid">
         <div class="row align-items-center flex-wrap">
-           <div class="col-9">Product Unit</div>
-           <div class="col-3">
-            <div class="buttons-wrapper d-flex justify-content-end Gap-5">
-                <button class="btn btn-success button-sm" ><i class="fa-solid fa-file-pdf"></i></button>
-                 <button class="btn button-info button-sm"><i class="fa-solid fa-file-csv"></i></button>
+            <div class="col-9">Product Unit</div>
+            <div class="col-3">
+                <div class="buttons-wrapper d-flex justify-content-end Gap-5">
+                    <button class="btn btn-success button-sm"><i class="fa-solid fa-file-pdf"></i></button>
+                    <button class="btn button-info button-sm"><i class="fa-solid fa-file-csv"></i></button>
 
-<button class="btn btn-danger button-sm"><i class="fa-solid fa-print"></i></button>
- <div class="plus-btn" (click)="toggleForm()">
+                    <button class="btn btn-danger button-sm"><i class="fa-solid fa-print"></i></button>
+                    <div class="plus-btn" (click)="toggleForm()">
 
-     <i class="fa-solid "  [ngClass]="showForm ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
- </div>
+                        <i class="fa-solid " [ngClass]="showUnitForm ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                    </div>
+                </div>
             </div>
-           </div>
-            
+
         </div>
 
     </div>
@@ -22,176 +22,208 @@
 
 <div class="page-body">
     <div class="container-fluid px-0">
-       <div class="row">
+        <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-0">
                 <div class="" id="sales-form-container">
                     <form class="">
                         <div class="container-fluid pt-0 px-1 pb-1">
-                             <div class="sales__form-box m-2 pb-2 " *ngIf="showForm">
+                            <div class="sales__form-box m-2 pb-2 " *ngIf="showUnitForm">
                                 <div class="row">
-                                     <div class="col-sm-4 col-md-4 col-lg-2">
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
 
-                                                <div class="custom__input-container">
-                                                    <select class="input-field custom__input  w-100 req" id="unitType">
-                                                        <option value="1">Simple</option>
-                                                         <option value="2">Compound</option>
-                                                          <option value="3">Service</option>
-                                                    </select>
-                                                    <label>Unit Type</label>
-                                                </div>
-                                            </div>
+                                        <div class="custom__input-container">
+                                            <select class="input-field custom__input  w-100 req" id="unitType"
+                                                name="Unit Type" data-placeholder="--Choose--" required>
+                                                    <option value=""></option>
+                                                     <option value="1">Simple</option>
+                                                      <option value="2">Compound</option>
+                                                       <option value="3">Service</option>
+                                            </select>
+                                            <label>Unit Type</label>
+                                        </div>
+                                    </div>
                                 </div>
-                                        <div class="row">
-                                            <div class=" col-sm-4 col-md-3 col-lg-2" [hidden]="!unitTypeStatus">
-                                                <div class="custom__input-container d-flex align-items-center">
-                                                    <input id="formalName" type="text" class="form-control custom__input"
-                                                        autocomplete="off">
-                                                    <label>Formal Name</label>
-                                                </div>
-                                            </div>
+                                <div class="row">
+                                    <div class=" col-sm-4 col-md-3 col-lg-2" [hidden]="!unitTypeStatus">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <input id="formalName" type="text" class="form-control custom__input"
+                                                autocomplete="off" name="Formal Name"
+                                                [(ngModel)]="this.service.productUnitModel.formalName" required>
+                                            <label>Formal Name</label>
+                                        </div>
+                                    </div>
 
-                                             <div class=" col-sm-4 col-md-3 col-lg-2" [hidden]="!unitTypeStatus">
-                                                <div class="custom__input-container d-flex align-items-center">
-                                                    <input id="symbol" type="text" class="form-control custom__input"
-                                                        autocomplete="off">
-                                                    <label>Symbol</label>
-                                                </div>
-                                            </div>
+                                    <div class=" col-sm-4 col-md-3 col-lg-2" [hidden]="!unitTypeStatus">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <input id="symbol" type="text" class="form-control custom__input"
+                                                autocomplete="off" name="Symbol"
+                                                [(ngModel)]="this.service.productUnitModel.symbol" required>
+                                            <label>Symbol</label>
+                                        </div>
+                                    </div>
 
-                                              <div class=" col-sm-4 col-md-3 col-lg-2" [hidden]="!unitTypeStatus">
-                                                <div class="custom__input-container d-flex align-items-center">
-                                                    <input id="decimalPlace" type="number" class="form-control custom__input"
-                                                        autocomplete="off">
-                                                    <label>No. of Decimal Place</label>
-                                                </div>
-                                            </div>
+                                    <div class=" col-sm-4 col-md-3 col-lg-2" [hidden]="!unitTypeStatus">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <input id="decimalPlace" type="number" class="form-control custom__input"
+                                                autocomplete="off" name="Number of Decimal Place"
+                                                [(ngModel)]="this.service.productUnitModel.numberOfDecimalPlace" required>
+                                            <label>No. of Decimal Place</label>
+                                        </div>
+                                    </div>
 
-                                            <div class="col-sm-4 col-md-4 col-lg-2" [hidden]="unitTypeStatus">
-                                                <div class="d-flex">
-<div class="col-11">
- <div class="custom__input-container" >
-                                                    <select class="input-field custom__input  w-100 req" id="firstUnit">
-                                                        <option>Box </option>
-                                                         <option>BTL</option>
+                                    <div class="col-sm-4 col-md-4 col-lg-2" [hidden]="unitTypeStatus">
+                                        <div class="d-flex">
+                                            <div class="col-11">
+                                                <div class="custom__input-container">
+                                                    <select class="input-field custom__input  w-100 req" id="firstUnit" name="First Name" data-placeholder="--Choose--" required>
+                                                       <option value=""></option>
+                                                <option *ngFor="let data of firstUnitDropdownList"
+                                                    value="{{data.value}}">
+                                                    {{data.text}}
+                                                    </option>
                                                     </select>
                                                     <label>First Unit</label>
                                                 </div>
-</div>
-<div class="col-1 " style="justify-content: center; align-items: center; margin:10px">
-  <span >of</span>
-</div>
-                                                </div>
-                                               
-                                              
                                             </div>
-
-                                              <div class=" col-sm-4 col-md-3 col-lg-2" [hidden]="unitTypeStatus">
-                                                <div class="custom__input-container d-flex align-items-center">
-                                                    <input id="conversionFactor" type="text" class="form-control custom__input"
-                                                        autocomplete="off">
-                                                    <label>Conversion Factor</label>
-                                                </div>
-                                            </div>
-
-                                             <div class="col-sm-4 col-md-4 col-lg-2" [hidden]="unitTypeStatus">
-
-                                                <div class="custom__input-container">
-                                                    <select class="input-field custom__input  w-100 req" id="secondUnit">
-                                                        <option>Box </option>
-                                                         <option>BTL</option>
-                                                    </select>
-                                                    <label>Second Unit</label>
-                                                </div>
-                                            </div>
-
-
-
-                                             <div class=" col-sm-4 col-md-3 col-lg-3">
-                                                <div class="custom__input-container d-flex align-items-center">
-                                                    <input id="groupRemarks" type="text" class="form-control custom__input"
-                                                        autocomplete="off">
-                                                    <label>Remarks</label>
-                                                </div>
-                                            </div>
-                                              <div class="col-sm-4 col-md-4 col-lg-2">
-
-                                                <div class="custom__input-container">
-                                                    <select class="input-field custom__input  w-100 req" id="groupStatus">
-                                                        <option value="1">Active</option>
-                                                        <option value="0">InActive</option>
-                                                    </select>
-                                                    <label>Status</label>
-                                                </div>
-                                            </div>
-
-                                             <div class="col-sm-4 col-md-3 col-lg-1">
-                                                <div class="custom__input-container d-flex align-items-center">
-                                                    <button id="button1" class="button-sm btn btn-success ms-1"
-                                                        title="Insert Item">
-                                                        <i class="fa-solid fa-plus"></i>
-                                                    </button>
-
-
-                                                    <button class="button-sm btn btn-danger ms-1" title="Reset"
-                                                        id="salesBtn_refresh" href="">
-                                                        <i class="fa-solid fa-rotate-left"></i>
-                                                    </button>
-                                                </div>
+                                            <div class="col-1 "
+                                                style="justify-content: center; align-items: center; margin:10px">
+                                                <span>of</span>
                                             </div>
                                         </div>
-                                   
+
+
+                                    </div>
+
+                                    <div class=" col-sm-4 col-md-3 col-lg-2" [hidden]="unitTypeStatus">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <input id="conversionFactor" type="number" class="form-control custom__input"
+                                                autocomplete="off" name="Conversion Factor"  [(ngModel)]="this.service.productUnitModel.conversionFactor" required>
+                                            <label>Conversion Factor</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-4 col-lg-2" [hidden]="unitTypeStatus">
+
+                                        <div class="custom__input-container">
+                                            <select class="input-field custom__input  w-100 req" id="secondUnit" name="Second Unit" data-placeholder="--Choose--" required>
+                                                 <option value=""></option>
+                                                <option *ngFor="let data of secondUnitDropdownList"
+                                                    value="{{data.value}}">
+                                                    {{data.text}}
+                                                    </option>
+                                            </select>
+                                            <label>Second Unit</label>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class=" col-sm-4 col-md-3 col-lg-3">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <input id="groupRemarks" type="text" class="form-control custom__input"
+                                                autocomplete="off" name="Remarks"  [(ngModel)]="this.service.productUnitModel.productUnitRemarks">
+                                            <label>Remarks</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+
+                                        <div class="custom__input-container">
+                                            <select class="input-field custom__input  w-100 req" id="unitStatus" name="Status" required>
+                                                <option value="1">Active</option>
+                                                <option value="0">InActive</option>
+                                            </select>
+                                            <label>Status</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-3 col-lg-1">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                             <button type="button" id="button"
+                                                class="button button-sm btn btn-success ms-1" [title]="submitButton" (click)="onSubmitProductUnit()" >
+
+                                                <i [ngClass]="{ 'fa-solid fa-save': submitButton === 'Save' }"></i>
+                                                <i [ngClass]="{
+                                        'fa-solid fa-rotate-right': submitButton === 'Update'
+                                        }"></i>
+                                            </button>
+
+
+                                            <button class="button-sm btn btn-danger ms-1" title="Reset"
+                                                id="salesBtn_refresh" (click)="resetProductUnit()">
+                                                <i class="fa-solid fa-rotate-left"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
-<div class="filter sales__form-box m-2 pb-2">
-    <div class="row d-flex justify-content-between">
-         <div class=" col-sm-4 col-md-3 col-lg-3">
-                                                <div class="custom__input-container d-flex align-items-center">
-                                                    <input id="groupRemarks" type="text" class="form-control custom__input"
-                                                        autocomplete="off">
-                                                    <label>Search</label>
-                                                </div>
-                                            </div>
-    </div>
-</div>
+                            <div class="filter sales__form-box m-2 pb-2">
+                                <div class="row d-flex justify-content-end">
+                                    <div class=" col-sm-4 col-md-3 col-lg-2">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <input id="productUnitSearchString" type="text" class="form-control custom__input search-icon-padding" placeholder="Search"
+                                                autocomplete="off" name="Search" [(ngModel)]="this.service.productUnitModel.productUnitSearchString"  (input)="onSearchProductUnit($event)">
+                                                <button class="search-icon"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-  <div class="row">
-                    <div class="col-lg-12">
-                        <div class="table__wrapper  table__wrapper-40 table_xxl-65 mt-3">
-                            <table class="table" style="height: 300px;">
-                                <thead class="table__head">
-                                    <tr>
-                                        <th class="sales-main-table__sn">S.N.</th>
-                                        <th class="sales-main-table__item">Unit Name</th>
-                                        <th class="sales-main-table__qty">Symbol</th>
-                                        <th class="sales-main-batch">Type</th>
-                                        <th class="sales-main-expirydate">Decimal Place</th>
-                                        <th class="sales-main-table__action">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="table__body" id="sales-main-table__body">
-                                      <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                       
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table__wrapper  table__wrapper-40 table_xxl-65 mt-3">
+                                        <table class="table">
+                                            <thead class="table__head">
+                                                <tr>
+                                                    <th class="sales-main-table__sn">S.N.</th>
+                                                    <th class="sales-main-table__item">Unit Name</th>
+                                                    <th class="sales-main-table__qty">Symbol</th>
+                                                    <th class="sales-main-batch">Type</th>
+                                                    <th class="sales-main-expirydate">Decimal Place</th>
+                                                    <th class="sales-main-table__action">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table__body" id="sales-main-table__body">
+                                                <tr  *ngFor="let data of productUnitGridList; let i = index">
+                                                    <td>{{productUnitGridDetails.pageStartIndex+i}}</td>
+                                                    <td>{{data?.formalName}}</td>
+                                                    <td>{{data?.symbol}}</td>
+                                                    <td>{{data?.unitTypeName}}</td>
+                                                    <td>{{data?.digitAfterDecimal}}</td>
+                                                    <td>
+                                                          <button
+                                                            class="button button--extra-small button--success button--rounded-sm me-2" (click)="getProductUnitById(data?.unitID)">
+                                                            <i class="fa-regular fa-pen-to-square"></i>
+                                                        </button>
+                                                        <button
+                                                            class="button button--extra-small button--danger button--rounded-sm me-2" (click)="confirmBoxProductUnitDelete(data?.unitID)" >
+                                                            <i class="fa-solid fa-trash"></i>
+                                                        </button>
+                                                    </td>
 
-                                    </tr>
-                                </tbody>
-                            </table>
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                              <mat-paginator #paginatorPopup (page)="handlePageEvent($event)" class="demo-paginator"
+                                [length]="length" [pageSize]="pageSize" [disabled]="disabled"
+                                [showFirstLastButtons]="showFirstLastButtons"
+                                [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+                                [hidePageSize]="hidePageSize" [pageIndex]="pageIndex" aria-label="Select page">
+                            </mat-paginator>
+
                         </div>
-
-
-                    </div>
-
+                    </form>
                 </div>
-
-                            </div>
-                            </form>
-                            </div>
+            </div>
         </div>
     </div>
-    </div>
-    </div>
+</div>
