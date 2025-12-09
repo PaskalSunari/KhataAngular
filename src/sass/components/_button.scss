@@ -71,6 +71,11 @@
   &--primary {
     background-color: $color-cyan-500;
     color: #fff;
+
+    &:hover {
+      background-color: $color-cyan-500;
+      color: #fff;
+    }
   }
 
   &--success {

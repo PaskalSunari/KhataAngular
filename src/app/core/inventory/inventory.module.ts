@@ -12,6 +12,7 @@ import { ProductModelComponent } from './Product/product-model/product-model.com
 import { ProductSizeComponent } from './Product/product-size/product-size.component';
 import { FormsModule } from '@angular/forms';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ProductCreationComponent } from './Product/product-creation/product-creation.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     ProductManufacturerComponent,
     ProductBrandComponent,
     ProductModelComponent,
-    ProductSizeComponent
+    ProductSizeComponent,
+    ProductCreationComponent
   ],
   imports: [
     CommonModule,

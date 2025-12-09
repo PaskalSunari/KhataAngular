@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { posUrl } from './pos-endpoint';
+import { UnitModel } from './pos.model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ export class PosService {
   baseurl = environment.appURL;
 
   //use in html
-  // InquiryModel: InquiryModel = new InquiryModel();
+  UnitModel: UnitModel = new UnitModel();
 
   constructor(private http: HttpClient, private endPoint: posUrl) {}
   //================================================================================
@@ -46,10 +47,10 @@ export class PosService {
     });
   }
 
-  GetProductDetail(productCode: any) {
+  GetProductDetail(selectedValue: any) {
     const params = new HttpParams()
       .set('flag', 2)
-      .set('productcode', productCode)
+      .set('productcode', selectedValue)
       .set('branch', 1001);
 
     return this.http.get(`${this.baseurl}${this.endPoint.GetProductByCode}`, {
@@ -58,30 +59,25 @@ export class PosService {
   }
 
   //================================================================================
-  GetUnits(
-    productId: number = 1,
-    batch: string = 'n/a',
-    branch: string = '1001'
-  ) {
-    const params = new HttpParams()
-      .set('productId', productId.toString())
-      .set('batch', batch)
-      .set('branch', branch);
 
-    return this.http.get(`${this.baseurl}${this.endPoint.GetUnits}`, {
-      params,
-    });
+  GetUnits(data: any) {
+    return this.http.post(`${this.baseurl}${this.endPoint.GetUnits}`, data);
   }
-  //================================================================================
 
-  // GetBatch(data: any) {
-  //   return this.http.post(`${this.baseurl}${this.endPoint.batch}`, data);
-  // }
+  //================================================================================
+  GetRate(data: any) {
+    return this.http.post(`${this.baseurl}${this.endPoint.GetRate}`, data);
+  }
+    //================================================================================
 
   GetFilterAnyDataPagination(data: any) {
     return this.http.post(
       `${this.baseurl}${this.endPoint.GetFilterAnyDataPagination}`,
       data
     );
+  }
+  //================================================================================
+  GetMissingUnit(data: any) {
+    return this.http.post(`${this.baseurl}${this.endPoint.GetMissingUnit}`, data);
   }
 }

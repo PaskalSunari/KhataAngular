@@ -13,11 +13,13 @@
 
             <div class="col-3">
                 <div class="pos-bar-right d-flex gap-3 justify-content-end">
-                    <div><i class="fa-solid fa-eye"></i></div>
-                    <div><i class="fa-solid fa-money-bill"></i></div>
-                    <div><i class="fa-solid fa-calculator"></i></div>
+                    <div title="Full Screen" id="fullScreen"><i class="fas fa-expand"></i></div>
+                    <div (click)="print()" title="View"><i class="fa-solid fa-eye"></i></div>
+                    <div (click)="cashTransactionPop()" title="Cash Transaction"><i class="fa-solid fa-money-bill"></i>
+                    </div>
+                    <div title="Calculator" (click)="calculatorPopup()"><i class="fa-solid fa-calculator"></i></div>
 
-                    <div class="buttons-wrapper d-flex justify-content-end Gap-5">
+                    <div title="Download" class="buttons-wrapper d-flex justify-content-end Gap-5">
                         <button class="btn btn-success button-sm ms-1" id="btn_getDraft">
                             <i class="fa-solid fa-download"></i>
                         </button>
@@ -151,13 +153,15 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-4 col-md-4 col-lg-6">
+                                            <div class="col-sm-4 col-md-4 col-lg-5">
 
                                                 <div class="custom__input-container">
                                                     <select id="productSelect"
-                                                        class="input-field custom__input w-100 req">
+                                                        class="input-field custom__input w-100 req"
+                                                        data-placeholder="--Choose--">
+                                                        <option value=""></option>
                                                         <option *ngFor="let item of productList"
-                                                            [value]="item.productCode">
+                                                            [value]="item.productId">
                                                             {{ item.productName }}
                                                         </option>
                                                     </select>
@@ -166,11 +170,14 @@
                                                     <label>Product Name</label>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-4 col-md-4 col-lg-3">
+                                            <div class="col-sm-4 col-md-4 col-lg-4">
                                                 <div class="custom__input-container">
-                                                    <select class="input-field custom__input w-100 req">
-                                                        <option *ngFor="let item of batch" [value]="item.branch">
-                                                            {{ item.batch }}
+                                                    <select id="batchSelect" class="input-field custom__input w-100 req"
+                                                        data-placeholder="--Choose--">
+                                                        <option value=""></option>
+                                                        <!-- <option value="" disabled selected>Choose</option> -->
+                                                        <option *ngFor="let item of batch" [value]="item.batch">
+                                                            {{ item.batch }} [ {{ item.qty }} {{ item.skuunit }}]
                                                         </option>
                                                     </select>
                                                     <label>Batch</label>
@@ -183,9 +190,11 @@
                                         <div class="row">
                                             <div class="col-sm-3 col-md-2 col-lg-3">
                                                 <div class="custom__input-container">
-                                                    <select class="input-field custom__input w-100 req">
-                                                        <option></option>
-
+                                                    <select id="selecUnit" class="input-field custom__input w-100 req"   data-placeholder="--Choose--">
+                                                        <option value=""></option>
+                                                        <option *ngFor="let item of unit" [value]="item.fromUnitId">
+                                                            {{ item.mainunit }}
+                                                        </option>
                                                     </select>
 
                                                     <label>Unit</label>
@@ -195,15 +204,15 @@
 
                                             <div class="col-sm-3 col-md-2 col-lg-2">
                                                 <div class="custom__input-container">
-                                                    <input id="" type="text" autocomplete="off"
-                                                        class="form-control custom__input" disabled>
+                                                    <input [(ngModel)]="rate" id="rate" type="text" name="Rate" autocomplete="off"
+                                                        class="form-control custom__input" >
                                                     <label>Rate</label>
                                                 </div>
                                             </div>
                                             <div class="col-sm-3 col-md-3 col-lg-2">
                                                 <div class="custom__input-container ">
                                                     <input name="vat" [(ngModel)]="vat" id="vat" type="text"
-                                                        autocomplete="off" class="form-control custom__input" disabled>
+                                                        autocomplete="off" class="form-control custom__input" >
                                                     <label>Vat</label>
                                                 </div>
                                             </div>
@@ -557,8 +566,9 @@
 
 <!--  Popup -->
 <div [hidden]="!IscustomerPopup">
-    <div class="customPopupContainer">
-        <div class="customPopup customPopup-md-hgt-90 customPopup-md-80">
+    <div class="customPopupContainer" (click)="closecustomerPopup()">
+        <div (click)="$event.stopPropagation()" class="customPopup customPopup-md-hgt-90 customPopup-md-80"
+            [ngClass]="modalAnimationClass">
             <div class="customPopupHeader"><span>Customer Ledger</span>
                 <span class="closeIcon" (click)="closecustomerPopup()">
                     <i class="fa-solid fa-xmark"></i>
@@ -821,5 +831,123 @@
             </div>
         </div>
 
+    </div>
+</div>
+<!-- POS Calculator Popup -->
+<div [hidden]="!IsCalculatorPopup">
+    <div class="customPopupContainer" (click)="closeCalculatorPopup()">
+        <div (click)="$event.stopPropagation()" class="calc-box">
+
+            <!-- Display -->
+            <div class="calc-display">
+                {{ display }}
+            </div>
+
+            <!-- ======= HISTORY BUTTONS ROW (MATCHED STYLE) ======= -->
+            <div class="calc-row">
+                <button class="btn-func" (click)="toggleHistory()">HIS</button>
+                <button class="btn-func" (click)="clearHistory()">CLR HIS</button>
+            </div>
+            <div [hidden]="isNumShow">
+                <!-- Top Buttons -->
+                <div class="calc-row">
+                    <button class="btn-off" (click)="closeCalculatorPopup()">OFF</button>
+                    <button class="btn-func" (click)="percentage()">%</button>
+                    <button class="btn-func" (click)="del()">DEL</button>
+                    <button class="btn-ac" (click)="clear()">AC</button>
+                </div>
+
+
+                <!-- Number + Operators Grid -->
+                <div class="calc-row">
+                    <button (click)="press('7')">7</button>
+                    <button (click)="press('8')">8</button>
+                    <button (click)="press('9')">9</button>
+                    <button class="btn-op" (click)="press('+')">+</button>
+                </div>
+
+                <div class="calc-row">
+                    <button (click)="press('4')">4</button>
+                    <button (click)="press('5')">5</button>
+                    <button (click)="press('6')">6</button>
+                    <button class="btn-op" (click)="press('-')">-</button>
+                </div>
+
+                <div class="calc-row">
+                    <button (click)="press('3')">3</button>
+                    <button (click)="press('2')">2</button>
+                    <button (click)="press('1')">1</button>
+                    <button class="btn-op" (click)="press('*')">*</button>
+                </div>
+
+                <div class="calc-row">
+                    <button (click)="press('0')">0</button>
+                    <button (click)="press('.')">.</button>
+                    <button class="btn-equal" (click)="calculate()">=</button>
+                    <button class="btn-op" (click)="press('/')">/</button>
+                </div>
+
+            </div>
+
+            <!-- ======= HISTORY BOX (SLIDES BELOW CALCULATOR) ======= -->
+            <div class="history-panel" *ngIf="showHistory">
+                <div class="history-item" *ngFor="let h of history">
+                    {{ h }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div [hidden]="!isCashTransactionPop">
+    <div class="customPopupContainer" (click)="closeCashTransactionPop()">
+        <div (click)="$event.stopPropagation()" class="customPopup customPopup-md-hgt-40 customPopup-md-30"
+            [ngClass]="cashTransactionAnimation">
+
+            <div class="customPopupHeader">
+                <span>Cash Transaction Summary</span>
+                <span class="closeIcon" (click)="closeCashTransactionPop()">
+                    <i class="fa-solid fa-xmark"></i>
+                </span>
+            </div>
+
+            <div class="modal-body p-4">
+                <div class="modal-body p-4">
+                    <div class="transaction-content">
+                        <table class="transaction-content-tbl">
+                            <thead>
+                                <tr>
+                                    <th style="width: 120px;">Initial Amount</th>
+                                    <td>:</td>
+                                    <td>Rs20,000</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Cash</th>
+                                    <td>:</td>
+                                    <td>Rs15,000</td>
+                                </tr>
+                                <tr>
+                                    <th>Credit</th>
+                                    <td>:</td>
+                                    <td>Rs20,000</td>
+                                </tr>
+                                <tr>
+                                    <th>Total</th>
+                                    <td>:</td>
+                                    <td>Rs 55,000</td>
+                                </tr>
+
+                            </thead>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
