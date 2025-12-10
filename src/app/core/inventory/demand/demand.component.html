@@ -24,6 +24,16 @@
                             <div class="sales__form-box m-2 pb-2 " *ngIf="showForm">
                                 <div class="row">
                                     <div class="col-sm-4 col-md-4 col-lg-2">
+
+                                        <div class="custom__input-container">
+                                            <select #department class="input-field custom__input  w-100 req" id="department">
+                                                <option disabled selected>Choose</option>
+                                                <option *ngFor=" let data of getDepartmentList" [value] = "data.departmentID">{{data.departmentName}}</option>
+                                            </select>
+                                            <label>Request By Department</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
                                             <select #requestBy class="input-field custom__input  w-100 req" id="requestBY">
                                                 <option disabled selected>Choose</option>
@@ -34,23 +44,22 @@
                                     </div>
                                     <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
+                                            <select #department class="input-field custom__input  w-100 req" id="department">
+                                                <option disabled selected>Choose</option>
+                                                <option *ngFor=" let data of getDepartmentList" [value] = "data.departmentID">{{data.departmentName}}</option>
+                                            </select>
+                                            <label>Requested To Department</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <div class="custom__input-container">
                                             <select #requestTo class="input-field custom__input  w-100 req" id="requestTo">
                                                  <option disabled selected>Choose</option>
                                                 <option *ngFor="let data of requestedToDropdownList" value="{{data.userID}}">{{data.userName}}</option>
                                             </select>
                                             <label>Requested To</label>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-4 col-md-4 col-lg-2">
-
-                                        <div class="custom__input-container">
-                                            <select #department class="input-field custom__input  w-100 req" id="department">
-                                                <option disabled selected>Choose</option>
-                                                <option *ngFor=" let data of getDepartmentList" [value] = "data.departmentID">{{data.departmentName}}</option>
-                                            </select>
-                                            <label>Requested Department</label>
-                                        </div>
-                                    </div>
+                                    </div>                                    
                                     <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
                                             <select #product class="input-field custom__input  w-100 req" id="product">

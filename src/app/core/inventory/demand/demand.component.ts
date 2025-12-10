@@ -329,10 +329,10 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     const todayDate = new Date().toLocaleDateString();
     const todayTime = new Date().toLocaleTimeString();
   
-    const autoRemarks = `Demanded by ${requestByText} to ${requestToText} on ${todayDate} at ${todayTime}`;
-    if (!this.remarks.nativeElement.value || this.remarks.nativeElement.value.trim() === '') {
-      this.remarks.nativeElement.value = autoRemarks;
-    }
+    // const autoRemarks = `Demanded by ${requestByText} to ${requestToText} on ${todayDate} at ${todayTime}`;
+    // if (!this.remarks.nativeElement.value || this.remarks.nativeElement.value.trim() === '') {
+    //   this.remarks.nativeElement.value = autoRemarks;
+    // }
     const rowData = {
       sn: this.tableRows.length + 1,
       date: new Date().toLocaleDateString(),

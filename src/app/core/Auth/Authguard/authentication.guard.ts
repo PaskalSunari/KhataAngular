@@ -19,7 +19,7 @@ export class AuthGuardService implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-
+debugger
     // ✅ Extract only the clean route path (remove query params and hash)
     const requestedRoute = state.url.split(/[?#]/)[0];
 
@@ -37,6 +37,7 @@ export class AuthGuardService implements CanActivate {
 
     // ✅ Allow route access if it’s in the allowed list
     if (allowedRoutes.includes(requestedRoute)) {
+      debugger
       return true;
     }
 
