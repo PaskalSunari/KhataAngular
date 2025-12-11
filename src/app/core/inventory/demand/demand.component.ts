@@ -6,6 +6,7 @@ import 'select2';
 import { DemandService } from './service/demand.service';
 import { error } from 'jquery';
 import { ToastrService } from 'ngx-toastr';
+import { timestamp } from 'rxjs';
 @Component({
   selector: 'app-demand',
   templateUrl: './demand.component.html'
@@ -33,6 +34,7 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
   lockDropdown = false;
   availableQtyPopover: any = null;
   unitName: string = '';
+  stockWarningMessage: string = '';
   toggleForm() {
     this.showForm = !this.showForm;
   }
@@ -40,10 +42,21 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     setTimeout(() => {
       $(this.el.nativeElement).find('select').select2();
-      this.getRequestByDropdownList();
       this.getDepartmentDropdownList();
       this.getProductList();
       this.enterFun();
+      if (this.department && this.department.nativeElement){
+        const $department = $(this.department.nativeElement);
+        setTimeout(() => {
+          try{
+            $department.next('.select2-container').find('.select2-selection').trigger('focus').trigger('click');
+          }catch{
+            try{
+              (this.department.nativeElement as HTMLElement).focus();
+            }catch {}
+          }
+        }, 100)
+      }
     }, 0);
     let self = this
     $('#unit').on('change', function (event: any) {
@@ -71,6 +84,11 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
           });
       }
     })
+    $('#requestedToDepartment').on('change', function (event: any) {
+      if(event.target.value){
+      self.getRequestToDropdownList($('#requestBY').val(),$('#requestedToDepartment').val())
+      }
+       })
   }
   ngOnDestroy(): void {
     try {
@@ -159,69 +177,6 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
       });
     });
   }
-
-  getRequestByDropdownList() {
-    this.service.getRequestedByDropdownList().subscribe(
-      (res) => {
-        const result: any = res;
-        if (result) {
-          this.requestedByDropdownList = result?.result || [];
-          setTimeout(() => {
-            if (this.requestBy && this.requestBy.nativeElement) {
-              const $el = $(this.requestBy.nativeElement);
-              if (!$el.hasClass('select2-hidden-accessible')) {
-                $el.select2();
-              }
-
-              const component = this;
-              const userID = localStorage.getItem('userId');
-              if (userID) {
-                $el.val(userID).trigger('change.select2');
-                component.selectedRequestById = Number(userID);
-                component.getRequestToDropdownList(Number(userID));
-              }
-              $el.off('change.demandRequestBy').on('change.demandRequestBy', function () {
-                if (component.lockDropdown) return;
-                const value = $(component.requestBy.nativeElement).val();
-                const userId = Number(value);
-                if (!isNaN(userId) && userId > 0) {
-                  component.selectedRequestById = userId;
-                  component.getRequestToDropdownList(userId);
-                } else {
-                  component.selectedRequestById = null;
-                  component.requestedToDropdownList = [];
-                }
-              });
-
-              try {
-                $el.next('.select2-container').find('.select2-selection').trigger('focus').trigger('click');
-              } catch (e) {
-                try { (this.requestBy.nativeElement as HTMLElement).focus(); } catch { }
-              }
-            }
-          }, 0);
-        }
-      },
-      (error) => {
-      }
-    );
-  }
-
-  getRequestToDropdownList(userId: number) {
-    if (!userId || this.lockDropdown) return;   // ⭐ PREVENT CHANGES IF LOCKED
-    this.service.getRequestedToDropdownList(userId).subscribe(
-
-      (res) => {
-        debugger;
-        let result: any = res;
-        if (result) {
-          this.requestedToDropdownList = result?.result;
-        }
-      },
-      (error) => {
-      }
-    );
-  }
   getDepartmentDropdownList() {
     this.service.getDepartmentDropdownList().subscribe(
       (res) => {
@@ -234,15 +189,98 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
               if (!$el.hasClass('select2-hidden-accessible')) {
                 $el.select2();
               }
+              const component = this;
+              $el.off('change.demandDepartment').on('change.demandDepartment', function () {
+                if (component.lockDropdown) return;
+                const value = $(component.department.nativeElement).val();
+                const departmentId = value && value !== 'Choose' ? Number(value) : undefined;
+                component.getRequestByDropdownList(departmentId);
+              });
             }
           }, 0);
         }
       },
       (error) => {
-
       }
     );
   }
+  getRequestByDropdownList(departmentId? : Number) {
+    this.service.getRequestedByDropdownList(departmentId).subscribe(
+      (res) => {
+        const result: any = res;
+        if (result) {
+          this.requestedByDropdownList = result?.result || [];
+          this.cdRef.detectChanges();
+          setTimeout(() => {
+            if (this.requestBy && this.requestBy.nativeElement) {
+              const $el = $(this.requestBy.nativeElement);
+
+              
+              const hasSelect2 = $el.hasClass('select2-hidden-accessible');
+              if (hasSelect2) {
+                $el.select2('destroy');
+              }
+              $el.select2();
+              const component = this;
+              const userID = localStorage.getItem('userId');
+              if (userID) {
+                const userIdNum = Number(userID);
+                const existingUser = this.requestedByDropdownList.some((u: any) => u.userID === userIdNum);
+                if (existingUser){
+                  $el.val(userID).trigger('change.select2');
+                  component.selectedRequestById = userIdNum;
+                }else{
+                  $el.val('Choose').trigger('change.select2');
+                  component.selectedRequestById = null;
+                  component.requestedToDropdownList = [];
+                }               
+              }else{
+                $el.val('Choose').trigger('change.select2');
+                component.selectedRequestById = null;
+                component.requestedToDropdownList = [];
+              }
+              $el.off('change.demandRequestBy').on('change.demandRequestBy', function () {
+                if (component.lockDropdown) return;
+                const value = $(component.requestBy.nativeElement).val();
+                const userId = Number(value);
+                if (!isNaN(userId) && userId > 0) {
+                  component.selectedRequestById = userId;
+                } else {
+                  component.selectedRequestById = null;
+                  component.requestedToDropdownList = [];
+                }
+              });
+
+              try {
+                $el.next('.select2-container').find('.select2-selection').trigger('focus').trigger('click');
+              } catch (e) {
+                try { (this.requestBy.nativeElement as HTMLElement).focus(); } catch { }
+              }
+            } else {
+            }
+          }, 100); 
+        }
+      },
+      (error) => {
+      }
+    );
+  }
+
+  getRequestToDropdownList(userId: number, departmentId: number) {
+    if (!userId || this.lockDropdown) return;  
+    this.service.getRequestedToDropdownList(userId, departmentId).subscribe(
+
+      (res) => {
+        debugger;
+        let result: any = res;
+        if (result) {
+          this.requestedToDropdownList = result?.result;
+        }
+      },
+      (error) => {
+      }
+    );
+  }  
   getProductList() {
     this.service.getProductList().subscribe(
       (res) => {
@@ -297,6 +335,8 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     );
   }
   addRowToTable() {
+   
+
     const requestByValue = $(this.requestBy.nativeElement).val();
     const requestByText = $(this.requestBy.nativeElement).find('option:selected').text();
 
@@ -325,12 +365,20 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
       this.toastr.warning('Please enter the valid quantity greater than zero.', 'Validation Eror');
       return;
     }
+    if (this.lastAvailableQty !== null && Number(quantityValue) > this.lastAvailableQty) {
+        const proceed = confirm(
+          `You are demanding more than the available quantity (${this.lastAvailableQty}). Do you want to proceed?`
+        );
+        if (!proceed) {
+            return; 
+        }
+    }
     const isDuplilcate = this.tableRows.some(row =>
       row.requestedByValue === requestByValue &&
       row.requestedToValue === requestToValue &&
       row.departmentValue === departmentValue &&
       row.productValue === productValue &&
-      row.unitValue === unitValue
+      row.productValue === productValue
     );
     if (isDuplilcate) {
       this.toastr.warning('This item is already added to the table.', 'Duplicate Item');
@@ -338,11 +386,6 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     }
     const todayDate = new Date().toLocaleDateString();
     const todayTime = new Date().toLocaleTimeString();
-  
-    // const autoRemarks = `Demanded by ${requestByText} to ${requestToText} on ${todayDate} at ${todayTime}`;
-    // if (!this.remarks.nativeElement.value || this.remarks.nativeElement.value.trim() === '') {
-    //   this.remarks.nativeElement.value = autoRemarks;
-    // }
     const rowData = {
       sn: this.tableRows.length + 1,
       date: new Date().toLocaleDateString(),
@@ -371,6 +414,12 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
         $(this.requestBy.nativeElement).prop('disabled', true).trigger('change.select2');
         $(this.requestTo.nativeElement).prop('disabled', true).trigger('change.select2');
         $(this.department.nativeElement).prop('disabled', true).trigger('change.select2');
+        $('#requestedToDepartment').prop('disabled', true).trigger('change.select2');
+      }else{
+        $(this.requestBy.nativeElement).prop('disabled', false).trigger('change.select2');
+        $(this.requestTo.nativeElement).prop('disabled', false).trigger('change.select2');
+        $(this.department.nativeElement).prop('disabled', false).trigger('change.select2');
+        $('#requestedToDepartment').prop('disabled', false).trigger('change.select2');
       }
       if (this.product && this.product.nativeElement) {
         const $product = $(this.product.nativeElement);
@@ -482,36 +531,23 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
         this.toastr.success('Demand posted successfully.', 'Success');
         this.tableRows = [];
         this.lockDropdown = false;
-        if (this.requestBy?.nativeElement) {
-          const $reqBy = $(this.requestBy.nativeElement);
-          $reqBy.val(userId).trigger('change.select2');
-          this.selectedRequestById = userId;
-          this.getRequestToDropdownList(userId);
-          try {
-            $reqBy.next('.select2-container').find('.select2-selection').trigger('focus').trigger('click');
-          } catch {
-            try {
-              (this.requestBy.nativeElement as HTMLElement).focus();
-            } catch { }
-          }
-        }
-        $(this.requestTo.nativeElement).val('Choose').trigger('change');
-        $(this.department.nativeElement).val('Choose').trigger('change');
-        $(this.requestBy.nativeElement).prop('disabled', false).trigger('change.select2');
-        $(this.requestTo.nativeElement).prop('disabled', false).trigger('change.select2');
-        $(this.department.nativeElement).prop('disabled', false).trigger('change.select2');
+         $(this.requestBy.nativeElement).prop('disabled', false).val(userId).trigger('change.select2');
+         $(this.requestTo.nativeElement).prop('disabled', false).val('Choose').trigger('change.select2');
+         $(this.department.nativeElement).prop('disabled', false).val('Choose').trigger('change.select2');
+         $('#requestedToDepartment').prop('disabled', false).val('Choose').trigger('change.select2');
+      try { this.remarks.nativeElement.value = ''; } catch {}
+       setTimeout(() => {
         try {
-          const $reqBy = $(this.requestBy.nativeElement);
-          $reqBy.next('.select2-container').find('.select2-selection').trigger('focus').trigger('click');
+          const $dep = $('#requestByDepartment');
+          $dep.next('.select2-container')
+              .find('.select2-selection')
+              .trigger('focus')
+              .trigger('click');
         } catch {
-          try {
-            (this.requestBy.nativeElement as HTMLElement).focus();
-          } catch { }
+          try { ($('#requestByDepartment')[0] as HTMLElement).focus(); } catch {}
         }
-        try {
-          (this.remarks.nativeElement as HTMLInputElement).value = '';
-        } catch { }
-      },
+      }, 150);
+    },        
       err => {
         console.error('Error in posting demand', err);
       }
