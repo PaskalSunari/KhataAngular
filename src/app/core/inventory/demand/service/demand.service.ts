@@ -12,13 +12,15 @@ baseurl = environment.appURL;
   Demandmodel: Demand = new Demand();
   constructor(private http: HttpClient, private endPoint: DemandUrl) {}
 
-   getRequestedByDropdownList() {
-   
-    return this.http.get(`${this.baseurl}${this.endPoint.getRequestedByDropdownList}`);
+   getRequestedByDropdownList(departmentId?: Number) {
+    const params: any = {};
+    if (departmentId){
+      params.departmentId = departmentId.toString();
+    }
+    return this.http.get(`${this.baseurl}${this.endPoint.getRequestedByDropdownList}`, {params});
   }
-  getRequestedToDropdownList(userId: number) {
-    const params = { userId: userId.toString() };
-    return this.http.get(`${this.baseurl}${this.endPoint.getRequestedToDropdownList}`, { params });
+  getRequestedToDropdownList(userId: number, departmentId : number) {
+    return this.http.get(`${this.baseurl}${this.endPoint.getRequestedToDropdownList}${userId}&departmentId=${departmentId}`);
   }
   getDepartmentDropdownList() {
     return this.http.get(`${this.baseurl}${this.endPoint.getDepartmentDropdownList}`);
