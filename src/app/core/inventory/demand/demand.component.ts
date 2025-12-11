@@ -210,7 +210,9 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
   getRequestToDropdownList(userId: number) {
     if (!userId || this.lockDropdown) return;   // ⭐ PREVENT CHANGES IF LOCKED
     this.service.getRequestedToDropdownList(userId).subscribe(
+
       (res) => {
+        debugger;
         let result: any = res;
         if (result) {
           this.requestedToDropdownList = result?.result;
@@ -226,6 +228,14 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
         let result: any = res;
         if (result) {
           this.getDepartmentList = result?.result;
+          setTimeout(() => {
+            if (this.department && this.department.nativeElement) {
+              const $el = $(this.department.nativeElement);
+              if (!$el.hasClass('select2-hidden-accessible')) {
+                $el.select2();
+              }
+            }
+          }, 0);
         }
       },
       (error) => {
