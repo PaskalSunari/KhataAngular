@@ -553,4 +553,55 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
       }
     )
   }
+  resetForm() {
+
+  // Clear Select2 dropdowns
+  $(this.requestBy.nativeElement).val('Choose').trigger('change.select2');
+  $(this.requestTo.nativeElement).val('Choose').trigger('change.select2');
+  $(this.department.nativeElement).val('Choose').trigger('change.select2');
+  $('#requestedToDepartment').val('Choose').trigger('change.select2');
+
+  $(this.product.nativeElement).val('Choose').trigger('change.select2');
+  $(this.unit.nativeElement).val('Choose').trigger('change.select2');
+
+  // Clear text fields
+  this.quantity.nativeElement.value = '';
+  this.remarks.nativeElement.value = '';
+  this.expectedDate.nativeElement.value = this.today;
+
+  // Clear dependent dropdown data
+  this.requestedByDropdownList = [];
+  this.requestedToDropdownList = [];
+  this.unitList = [];
+
+  // Clear available quantity info
+  this.lastAvailableQty = null;
+  this.destroyAvailableQtyPopover();
+
+  // Enable all dropdowns (because some are locked during add)
+  this.lockDropdown = false;
+
+  $(this.requestBy.nativeElement).prop('disabled', false);
+  $(this.requestTo.nativeElement).prop('disabled', false);
+  $(this.department.nativeElement).prop('disabled', false);
+  $('#requestedToDepartment').prop('disabled', false);
+
+  // Reset table if needed (optional)
+  // this.tableRows = [];
+
+  // Set focus back to first field
+  setTimeout(() => {
+    try {
+      $(this.department.nativeElement)
+        .next('.select2-container')
+        .find('.select2-selection')
+        .trigger('focus')
+        .trigger('click');
+    } catch {
+      this.department.nativeElement.focus();
+    }
+  }, 80);
+
+    this.toastr.info('Form reset successfully.');
+  }
 }
