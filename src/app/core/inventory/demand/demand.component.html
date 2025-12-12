@@ -101,7 +101,7 @@
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
                                             <button type="button" class="button-sm btn btn-danger ms-1" title="Reset"
-                                                id="salesBtn_refresh" href="">
+                                                 (click)="resetForm()" id="salesBtn_refresh" href="">
                                                 <i class="fa-solid fa-rotate-left"></i>
                                             </button>
                                         </div>
@@ -159,7 +159,7 @@
                     <div class=" col-sm-4 col-md-3 col-lg-2">
                         <div class="custom__input-container d-flex align-items-center">
                             <input #expectedDate class="date-picker__input custom__input" maxlength="10" type="date"
-                                placeholder="yyyy/mm/dd" [value]="today" />
+                                placeholder="yyyy/mm/dd" [value]="today" [min]="today"/>
                             <label>Expected Date</label>
                         </div>
                     </div>
@@ -174,7 +174,7 @@
                             <button id="finalPostButton" type="button" class="button-sm btn btn-success ms-1" title="Insert Item" (click)="FinalPost()">
                                 <i class="fa-solid fa-plus"></i>
                             </button>
-                            <button type="button" class="button-sm btn btn-danger ms-1" title="Reset" id="salesBtn_refresh" href="">
+                            <button type="button" class="button-sm btn btn-danger ms-1" title="Reset"  (click)="resetForm()" id="salesBtn_refresh" href="">
                                 <i class="fa-solid fa-rotate-left"></i>
                             </button>
                         </div>
