@@ -100,10 +100,10 @@
                                                 title="Insert Item" (click)="addRowToTable()">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
-                                            <button type="button" class="button-sm btn btn-danger ms-1" title="Reset"
+                                            <!-- <button type="button" class="button-sm btn btn-danger ms-1" title="Reset"
                                                  (click)="resetForm()" id="salesBtn_refresh" href="">
                                                 <i class="fa-solid fa-rotate-left"></i>
-                                            </button>
+                                            </button> -->
                                         </div>
                                     </div>
                                 </div>
@@ -116,9 +116,9 @@
                                                 <tr>
                                                     <th class="sales-main-table__sn">S.N.</th>
                                                     <th class="sales-main-table__item">Date</th>
-                                                    <th class="sales-main-expirydate">Request By Dept</th>
+                                                    <!-- <th class="sales-main-expirydate">Request By Dept</th> -->
                                                     <th class="sales-main-table__qty">Requested By</th>
-                                                    <th class="sales-main-expirydate">Department</th>
+                                                    <!-- <th class="sales-main-expirydate">Department</th> -->
                                                     <th class="sales-main-batch">Requested To</th>
                                                     <th class="sales-main-table__action">Particulars</th>
                                                     <th class="sales-main-table__action">Quantity</th>
@@ -132,10 +132,10 @@
                                                 <tr *ngFor="let row of tableRows; let i = index" [ngClass]="{'row-removing' : row.removing}">
                                                     <td>{{row.sn}}</td>
                                                     <td>{{row.date}}</td>
-                                                    <td>{{row.requestByDepartment}}</td>
-                                                    <td>{{row.requestedBy}}</td>
-                                                    <td>{{row.category}}</td>
-                                                    <td>{{row.requestedTo}}</td>
+                                                    <!-- <td>{{row.requestByDepartment}}</td> -->
+                                                    <td>{{row.requestedBy}} ({{row.requestByDepartment}})</td>
+                                                    <!-- <td>{{row.category}}</td> -->
+                                                    <td>{{row.requestedTo}} ({{row.category}})</td>
                                                     <td>{{row.particulars}}</td>
                                                     <td>{{row.quantity}} {{row.unit}}</td>
                                                     <td style="position: relative;">

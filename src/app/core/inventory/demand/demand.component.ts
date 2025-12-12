@@ -21,6 +21,7 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
   @ViewChild('remarks') remarks!: ElementRef;
   @ViewChild('expectedDate') expectedDate!: ElementRef;
   @ViewChild('availableQtyInfo') availableQtyInfo!: ElementRef;
+  @ViewChild('requestedToDepartment') requestedToDepartmentRef!: ElementRef;
   showForm = true;
   today = new Date().toISOString().split('T')[0];
   requestedByDropdownList: any[] = [];
@@ -344,8 +345,8 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     const requestToValue = $(this.requestTo.nativeElement).val();
     const requestToText = $(this.requestTo.nativeElement).find('option:selected').text();
 
-    const departmentValue = $(this.department.nativeElement).val();
-    const departmentText = $(this.department.nativeElement).find('option:selected').text();
+    const requestedToDepartmentValue = $('#requestedToDepartment').val();
+    const requestedToDepartmentText = $('#requestedToDepartment').find('option:selected').text();
 
     const productValue = $(this.product.nativeElement).val();
     const productText = $(this.product.nativeElement).find('option:selected').text();
@@ -356,7 +357,8 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
 
     if (!requestByValue || requestByValue === 'Choose' ||
       !requestToValue || requestToValue === 'Choose' ||
-      !departmentValue || departmentValue === 'Choose' ||
+      !requestByDeptValue || requestByDeptValue === 'Choose' ||
+      !requestedToDepartmentValue || requestedToDepartmentValue === 'Choose' ||
       !productValue || productValue === 'Choose' ||
       !quantityValue || !unitValue || unitValue === 'Choose') {
       this.toastr.warning('Please fill all required fields.', 'Validation Error');
@@ -377,7 +379,7 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     const isDuplilcate = this.tableRows.some(row =>
       row.requestedByValue === requestByValue &&
       row.requestedToValue === requestToValue &&
-      row.departmentValue === departmentValue &&
+      //row.departmentValue === departmentValue &&
       row.productValue === productValue &&
       row.productValue === productValue
     );
@@ -396,8 +398,8 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
       requestedByValue: requestByValue,
       requestedTo: requestToText,
       requestedToValue: requestToValue,
-      category: departmentText,
-      departmentValue: departmentValue,
+      category: requestedToDepartmentText,
+      departmentValue: requestedToDepartmentValue,
       particulars: productText,
       productValue: productValue,
       quantity: quantityValue,
@@ -558,6 +560,7 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     )
   }
   resetForm() {
+  // Clear all dropdowns and inputs
   $(this.requestBy.nativeElement).val('Choose').trigger('change.select2');
   $(this.requestTo.nativeElement).val('Choose').trigger('change.select2');
   $(this.department.nativeElement).val('Choose').trigger('change.select2');
@@ -568,17 +571,29 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
   this.quantity.nativeElement.value = '';
   this.remarks.nativeElement.value = '';
   this.expectedDate.nativeElement.value = this.today;
+
+  // Clear dynamic lists
   this.requestedByDropdownList = [];
   this.requestedToDropdownList = [];
   this.unitList = [];
-  this.destroyAvailableQtyPopover();
-  this.lockDropdown = false;
 
+  // Clear table rows
+  this.tableRows = [];
+
+  // Unlock dropdowns
+  this.lockDropdown = false;
   $(this.requestBy.nativeElement).prop('disabled', false);
   $(this.requestTo.nativeElement).prop('disabled', false);
   $(this.department.nativeElement).prop('disabled', false);
   $('#requestedToDepartment').prop('disabled', false);
+
+  // Destroy any popovers
+  this.destroyAvailableQtyPopover();
+
+  // Reinitialize dropdowns and focus on first field
   setTimeout(() => {
+    this.getDepartmentDropdownList(); // repopulate department dropdown
+    this.getProductList(); // repopulate product dropdown
     try {
       $(this.department.nativeElement)
         .next('.select2-container')
@@ -588,8 +603,8 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     } catch {
       this.department.nativeElement.focus();
     }
-  }, 80);
+  }, 100);
 
-    this.toastr.info('Form reset successfully.');
-  }
+  this.toastr.info('Form reset successfully.', 'Info');
+}
 }
