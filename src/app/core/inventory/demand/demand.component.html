@@ -116,12 +116,12 @@
                                                 <tr>
                                                     <th class="sales-main-table__sn">S.N.</th>
                                                     <th class="sales-main-table__item">Date</th>
+                                                    <th class="sales-main-expirydate">Request By Dept</th>
                                                     <th class="sales-main-table__qty">Requested By</th>
-                                                    <th class="sales-main-batch">Requested To</th>
                                                     <th class="sales-main-expirydate">Department</th>
+                                                    <th class="sales-main-batch">Requested To</th>
                                                     <th class="sales-main-table__action">Particulars</th>
                                                     <th class="sales-main-table__action">Quantity</th>
-                                                    <!-- <th class="sales-main-table__action">Available Quantity</th> -->
                                                     <th class="sales-main-table__action">Action</th>
                                                 </tr>
                                             </thead>
@@ -132,12 +132,12 @@
                                                 <tr *ngFor="let row of tableRows; let i = index" [ngClass]="{'row-removing' : row.removing}">
                                                     <td>{{row.sn}}</td>
                                                     <td>{{row.date}}</td>
+                                                    <td>{{row.requestByDepartment}}</td>
                                                     <td>{{row.requestedBy}}</td>
-                                                    <td>{{row.requestedTo}}</td>
                                                     <td>{{row.category}}</td>
+                                                    <td>{{row.requestedTo}}</td>
                                                     <td>{{row.particulars}}</td>
                                                     <td>{{row.quantity}} {{row.unit}}</td>
-                                                    <!-- <td>{{row.availableQuantity}}</td> -->
                                                     <td style="position: relative;">
                                                         <button class="button-sm btn btn-danger" title="Remove" (click)="removeRowFromTable(i)">
                                                             <i class="fa-solid fa-trash"></i>
