@@ -335,7 +335,8 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     );
   }
   addRowToTable() {
-   
+    const requestByDeptValue = $('#requestByDepartment').val();
+    const requestByDeptText = $('#requestByDepartment').find('option:selected').text();
 
     const requestByValue = $(this.requestBy.nativeElement).val();
     const requestByText = $(this.requestBy.nativeElement).find('option:selected').text();
@@ -389,6 +390,8 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     const rowData = {
       sn: this.tableRows.length + 1,
       date: new Date().toLocaleDateString(),
+      requestByDepartment: requestByDeptText,
+      requestByDepartmentValue: requestByDeptValue,
       requestedBy: requestByText,
       requestedByValue: requestByValue,
       requestedTo: requestToText,
@@ -513,6 +516,7 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
       requestedTo: +row.requestedToValue,
       requestedToDept: +row.departmentValue,
       availableQuantity: +row.availableQuantity || 0,
+      requestByDepartmentId : +row.requestByDepartmentValue
     }))
     const payload = {
       userID: userId,
@@ -554,8 +558,6 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     )
   }
   resetForm() {
-
-  // Clear Select2 dropdowns
   $(this.requestBy.nativeElement).val('Choose').trigger('change.select2');
   $(this.requestTo.nativeElement).val('Choose').trigger('change.select2');
   $(this.department.nativeElement).val('Choose').trigger('change.select2');
@@ -563,33 +565,19 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
 
   $(this.product.nativeElement).val('Choose').trigger('change.select2');
   $(this.unit.nativeElement).val('Choose').trigger('change.select2');
-
-  // Clear text fields
   this.quantity.nativeElement.value = '';
   this.remarks.nativeElement.value = '';
   this.expectedDate.nativeElement.value = this.today;
-
-  // Clear dependent dropdown data
   this.requestedByDropdownList = [];
   this.requestedToDropdownList = [];
   this.unitList = [];
-
-  // Clear available quantity info
-  this.lastAvailableQty = null;
   this.destroyAvailableQtyPopover();
-
-  // Enable all dropdowns (because some are locked during add)
   this.lockDropdown = false;
 
   $(this.requestBy.nativeElement).prop('disabled', false);
   $(this.requestTo.nativeElement).prop('disabled', false);
   $(this.department.nativeElement).prop('disabled', false);
   $('#requestedToDepartment').prop('disabled', false);
-
-  // Reset table if needed (optional)
-  // this.tableRows = [];
-
-  // Set focus back to first field
   setTimeout(() => {
     try {
       $(this.department.nativeElement)
