@@ -6,6 +6,22 @@
   border-bottom: 2px solid #f8a15b;
 }
 
+.header-right{
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.pos-btn{
+  border: 1px solid $primary-500;
+  color: $primary-500;
+  height: 32px;
+  line-height: 32px;
+  padding: 0 12px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 500;
+}
 .menu_toggle_icon {
   color: #f8a15b;
   padding-right: 20px;

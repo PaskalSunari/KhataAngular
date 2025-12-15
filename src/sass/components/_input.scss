@@ -73,8 +73,7 @@ input[type="date"]~.input-label {
 
 input:required~label::after,
 select:required~label::after,
-textarea:required~label::after
-{
+textarea:required~label::after {
   content: '*';
   color: red;
   position: absolute;
@@ -93,18 +92,6 @@ textarea:required~label::after
   // right: -.5rem;
   transform: translateY(-50%);
 }
-
-
-
-
-// input:required.input-field::before {
-//   content: '*';
-//   color: red;
-//   position: absolute;
-//   top: 50%;
-//   right: -.6rem;
-//   transform: translateY(-50%);
-// }
 
 
 .input-field {
@@ -246,19 +233,26 @@ ng-multiselect-dropdown[required]+label::after {
 .select2-container {
   display: block !important;
   width: 100% !important;
-  z-index: 9999999;
+  z-index: 9999999999;
 }
 
-#patientEdit .select2-container,
-#patientEdit1 .select2-container {
-  z-index: 0;
+.custom__input-container label {
+  z-index: 9999999999;
 }
 
-
-div.hms-input label.input-label.dropDownDisbaleLabel {
-  background-image: linear-gradient(to top, rgb(230, 230, 230), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+.search-wrap-inner {
+  border: 1px solid #ccc;
+  padding: 3px 4px;
+  background: #fff;
 }
 
+.search-container {
+  position: relative;
+}
+
+.search-input {
+  padding-left: 26px;
+}
 
 
 /* Style for the select element */
@@ -356,4 +350,30 @@ ng-multiselect-dropdown .multiselect-dropdown {
   height: 30px !important;
 }
 
+.search-icon-padding{
+  padding-left: 20px !important;
+}
 
+
+// #patientEdit .select2-container,
+// #patientEdit1 .select2-container {
+//   z-index: 0;
+// }
+
+
+// div.hms-input label.input-label.dropDownDisbaleLabel {
+//   background-image: linear-gradient(to top, rgb(230, 230, 230), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+// }
+
+//search
+.search-icon {
+  background: transparent;
+  color: gray;
+  font-size: 12px;
+  position: absolute;
+  left: 0;
+  top: 19%;
+  border: none;
+  outline: none;
+  padding: 0 5px;
+}

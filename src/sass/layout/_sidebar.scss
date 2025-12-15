@@ -3,7 +3,8 @@
   /* width: 250px; */
   background-color: #137b95;
   height: 100%;
-  top: 48px;
+  padding-top: 48px;
+  top: 0;
   position: absolute;
   overflow: auto;
   z-index: 1000;
@@ -23,7 +24,8 @@
   /* width: 250px; */
   background-color: #137b95;
   height: 100%;
-  top: 48px;
+  top: 0;
+  padding-top: 48px;
   position: absolute;
   overflow: hidden;
   z-index: 100;
@@ -32,8 +34,9 @@
 .navigation.active {
   width: 232px;
   background-color: #137b95;
-  height: calc(100% - 50px);
-  top: 50px;
+  height: 100%;
+  top: 0;
+  padding-top: 50px;
   position: absolute;
   overflow-y: auto;
   overflow-x: hidden;
