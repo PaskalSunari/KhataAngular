@@ -560,7 +560,6 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     )
   }
   resetForm() {
-  // Clear all dropdowns and inputs
   $(this.requestBy.nativeElement).val('Choose').trigger('change.select2');
   $(this.requestTo.nativeElement).val('Choose').trigger('change.select2');
   $(this.department.nativeElement).val('Choose').trigger('change.select2');
@@ -571,16 +570,10 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
   this.quantity.nativeElement.value = '';
   this.remarks.nativeElement.value = '';
   this.expectedDate.nativeElement.value = this.today;
-
-  // Clear dynamic lists
   this.requestedByDropdownList = [];
   this.requestedToDropdownList = [];
   this.unitList = [];
-
-  // Clear table rows
   this.tableRows = [];
-
-  // Unlock dropdowns
   this.lockDropdown = false;
   $(this.requestBy.nativeElement).prop('disabled', false);
   $(this.requestTo.nativeElement).prop('disabled', false);
@@ -589,11 +582,9 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
 
   // Destroy any popovers
   this.destroyAvailableQtyPopover();
-
-  // Reinitialize dropdowns and focus on first field
   setTimeout(() => {
-    this.getDepartmentDropdownList(); // repopulate department dropdown
-    this.getProductList(); // repopulate product dropdown
+    this.getDepartmentDropdownList(); 
+    this.getProductList(); 
     try {
       $(this.department.nativeElement)
         .next('.select2-container')
