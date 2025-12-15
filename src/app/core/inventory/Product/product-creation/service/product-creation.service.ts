@@ -1,9 +1,39 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { productCreateUrl } from '../product-creationEndpointURL';
+import { ProductCreation } from '../product-creation.model';
+import { AddVariable } from '../product-creation.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductCreationService {
 
-  constructor() { }
+  baseurl = environment.appURL;
+    productCreationModel: ProductCreation = new ProductCreation();
+
+    addVariableModel:AddVariable=new AddVariable
+    constructor(private http: HttpClient, private endPoint: productCreateUrl) {}
+  
+  
+     getProductCreateDropdownList(model:any) {
+      return this.http.post(`${this.baseurl}${this.endPoint.getProductCreateDropdownList}`,model);
+    }
+   
+  
+    insertUpdateProductCreate(data: any) {
+      return this.http.post(`${this.baseurl}${this.endPoint.insertUpdateProductCreate}`,data);
+    }
+    getProductCreateByID(data:any){
+        return this.http.post(`${this.baseurl}${this.endPoint.getProductCreateDataByID}`,data);
+    }
+  
+     deleteProductCreate(data:any){
+        return this.http.post(`${this.baseurl}${this.endPoint.deleteProductCreate}`,data);
+    }
+  
+      getProductCreateFilteredList(data:any){
+        return this.http.post(`${this.baseurl}${this.endPoint.productCreateFilteredData}`,data);
+    }
 }
