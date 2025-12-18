@@ -36,4 +36,38 @@ export class ProductCreationService {
       getProductCreateFilteredList(data:any){
         return this.http.post(`${this.baseurl}${this.endPoint.productCreateFilteredData}`,data);
     }
+
+
+    //Add Variable api
+     getNatureDropdownList(model:any) {
+      return this.http.post(`${this.baseurl}${this.endPoint.natureDropdownList}`,model);
+    }
+ getAddVariableFilteredList(data:any){
+        return this.http.post(`${this.baseurl}${this.endPoint.addVariableFilteredData}`,data);
+    }
+ insertUpdateAddVariable(data: any) {
+      return this.http.post(`${this.baseurl}${this.endPoint.insertUpdateAddVariable}`,data);
+    }
+     getAddVariableByID(data:any){
+        return this.http.post(`${this.baseurl}${this.endPoint.getAddVariableDataByID}`,data);
+    }
+  
+     deleteAddVariable(data:any){
+        return this.http.post(`${this.baseurl}${this.endPoint.deleteAddVariable}`,data);
+    }
+
+    //Variable Option api
+
+     getVariableOptionList(data:any){
+        return this.http.post(`${this.baseurl}${this.endPoint.getVariableOptionList}`,data);
+    }
+     insertUpdateVariableOption(data: any) {
+      return this.http.post(`${this.baseurl}${this.endPoint.insertUpdateVariableOption}`,data);
+    }
+
+     deleteVariableOption(data:any){
+        return this.http.post(`${this.baseurl}${this.endPoint.deleteVariableOption}`,data);
+    }
+
+
 }

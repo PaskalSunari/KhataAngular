@@ -15,6 +15,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { ProductCreationComponent } from './Product/product-creation/product-creation.component';
 import { SupplyComponent } from './supply/supply/supply.component';
 import { DeptStockLocationMappingComponent } from './dept-stock-location-mapping/dept-stock-location-mapping.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,8 @@ import { DeptStockLocationMappingComponent } from './dept-stock-location-mapping
     SharedModule,
     FormsModule,
     MatPaginatorModule,
+      NgMultiSelectDropDownModule,
+  
 ]
 })
 export class InventoryModule { }
