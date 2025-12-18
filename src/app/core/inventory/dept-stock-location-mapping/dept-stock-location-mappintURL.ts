@@ -4,5 +4,6 @@ import { Injectable } from "@angular/core";
     providedIn:'root',
 })
 export class DeptLocationMappingUrl{
-    getDropdownList:string='inventory/DepartmentLocationMapping/GeDropdoantList'
+    getDropdownList:string='inventory/DepartmentLocationMapping/GeDropdoantList';
+    getGridList:string='inventory/DepartmentLocationMapping/GetJsonList';
 }

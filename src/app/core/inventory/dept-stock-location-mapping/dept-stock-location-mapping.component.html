@@ -25,9 +25,10 @@
                                     <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
                                             <select class="input-field custom__input  w-100 req" id="department"
-                                                name="Department" data-placeholder="--Choose--"  required>
+                                                name="Department" data-placeholder="--Choose--" required>
                                                 <option value=""></option>
-                                                <option *ngFor="let item of DepartmentList" value="{{item.departmentID}}">{{item.departmentName}}</option>
+                                                <option *ngFor="let item of DepartmentList"
+                                                    value="{{item.departmentID}}">{{item.departmentName}}</option>
                                             </select>
                                             <label>Store</label>
                                         </div>
@@ -37,21 +38,37 @@
                                             <select class="input-field custom__input  w-100 req" id="user" name="User"
                                                 data-placeholder="--Choose--" required>
                                                 <option value=""></option>
-                                                <option  *ngFor="let item of UserList" value="{{item.userId}}">{{item.userName}}</option>
+                                                <option *ngFor="let item of UserList" value="{{item.userId}}">
+                                                    {{item.userName}}</option>
                                             </select>
                                             <label>User</label>
                                         </div>
                                     </div>
-                                    <div class="col-sm-4 col-md-4 col-lg-2">
+                                    <div class="col-sm-4 col-md-4 col-lg-2" *ngIf="!isSelect2Show">
                                         <div class="custom__input-container">
-                                            <select class="input-field custom__input  w-100 req" id="location"
+
+                                            <ng-multiselect-dropdown id="multiLocationId" name="Variable Multi Option"
+                                                [placeholder]="'Choose'" class="w-100" [data]="this.StockLocationList"
+                                                [settings]="multidropdownSettings"
+                                                [(ngModel)]="service.storeLocationModel.multiSelectValue">
+                                            </ng-multiselect-dropdown>
+
+
+                                            <label>Location</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-2" *ngIf="isSelect2Show">
+                                        <div class="custom__input-container">
+                                            <select multiple class="input-field custom__input  w-100 req" id="singleLocationId"
                                                 name="Location" data-placeholder="--Choose--" required>
                                                 <option value=""></option>
-                                                <option *ngFor="let item of StockLocationList" value="{{item.locationId}}">{{item.locationName}}</option>
+                                                <option *ngFor="let item of StockLocationList"
+                                                    value="{{item.locationId}}">{{item.locationName}}</option>
                                             </select>
                                             <label>Location</label>
                                         </div>
                                     </div>
+
                                     <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
                                             <select class="input-field custom__input  w-100 req" id="brandStatus">
@@ -105,20 +122,12 @@
                                                 </tr>
                                             </thead>
                                             <tbody class="table__body" id="sales-main-table__body">
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Stock Location -1</td>
-                                                    <td>Store</td>
-                                                    <td>admin</td>
-                                                    <td>Active</td>
-                                                    <td>--</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Stock Location -2</td>
-                                                    <td>Store</td>
-                                                    <td>user</td>
-                                                    <td>InActive</td>
+                                                <tr *ngFor="let item of DepartmentStockLocationMappingList let i=index">
+                                                    <td>{{i+1}}</td>
+                                                    <td>{{item.locationName}}</td>
+                                                    <td>{{item.departmentName}}</td>
+                                                    <td>{{item.userName}}</td>
+                                                    <td>{{item.status?'Active':'InActive'}}</td>
                                                     <td>--</td>
                                                 </tr>
                                             </tbody>

@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 declare var $: any;
 declare const setFocusOnNextElement: any;
 
+
 @Component({
   selector: 'app-dept-stock-location-mapping',
   templateUrl: './dept-stock-location-mapping.component.html'
@@ -14,6 +15,7 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
   userId: any = 0;
   branchId: any = 0;
   submitButton: any = 'Save'
+  isSelect2Show: boolean = true;
 
   //pagination variable
   length = 0;
@@ -30,6 +32,22 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
   DepartmentList: any[] = [];
   UserList: any[] = [];
   StockLocationList: any[] = [];
+  DepartmentStockLocationMappingList: any[] = [];
+
+  //Multidropdown setting in additional info form
+  multidropdownSettings: any = {
+    singleSelection: false,
+    idField: 'locationId',
+    textField: 'locationName',
+    selectAllText: 'Select All',
+    unSelectAllText: 'UnSelect All',
+    itemsShowLimit: 1,
+    allowSearchFilter: true,
+    closeDropDownOnSelection: true,
+    enableCheckAll: true,
+    maxHeight: 120,
+  };
+
 
   constructor(private el: ElementRef, private titleService: Title, public service: DeptStockLocationMappingService, private toastr: ToastrService) { }
 
@@ -43,6 +61,7 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
     this.enterFun();
     $(this.el.nativeElement).find('select').select2();
     this.getDropdownList();
+    this.getGridList();
   }
 
   // Enter functon
@@ -79,6 +98,13 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
       this.DepartmentList = res.department || [];
       this.UserList = res.user || [];
       this.StockLocationList = res.location || [];
+    })
+  }
+
+  getGridList() {
+    this.service.getGridDataList(this.branchId, this.userId).subscribe((res: any) => {
+      console.log('response: ', res);
+      this.DepartmentStockLocationMappingList=res?.result;
     })
   }
 
