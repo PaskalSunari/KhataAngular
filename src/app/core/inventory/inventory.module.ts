@@ -13,6 +13,8 @@ import { ProductSizeComponent } from './Product/product-size/product-size.compon
 import { FormsModule } from '@angular/forms';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ProductCreationComponent } from './Product/product-creation/product-creation.component';
+import { SupplyComponent } from './supply/supply/supply.component';
+import { DeptStockLocationMappingComponent } from './dept-stock-location-mapping/dept-stock-location-mapping.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { ProductCreationComponent } from './Product/product-creation/product-cre
     ProductBrandComponent,
     ProductModelComponent,
     ProductSizeComponent,
-    ProductCreationComponent
+    ProductCreationComponent,
+    SupplyComponent,
+    DeptStockLocationMappingComponent
   ],
   imports: [
     CommonModule,
