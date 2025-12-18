@@ -1,5 +1,6 @@
 export class ProductCreation {
     productID:number=0
+    productDetailsID:number=0
     productCode:any=''
     productName:any=''
     UUID:number=0
@@ -9,6 +10,9 @@ export class ProductCreation {
     HSCode:any=''
     productDescription:any=''
     value:any=''
+    wholeNumber:number=0
+    decimalNumber:number=0
+    multiSelectValue:any=''
     
 
 

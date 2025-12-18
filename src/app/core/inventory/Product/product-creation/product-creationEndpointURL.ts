@@ -21,6 +21,6 @@ deleteAddVariable:string=`inventory/ProductInfoVariable/DeleteProductInfoVariabl
 
 // variable option api
 getVariableOptionList:string=`inventory/ProductInfoVariable/GetProductInfoVariableOptionList`
-addUpdateVariableOption:string=`inventory/ProductInfoVariable/AddUpdateProductInfoVariableOption`
+insertUpdateVariableOption:string=`inventory/ProductInfoVariable/AddUpdateProductInfoVariableOption`
 deleteVariableOption:string=`inventory/ProductInfoVariable/DeleteProductInfoVariableOption`
 }

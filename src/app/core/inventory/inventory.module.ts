@@ -13,6 +13,7 @@ import { ProductSizeComponent } from './Product/product-size/product-size.compon
 import { FormsModule } from '@angular/forms';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ProductCreationComponent } from './Product/product-creation/product-creation.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,8 @@ import { ProductCreationComponent } from './Product/product-creation/product-cre
     SharedModule,
     FormsModule,
     MatPaginatorModule,
+      NgMultiSelectDropDownModule,
+  
 ]
 })
 export class InventoryModule { }
