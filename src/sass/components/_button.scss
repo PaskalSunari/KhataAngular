@@ -362,11 +362,22 @@
   width: 15.70% !important
 }
 
-.plus-btn {
-  background-color: #1c8eab;
-  border-radius: 50%;
-  padding: 2px;
-  font-size: 12px;
-
-
+.plus-btn{
+  background-color:#1c8eab;
+   border-radius: 50%;
+    padding: 2px;
+    font-size: 12px;
+   
+   
+}
+.search-icon{
+background: transparent;
+    color: gray;
+    font-size: 12px;
+    position: absolute;
+    left: 0;
+    top: 10%;
+    border: none;
+    outline: none;
+    padding: 0 5px;
 }

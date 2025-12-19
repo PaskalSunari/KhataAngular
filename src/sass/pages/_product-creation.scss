@@ -36,7 +36,33 @@
     }
 }
 
-.table-wrapper-72{
+.table-wrapper-72 {
     height: 72px;
     max-height: 72px;
+}
+
+.closeIcon-product-group {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    height: 32px;
+    width: 32px;
+    line-height: 32px;
+    text-align: center;
+    border-radius: 100%;
+    background: $primary-500;
+    cursor: pointer;
+    z-index: 100;
+
+    i {
+        color: #fff;
+    }
+
+    &:hover {
+        background: $primary-600;
+
+    }
+}
+.customPopup-product-group{
+    overflow: initial;
 }

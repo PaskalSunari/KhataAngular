@@ -23,7 +23,7 @@ const routes: Routes = [
     component: ProductUnitComponent,
   },
    {
-    path: 'productmanufacturer',
+    path: 'productmanufacture',
     component: ProductManufacturerComponent,
   },
    {

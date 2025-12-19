@@ -15,7 +15,9 @@ export class ProductGroupComponent implements AfterViewInit {
 productGroupUnderList:any;
 productGroupUnderFilterList:any;
 productGroupFilterList:any;
+
 productGroupGridList:any;
+productGroupGridDetails:any;
 productGroupModel:any;
 deleteData:boolean=true
 productGroupDataByID:any;
@@ -32,6 +34,18 @@ fiscalPG:any = ''
 otherInfoPG:any = ''
 userPG:any = '';
 submitButton:any='Save'
+
+
+//pagination variable
+ length = 0;
+  pageSize = 25;
+  pageIndex = 0;
+  pageSizeOptions = [10, 25, 50, 100];
+
+  hidePageSize = false;
+  showPageSizeOptions = true;
+  showFirstLastButtons = true;
+  disabled = false;
 
  constructor(private el: ElementRef, public service: ProductGroupService, private toastr: ToastrService,) {}
   ngAfterViewInit(): void {
@@ -54,7 +68,6 @@ this.enterFun();
 let self=this
   $('#filterByGroupName').on('change', function (event: any) {
     if(event.target.value){
-      debugger
  self.getProductGroupFilteredList()
     }
      })
@@ -98,24 +111,24 @@ let self=this
     getProductUnderDropdownList() {
     let Model = {
     "mainInfoModel": {
-        "userId": "1",
-        "fiscalID": 3,
+        "userId": this.userIdPG,
+        "fiscalID":this.fiscalPG.financialYearId,
         "branchDepartmentId": 1001,
-        "branchId": 1001,
+        "branchId": this.branchIdPG,
         "dbName": "",
-        "isEngOrNepaliDate": true,
+        "isEngOrNepaliDate": this.otherInfoPG.isEngOrNepali,
         "isMenuVerified": true,
         "filterId": 0,
         "refId": 0,
         "mainId": 0,
         "strId": "",
-        "startDate": "2025-07-17T00:00:00",
-        "fromDate": "2025-07-17T00:00:00",
-        "endDate": "2026-07-16T00:00:00",
-        "toDate": "2026-07-16T00:00:00",
-        "decimalPlace": "2",
+        "startDate": this.fiscalPG.fromDate,
+        "fromDate": this.fiscalPG.fromDate,
+        "endDate": this.fiscalPG.toDate,
+        "toDate": this.fiscalPG.toDate,
+        "decimalPlace": this.globalVariablePG[2].value,
         "bookClose": 0,
-        "sessionId": "545efb3e-52bc-49da-86b2-ccc58fe5a10b",
+        "sessionId": this.sessionIdPG,
         "id": 0,
         "searchtext": "",
         "cid": 0
@@ -215,7 +228,7 @@ let self=this
 }
 
 
-  //post data Service Mapping form
+  //post data of product Group form
     onSubmitProductGroup() {
 
       this.productGroupModel = {  
@@ -256,14 +269,9 @@ let self=this
   }
       }
     
-      // console.log(this.finalDataServiceCost, "finaldataServiceCost")
-      // if (this.service.productGroupmodel.groupID === 0) {
+      // console.log(this.productGroupModel, "model")
         this.InsertProductGroup()
-      // }
-      // else if (this.service.productGroupmodel.groupID != 0) {
-      //   // this.UpdateHMISReportSetting()
-  
-      // }
+     
     }
 
 
@@ -273,7 +281,7 @@ let self=this
         
       if (this.validation() == true) {
         this.service.insertUpdateProductGroup( this.productGroupModel).subscribe((response: any) => {
-          console.log(response);
+          // console.log(response);
           
           if (response.success == false) {
             this.toastr.error(response?.msg);
@@ -283,6 +291,7 @@ let self=this
             this.toastr.success(response?.msg);
             this.resetProductGroup()
             //  this.getProductUnderDropdownList()
+             this.getProductUnderDropdownList()
                this.getProductGroupFilteredList()
             this. getProductGroupGridList()
             setTimeout(() => {
@@ -342,6 +351,7 @@ let self=this
 
 
      EditProductGroup(value: any) {
+        
 this.submitButton='Update'
       this.service.productGroupModel.groupID = value?.groupID
       this.service.productGroupModel.groupName = value?.groupName
@@ -371,14 +381,14 @@ this.submitButton='Update'
       }, 100);
      
   
-      $('#productName').focus()
+       $('#groupName').focus()
      
     }
 
 
       resetProductGroup() {
   
-
+this. pageIndex = 0;
     this.service.productGroupModel.groupID = 0
       this.service.productGroupModel.groupName = ""
       this.service.productGroupModel.remarks = ""
@@ -399,6 +409,24 @@ this.submitButton='Update'
         const dropdown = document.getElementById("groupStatus") as HTMLInputElement | null;
         if (dropdown) {
           dropdown.value = "1"; // Assuming val.parentID is a string, convert it to a string if needed
+          const event = new Event('change', { bubbles: true });
+          dropdown.dispatchEvent(event);
+        }
+      }
+
+       if ($('#filterByGroupName').length) {
+        const dropdown = document.getElementById("filterByGroupName") as HTMLInputElement | null;
+        if (dropdown) {
+          dropdown.value = "0"; // Assuming val.parentID is a string, convert it to a string if needed
+          const event = new Event('change', { bubbles: true });
+          dropdown.dispatchEvent(event);
+        }
+      }
+
+       if ($('#filterByGroupUnder').length) {
+        const dropdown = document.getElementById("filterByGroupUnder") as HTMLInputElement | null;
+        if (dropdown) {
+          dropdown.value = "0"; // Assuming val.parentID is a string, convert it to a string if needed
           const event = new Event('change', { bubbles: true });
           dropdown.dispatchEvent(event);
         }
@@ -510,7 +538,7 @@ DeleteProductGroup(Id: number) {
       this.toastr.error(res?.msg)
     }
   }, (error:any) => {
-    this.toastr.error(error.error.Message)
+    this.toastr.error(error?.error?.Message)
   })
 
 
@@ -527,8 +555,8 @@ DeleteProductGroup(Id: number) {
     "underColumnName": "",
     "underIntID": 0,
     "filterColumnsString": `[\"group--${$('#filterByGroupName').val()==0?'':$('#filterByGroupName').val()}\",\"underGroup--${$('#filterByGroupUnder').val()==0?'':$('#filterByGroupUnder').val()}\"]`,
-    "currentPageNumber": 1,
-    "pageRowCount": 25,
+    "currentPageNumber": this.pageIndex+1,
+    "pageRowCount": this.pageSize,
     "strlistNames": "string"
   },
   "mainInfoModel": {
@@ -567,8 +595,15 @@ DeleteProductGroup(Id: number) {
         console.log(result, 'product group data list');
         if (result) {
            this.productGroupGridList=result[0]
+           this.productGroupGridDetails=result[1]
           
-           console.log(this.productGroupGridList,"productGroupgridlist");
+           console.log(this.productGroupGridList,"gridddd");
+            console.log(result[1].totalRecords,"total");
+           
+          this.length=result[1]?.totalRecords
+          // this.pageSize=this.productGroupGridList[1]?.pageSize
+          // this.pageIndex=this.productGroupGridList[1]?.currentPageNumber - 1
+          //  console.log(result,"productGroupgridlist");
            
         }
       },
@@ -579,5 +614,11 @@ DeleteProductGroup(Id: number) {
     );
   }
 
+   handlePageEvent(e: any) {
+    this.length = e.length;
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
+    this.getProductGroupFilteredList()
+  }
 
 }
