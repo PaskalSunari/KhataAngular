@@ -9,16 +9,25 @@ import { DeptStockLocationMapping } from '../dept-stock-location-mapping.model';
   providedIn: 'root'
 })
 export class DeptStockLocationMappingService {
-baseUrl = environment.appURL;
+  baseUrl = environment.appURL;
 
-storeLocationModel: DeptStockLocationMapping = new DeptStockLocationMapping();
+  storeLocationModel: DeptStockLocationMapping = new DeptStockLocationMapping();
 
-  constructor(private http:HttpClient, private endPoint:DeptLocationMappingUrl) { }
+  constructor(private http: HttpClient, private endPoint: DeptLocationMappingUrl) { }
 
-  getDropdownList(userId:number, branchId:number){
+  getDropdownList(userId: number, branchId: number) {
     return this.http.get(`${this.baseUrl}${this.endPoint.getDropdownList}/${userId}/${branchId}`);
   }
-  getGridDataList(userId:number, branchId:number){
-    return this.http.get(`${this.baseUrl}${this.endPoint.getGridList}/${branchId}/${userId}`);
+
+  getGridDataList(model: any) {
+    return this.http.post(`${this.baseUrl}${this.endPoint.getGridList}`, model);
+  }
+
+  insertUpdate(data: any) {
+    return this.http.post(`${this.baseUrl}${this.endPoint.insertUpdate}`, data);
+  }
+
+  getById(id:any, branchId:any,userId:any){
+    return this.http.get(`${this.baseUrl}${this.endPoint.getById}/${id}/${branchId}/${userId}`)
   }
 }

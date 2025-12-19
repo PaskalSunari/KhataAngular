@@ -24,7 +24,7 @@
                                 <div class="row">
                                     <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
-                                            <select class="input-field custom__input  w-100 req" id="department"
+                                            <select class="input-field custom__input  w-100 req" id="departmentId"
                                                 name="Department" data-placeholder="--Choose--" required>
                                                 <option value=""></option>
                                                 <option *ngFor="let item of DepartmentList"
@@ -35,7 +35,7 @@
                                     </div>
                                     <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
-                                            <select class="input-field custom__input  w-100 req" id="user" name="User"
+                                            <select class="input-field custom__input  w-100 req" id="userId" name="User"
                                                 data-placeholder="--Choose--" required>
                                                 <option value=""></option>
                                                 <option *ngFor="let item of UserList" value="{{item.userId}}">
@@ -46,7 +46,6 @@
                                     </div>
                                     <div class="col-sm-4 col-md-4 col-lg-2" *ngIf="!isSelect2Show">
                                         <div class="custom__input-container">
-
                                             <ng-multiselect-dropdown id="multiLocationId" name="Variable Multi Option"
                                                 [placeholder]="'Choose'" class="w-100" [data]="this.StockLocationList"
                                                 [settings]="multidropdownSettings"
@@ -59,8 +58,9 @@
                                     </div>
                                     <div class="col-sm-4 col-md-4 col-lg-2" *ngIf="isSelect2Show">
                                         <div class="custom__input-container">
-                                            <select multiple class="input-field custom__input  w-100 req" id="singleLocationId"
-                                                name="Location" data-placeholder="--Choose--" required>
+                                            <select multiple class="input-field custom__input  w-100 req"
+                                                id="storeLocationId" name="Location" data-placeholder="--Choose--"
+                                                required>
                                                 <option value=""></option>
                                                 <option *ngFor="let item of StockLocationList"
                                                     value="{{item.locationId}}">{{item.locationName}}</option>
@@ -71,7 +71,8 @@
 
                                     <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
-                                            <select class="input-field custom__input  w-100 req" id="brandStatus">
+                                            <select class="input-field custom__input  w-100 req" id="status"
+                                                (change)="service.storeLocationModel.status = $any($event.target).value">
                                                 <option value="1">Active</option>
                                                 <option value="0">InActive</option>
                                             </select>
@@ -80,15 +81,14 @@
                                     </div>
                                     <div class="col-sm-4 col-md-3 col-lg-1">
                                         <div class="custom__input-container d-flex align-items-center">
-                                            <button type="button" id="button"
+                                            <button type="button" id="button" (click)="onSubmitData()"
                                                 class="button button-sm btn btn-success ms-1">
                                                 <i [ngClass]="{ 'fa-solid fa-plus': submitButton === 'Save' }"></i>
-                                                <i [ngClass]="{
-                                        'fa-solid fa-rotate-right': submitButton === 'Update'
-                                        }"></i>
+                                                <i
+                                                    [ngClass]="{'fa-solid fa-rotate-right': submitButton === 'Update'}"></i>
                                             </button>
-                                            <button class="button-sm btn btn-danger ms-1" title="Reset"
-                                                id="salesBtn_refresh">
+                                            <button type="button" class="button-sm btn btn-danger ms-1" title="Reset"
+                                                (click)="resetForm()" id="salesBtn_refresh">
                                                 <i class="fa-solid fa-rotate-left"></i>
                                             </button>
                                         </div>
@@ -99,7 +99,7 @@
                                 <div class="row d-flex justify-content-end">
                                     <div class=" col-sm-4 col-md-3 col-lg-2 mb-2">
                                         <div class="custom__input-container d-flex align-items-center mt-0">
-                                            <input id="brandSearchString" type="text"
+                                            <input id="mappingSearchString" type="text" (input)="onSearchData($event)"
                                                 class="form-control custom__input search-icon-padding"
                                                 placeholder="Search" autocomplete="off">
                                             <button class="search-icon"><i class="fa fa-search"></i></button>
@@ -118,23 +118,40 @@
                                                     <th class="sales-main-table__qty">Department</th>
                                                     <th class="sales-main-batch">User</th>
                                                     <th class="sales-main-expirydate">Status</th>
+
                                                     <th class="sales-main-table__action">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="table__body" id="sales-main-table__body">
                                                 <tr *ngFor="let item of DepartmentStockLocationMappingList let i=index">
-                                                    <td>{{i+1}}</td>
+                                                    <td>{{item.sn}}</td>
                                                     <td>{{item.locationName}}</td>
                                                     <td>{{item.departmentName}}</td>
                                                     <td>{{item.userName}}</td>
                                                     <td>{{item.status?'Active':'InActive'}}</td>
-                                                    <td>--</td>
+                                                    <td>
+                                                        <button type="button"
+                                                            (click)="getById(item.id, item.branchId,item.userId)"
+                                                            class="button button--extra-small button--success button--rounded-sm me-2">
+                                                            <i class="fa-regular fa-pen-to-square"></i>
+                                                        </button>
+                                                        <button type="button"
+                                                            class="button button--extra-small button--danger button--rounded-sm me-2">
+                                                            <i class="fa-solid fa-trash"></i>
+                                                        </button>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
+                            <mat-paginator #paginatorPopup (page)="handlePageEvent($event)" class="demo-paginator"
+                                [length]="length" [pageSize]="pageSize" [disabled]="disabled"
+                                [showFirstLastButtons]="showFirstLastButtons"
+                                [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+                                [hidePageSize]="hidePageSize" [pageIndex]="pageIndex" aria-label="Select page">
+                            </mat-paginator>
                         </div>
                     </form>
                 </div>
