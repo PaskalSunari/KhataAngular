@@ -80,4 +80,32 @@ export class PosService {
   GetMissingUnit(data: any) {
     return this.http.post(`${this.baseurl}${this.endPoint.GetMissingUnit}`, data);
   }
+
+  //================================================================================
+   AddSalesMasterDetails(data: any) {
+    return this.http.post(`${this.baseurl}${this.endPoint.AddSalesMasterDetails}`, data);
+  }
+
+   //================================================================================
+   GetSuffixPrefix() {
+    const params = new HttpParams()
+      .set('vId', 1)
+      .set('branchId', 1001)
+      .set('fiscalId', 1);
+
+    return this.http.get(`${this.baseurl}${this.endPoint.GetSuffixPrefix}`, {
+      params,
+    });
+  }
+
+   //================================================================================
+
+  LoadSalesDetails(voucherNo:any) {
+    const params = new HttpParams()
+      .set('voucherNo', voucherNo)
+
+    return this.http.get(`${this.baseurl}${this.endPoint.LoadSalesMasterDetails}`, {
+      params,
+    });
+  }
 }

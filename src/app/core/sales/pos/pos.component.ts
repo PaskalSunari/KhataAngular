@@ -1,7 +1,15 @@
-import { AfterViewInit, Component, ElementRef } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  ChangeDetectorRef,
+} from '@angular/core';
 declare var $: any;
 declare const setFocusOnNextElement: any;
-
+declare const AD2BS: any;
+declare const BS2AD: any;
+declare const oninitial: any;
+declare const CurrentBSDate: any;
 import 'select2';
 import { PosService } from './pos.service';
 import { ToastrService } from 'ngx-toastr';
@@ -13,11 +21,13 @@ import { ToastrService } from 'ngx-toastr';
 export class PosComponent implements AfterViewInit {
   loading: boolean = false;
   tab = 'main';
+  fiscalYear = JSON.parse(localStorage.getItem('fiscalYear') || '');
+
   constructor(
     private el: ElementRef,
     public service: PosService,
     private toastr: ToastrService,
-
+    private cd: ChangeDetectorRef
   ) {
     // keyboard listener
     window.addEventListener('keydown', (event) => this.handleKey(event));
@@ -107,11 +117,17 @@ export class PosComponent implements AfterViewInit {
     this.fullScreen();
     this.selecBatch();
     this.selecUnit();
+    this.fetchSuffixPrefix();
     // this.fetchTableData();
     this.enterFun();
     setTimeout(() => {
       $(this.el.nativeElement).find('select').select2();
     }, 10);
+
+    Promise.resolve().then(() => {
+      const stored = JSON.parse(localStorage.getItem('salesInfo') || '[]');
+      this.salesDetails = Array.isArray(stored) ? stored : [];
+    });
   }
   //=====================================================================
   // Enter functon
@@ -161,17 +177,21 @@ export class PosComponent implements AfterViewInit {
   }
   //=====================================================================
   productList: any[] = [];
-  productCode: any[] = [];
+  productCode: string = '';
   vat: any;
   rateDetails: any[] = [];
+  productId: any;
   unit: any;
   batch: any[] = [];
-  skuunit: any[] = [];
-rate:any;
+  skuunit: any;
+  rate: number = 0;
+  qty: any;
+  conversionFactor: any;
   selectProductName() {
     $('#productSelect').on('change', (event: any) => {
       const selectedValue = event.target.value;
       this.fetchProductDetail(selectedValue); // <-- Pass selected product code here
+
       setTimeout(() => {
         if ($('#batchSelect').length) {
           const dropdown = document.getElementById(
@@ -184,6 +204,11 @@ rate:any;
           }
         }
       }, 100);
+
+      this.qtyNum = 0;
+      this.discountAmount = 0;
+      this.discountPercent = 0;
+      this.netTotal = 0;
     });
   }
 
@@ -191,11 +216,11 @@ rate:any;
   fetchProductDetail(selectedValue: any) {
     this.service.GetProductDetail(selectedValue).subscribe({
       next: (data: any) => {
-        // console.log(data, ' data');
         if (data.code == 200) {
-          console.log(data.result, ' data aayo');
           this.batch = data?.result;
           this.productCode = data?.result[0]?.productCode;
+          this.vat = data?.result[0]?.isvatable;
+          this.productId = data?.result[0]?.productId;
         }
       },
       error: () => {
@@ -209,7 +234,7 @@ rate:any;
     this.service.GetAllProducts().subscribe({
       next: (data: any) => {
         if (data.code == 200) {
-          this.productList = data.result;
+          this.productList = data?.result;
           // all batch list
         }
       },
@@ -225,12 +250,13 @@ rate:any;
     $('#batchSelect').on('change', (event: any) => {
       const selectedValue = event.target.value;
       // console.log(selectedValue, 'batch');
+
       const selectedBatchObject = this.batch?.find(
         (p) => p?.batch == selectedValue
       );
 
       this.fetchUnits(selectedBatchObject); // <-- Pass selected product code here
-
+      this.qty = selectedBatchObject?.qty;
       setTimeout(() => {
         if ($('#rate').length) {
           const dropdown = document.getElementById(
@@ -258,8 +284,8 @@ rate:any;
     this.service.GetUnits(obj).subscribe(
       (res: any) => {
         // const transactionData = res.data;
-
         if (res.code == 200) {
+          debugger;
           this.unit = res?.result;
         }
         this.loading = false;
@@ -274,13 +300,12 @@ rate:any;
   }
 
   selecUnit() {
+    console.log(this.fiscalYear, 'fiscalYear');
     $('#selecUnit').on('change', (event: any) => {
       const selectedValue = event.target.value;
       const selectedObject = this.unit?.find(
         (p: any) => p?.fromUnitId == selectedValue
       );
-
-      console.log(selectedObject, 'unit');
 
       this.fetchMissingUnit(selectedObject);
       // this.fetchRate(selectedObject);
@@ -303,6 +328,7 @@ rate:any;
         // const transactionData = res.data;
 
         if (res.code == 200) {
+          this.conversionFactor = res?.result[0]?.conversionFactor;
         }
         this.loading = false;
       },
@@ -318,28 +344,25 @@ rate:any;
 
   fetchRate() {
     this.loading = true;
+
     const obj = {
       batch: $('#batchSelect').val(),
       branch: '1001',
       flag: 5,
-      productCode: $('#productCode').val(),
+      productCode: this.productCode,
       productId: $('#productSelect').val(),
       unit: $('#selecUnit').val(),
     };
     this.service.GetRate(obj).subscribe(
       (res: any) => {
-        // const transactionData = res.data;
-        debugger;
-        // if (res.code == 200) {
-        console.log(res.result, 'rate data');
-        this.rateDetails = res.result;
-        if (this.rateDetails.length) {
-          this.service.UnitModel.rate = this.rateDetails[0]?.salesRate;
-          this.rate=this.rateDetails[0]?.salesRate;
-          
+        if (res.code == 200) {
+          this.rateDetails = res?.result;
+          this.skuunit = res?.result[0]?.skuunit;
+          if (this.rateDetails.length) {
+            this.rate = this.rateDetails[0]?.salesRate;
+          }
         }
-        // }
-        // this.loading = false;
+        this.loading = false;
       },
       (err) => {
         console.error('Error fetching Batch data:', err);
@@ -348,6 +371,95 @@ rate:any;
         this.toastr.error('Failed to load Batch data');
       }
     );
+  }
+
+  //=====================================================================
+  // rate: number = 97.35;
+
+  qtyNum: number = 0;
+
+  discountPercent: number = 0;
+  discountAmount: number = 0;
+
+  netTotal: number = 0;
+
+  // ------------------------
+  // When Discount % changes
+  // ------------------------
+  percentChanged() {
+    if (this.qtyNum <= 0) return;
+    this.discountAmount = parseFloat(
+      ((this.rate * this.qtyNum * this.discountPercent) / 100).toFixed(2)
+    );
+    this.calculateNetTotal();
+  }
+
+  // ------------------------
+  // When Discount Amount changes
+  // ------------------------
+  amountChanged() {
+    if (this.qtyNum <= 0) return;
+    this.discountPercent = parseFloat(
+      ((this.discountAmount / (this.rate * this.qtyNum)) * 100).toFixed(2)
+    );
+    this.calculateNetTotal();
+  }
+
+  qtyValidation(event: KeyboardEvent) {
+    const invalidKeys = ['-', 'e', 'E', '.'];
+
+    if (invalidKeys.includes(event.key)) {
+      event.preventDefault(); // key type नै हुन नदिने
+    }
+  }
+  disValidation(event: KeyboardEvent) {
+    const invalidKeys = ['-', 'e', 'E'];
+
+    if (invalidKeys.includes(event.key)) {
+      event.preventDefault(); // key type नै हुन नदिने
+    }
+  }
+
+  // ------------------------
+  // When Quantity changes
+  // ------------------------
+  quantityChanged() {
+    if (!this.qtyNum || this.qtyNum <= 0) {
+      this.qtyNum = 0;
+      this.discountAmount = 0;
+      this.discountPercent = 0;
+      this.netTotal = 0;
+      return;
+    }
+
+    // Recalculate discount based on which field is active
+    if (this.discountPercent > 0) {
+      this.discountAmount =
+        (this.rate * this.qtyNum * this.discountPercent) / 100;
+    } else if (this.discountAmount > 0) {
+      this.discountPercent =
+        (this.discountAmount / (this.rate * this.qtyNum)) * 100;
+    }
+
+    this.calculateNetTotal();
+  }
+
+  // ------------------------
+  // NET TOTAL CALCULATION
+  // ------------------------
+  calculateNetTotal() {
+    const subtotal = this.rate * this.qtyNum;
+    const afterDiscount = subtotal - this.discountAmount;
+
+    let vatAmount = 0;
+
+    if (this.vat == true) {
+      vatAmount = afterDiscount * 0.13; // 13% VAT
+    } else {
+      vatAmount = 0;
+    }
+
+    this.netTotal = parseFloat((afterDiscount + vatAmount).toFixed(2));
   }
 
   //=====================================================================
@@ -366,6 +478,243 @@ rate:any;
   }
 
   //=====================================================================
+  suffixPrefix: any;
+  fetchSuffixPrefix() {
+    this.service.GetSuffixPrefix().subscribe({
+      next: (data: any) => {
+        this.suffixPrefix = data;
+      },
+      error: () => {
+        this.toastr.error('Failed to load product list');
+      },
+    });
+  }
+
+  //=====================================================================
+  salesDetails: any[] = [];
+
+  validation() {
+    // const selectedText = $('#productSelect option:selected').text().trim();
+    if ($('#salesLedger option:selected').text() == '') {
+      $('#salesLedger').select2('open');
+      this.toastr.error('salesLedger is required');
+      return false;
+    }
+     else if ($('#modeSelect option:selected').text() == '') {
+      $('#modeSelect').select2('open');
+      this.toastr.error('modeSelect is required');
+      return false;
+    } 
+    else if (
+      this.productCode == '' ||
+      this.productCode == undefined ||
+      this.productCode == null
+    ) {
+      // $('#productSelect').select2('open');
+      this.toastr.error('productCode is required');
+      return false;
+    }
+
+    return true;
+  }
+
+  fetchSalesData() {
+    console.log(this.fiscalYear, 'fiscalYear');
+    this.loading = true;
+    const vatApplicable = this.vat; // true or false
+
+    // example: 80
+    // 1️⃣ Gross Amount
+    const grossAmount = +(this.rate * this.qtyNum).toFixed(2);
+
+    // 2️⃣ Discount Amount
+    const discountAmt = +((grossAmount * this.discountPercent) / 100).toFixed(
+      2
+    );
+
+    // 3️⃣ Net Amount (Discount पछि)
+    const netAmt = +(grossAmount - discountAmt).toFixed(2);
+
+    // 4️⃣ Taxable Amount (VAT लाग्ने amount)
+    // - यदि item taxable छ र VAT लाग्छ भने netAmt नै taxableAmount हुन्छ
+    // - अन्यथा 0
+    const taxableAmount = vatApplicable ? netAmt : 0;
+
+    // 5️⃣ VAT Amount (13% VAT)
+    const vatAmount = +(taxableAmount * 0.13).toFixed(2);
+
+    // 6️⃣ Net Total (Final Payable)
+    const netTotal = +(netAmt + vatAmount).toFixed(2);
+
+    let transactionUnitCost = 0;
+
+    if (vatApplicable) {
+      // Selling unit price (VAT included)
+      transactionUnitCost = +(netTotal / this.qtyNum).toFixed(2);
+    } else {
+      // Cost / price without VAT
+      transactionUnitCost = +(netAmt / this.qtyNum).toFixed(2);
+    }
+
+    // 🔹 SKU Unit Cost (from Product Master / API)
+    const skuUnitCost = +(transactionUnitCost * this.conversionFactor).toFixed(
+      2
+    );
+
+    // console.log({
+    //   grossAmount,
+    //   discountAmt,
+    //   netAmt,
+    //   taxableAmount,
+    //   vatAmount,
+    //   netTotal,
+    // });
+
+    let cuurentDate = new Date().toISOString().split('T')[0];
+    let BS = AD2BS(cuurentDate);
+
+    // return;
+    const obj = {
+      SalesMasterID: 0,
+      VoucherDate: new Date().toISOString(),
+      VoucherNo: this.suffixPrefix,
+      InvoiceNo: 0,
+      ManualRefNo: '0',
+      VouchertypeID: 19,
+
+      TransactionMode: $('#modeSelect').val(),
+      FinancialYearID: Number(this.fiscalYear.financialYearId),
+      BranchID: '1001',
+
+      SalesAccountID: Number($('#salesLedger').val()),
+      SalesOrderMasterID: 0,
+      ChallanMasterID: 0,
+      CustomerID: Number($('#customerSelect').val()),
+      RefererID: 0,
+      PricingLevelID: 0,
+
+      GrossAmt: grossAmount,
+      ItemDiscount: discountAmt,
+      BillDiscountAmt: 0,
+      BillDiscountPercent: 0,
+      OtherTaxAmt: 0,
+      ChargeAmt: 0,
+      AdditionalIncomeAmt: 0,
+
+      TaxableAmt: taxableAmount,
+      NonTaxableAmt: 0,
+      VATAmt: vatAmount,
+      NetBillAmt: netTotal,
+
+      IsExport: false,
+      Narration: '0',
+      Status: true,
+      UserID: '1',
+
+      EntryDate: new Date().toISOString(),
+      UpdatedBy: 0,
+      UpdatedDate: new Date().toISOString(),
+
+      Extra1: BS,
+      Extra2: '0',
+      flag: 2,
+      IsDraft: false,
+      BillAdjustment: 0,
+
+      SalesDetailsDraftID: 0,
+      ChallanDetailsID: 0,
+      OrderDetailsID: 0,
+
+      ProductID: this.productId,
+      Batch: $('#batchSelect').val(),
+      ExpiryDate: null,
+
+      Rate: this.rate,
+      TransactionUnitID: 2,
+      SKU: this.skuunit,
+      ProductUnitID: 0,
+
+      ItemDiscountPercent: this.discountPercent,
+      ItemDiscountAmt: discountAmt,
+      NetAmt: netAmt,
+
+      TransactionUnitCost: transactionUnitCost,
+      SKUUnitCost: skuUnitCost,
+
+      Stockqty: this.qtyNum,
+      locationId: 0,
+      Vat: Number(this.vat),
+
+      unit: $('#selecUnit option:selected').text(),
+
+      productName: $('#productSelect option:selected').text(),
+      batchName: $('#batchSelect').val(),
+    };
+
+    // check if already exists
+
+    if (this.validation() == true) {
+      const exists = this.salesDetails.some(
+        (item) => item.ProductID == obj.ProductID
+      );
+
+      if (!exists) {
+        this.salesDetails.push(obj);
+        localStorage.setItem('salesInfo', JSON.stringify(this.salesDetails));
+      } else {
+        this.toastr.warning('This product is already added!');
+      }
+    }
+
+    // this.service.AddSalesMasterDetails(obj).subscribe(
+    //   (res: any) => {
+    //     if (res.code == 200) {
+
+    //      this.fetchTableSales(this.suffixPrefix)
+    //       this.rateDetails = res.result;
+    //     }
+    //     this.loading = false;
+    //   },
+    //   (err) => {
+    //     console.error('Error fetching Batch data:', err);
+    //     this.loading = false;
+
+    //     this.toastr.error('Failed to load Batch data');
+    //   }
+    // );
+  }
+
+  deleteItem(Item: any) {
+    this.salesDetails = this.salesDetails.filter((item) => {
+      return item != Item;
+    });
+
+    // Update localStorage after delete
+    localStorage.setItem('salesInfo', JSON.stringify(this.salesDetails));
+
+    this.toastr.success('Item removed');
+  }
+
+  tableList: any[] = [];
+
+  //=====================================================================
+  fetchTableSales(VoucherNo: any) {
+    this.service.LoadSalesDetails(VoucherNo).subscribe({
+      next: (data: any) => {
+        if (data.code == 200) {
+          this.tableList = data?.result;
+        }
+      },
+      error: () => {
+        this.toastr.error('Failed to load product list');
+      },
+    });
+  }
+
+  // grossAmount: any;
+  // calculateGrossAmount() {
+  //   this.grossAmount = Number(this.rate) * Number(this.qty);
+  // }
 
   // tableData: any[] = [];
   // sesessionId: string = localStorage.getItem('sessionId') || '';
@@ -434,12 +783,12 @@ rate:any;
   selectMode() {
     $('#modeSelect').on('change', (event: any) => {
       const selectedValue = event.target.value;
-      if (selectedValue == 'cash') {
+      if (selectedValue == '1') {
         this.mode = 9;
         this.fetchCustomerList(this.mode);
       }
 
-      if (selectedValue == 'credit') {
+      if (selectedValue == '0') {
         this.mode = 2;
         this.fetchCustomerList(this.mode);
       }

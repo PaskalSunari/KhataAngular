@@ -93,10 +93,10 @@
     margin: 0;
 }
 
-#sales-main-table__body {
-    max-height: 218px;
-    overflow-y: auto;
-}
+// #sales-main-table__body {
+//     max-height: 218px;
+//     overflow-y: auto;
+// }
 
 .table__container thead th {
     background: $primary-500;
@@ -291,4 +291,8 @@
 .customPopupContainer .transaction-content-tbl tr:nth-child(even) td {
     background-color: #fff !important;
 
+}
+
+.table--pos tr{
+    height: 30px;
 }

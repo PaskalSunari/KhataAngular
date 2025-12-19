@@ -12,5 +12,10 @@ export class posUrl {
   GetMissingUnit: string='Inventory/Sales/GetMissingUnitConversionFact';
 
   GetFilterAnyDataPagination: string='Account/MyFunction/GetFilterAnyDataPagination';  
- 
+
+
+  AddSalesMasterDetails: string='Inventory/Sales/AddSalesMasterDetails';
+  GetSuffixPrefix: string='Inventory/Sales/GetSuffixPrefix';  
+  
+  LoadSalesMasterDetails: string='Inventory/Sales/LoadSalesMasterDetails';
 }
