@@ -21,6 +21,11 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
   hasSubmit = false;
   isDeleted = true;  
   isEditMode: boolean = false; 
+  isFormVisible = true;
+  
+  toggleForm() {
+    this.isFormVisible = !this.isFormVisible;
+  }
 
   //pagination variable
   length = 0;
@@ -40,10 +45,6 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
   StockLocationList: any[] = [];
   DepartmentStockLocationMappingList: any[] = [];
 
-  hasShowForm = true;
-  toggleForm() {
-    this.hasShowForm = !this.hasShowForm;
-  }
 
   //Multidropdown setting in additional info form
   multidropdownSettings: any = {

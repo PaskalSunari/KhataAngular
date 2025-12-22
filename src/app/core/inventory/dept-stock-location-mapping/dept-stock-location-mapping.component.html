@@ -8,7 +8,7 @@
                     <button class="btn button-info button-sm"><i class="fa-solid fa-file-csv"></i></button>
                     <button class="btn btn-danger button-sm"><i class="fa-solid fa-print"></i></button> -->
                     <div class="plus-btn" (click)="toggleForm()">
-                        <i class="fa-solid " [ngClass]="hasShowForm ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                        <i class="fa-solid " [ngClass]="isFormVisible ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
                     </div>
                 </div>
             </div>
@@ -22,7 +22,7 @@
                 <div class="" id="sales-form-container">
                     <form class="">
                         <div class="container-fluid pt-0 px-0 pb-0">
-                            <div class="sales__form-box m-1 pb-4 " *ngIf="hasShowForm">
+                            <div class="sales__form-box m-1 pb-4 " *ngIf="isFormVisible">
                                 <div class="row">
                                     <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
