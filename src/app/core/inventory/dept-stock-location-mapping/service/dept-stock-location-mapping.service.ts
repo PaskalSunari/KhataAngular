@@ -27,7 +27,10 @@ export class DeptStockLocationMappingService {
     return this.http.post(`${this.baseUrl}${this.endPoint.insertUpdate}`, data);
   }
 
-  getById(id:any, branchId:any,userId:any){
+  getById(id: any, branchId: any, userId: any) {
     return this.http.get(`${this.baseUrl}${this.endPoint.getById}/${id}/${branchId}/${userId}`)
+  }
+  deleteById(id: number, branchId: number, userId: any) {
+    return this.http.get(`${this.baseUrl}${this.endPoint.deleteById}/${id}/${branchId}/${userId}`);
   }
 }

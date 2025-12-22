@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { DeptStockLocationMappingService } from './service/dept-stock-location-mapping.service';
 import { ToastrService } from 'ngx-toastr';
 import { PaginationModel } from './dept-stock-location-mapping.model';
+import { AppearanceAnimation, ConfirmBoxInitializer, DialogLayoutDisplay, DisappearanceAnimation } from '@costlydeveloper/ngx-awesome-popup';
 declare var $: any;
 declare const setFocusOnNextElement: any;
 
@@ -15,10 +16,11 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
 
   id: number = 0;
   userId: any = 0;
-  branchId: any = 0;
-  submitButton: any = 'Save'
+  branchId: any = 0;  
   isSelect2Show: boolean = true;
   hasSubmit = false;
+  isDeleted = true;  
+  isEditMode: boolean = false; 
 
   //pagination variable
   length = 0;
@@ -32,14 +34,16 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
   showFirstLastButtons = true;
   disabled = false;
 
-
   //List data
   DepartmentList: any[] = [];
   UserList: any[] = [];
   StockLocationList: any[] = [];
   DepartmentStockLocationMappingList: any[] = [];
 
-
+  hasShowForm = true;
+  toggleForm() {
+    this.hasShowForm = !this.hasShowForm;
+  }
 
   //Multidropdown setting in additional info form
   multidropdownSettings: any = {
@@ -104,8 +108,7 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
 
   getDropdownList() {
     this.service.getDropdownList(this.userId, this.branchId).subscribe((res: any) => {
-      //let result:any:res;
-      console.log('response:', res);
+      //let result:any:res;      
       this.DepartmentList = res.department || [];
       this.UserList = res.user || [];
       this.StockLocationList = res.location || [];
@@ -121,10 +124,8 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
     model.searchData = this.searchData;
 
     this.service.getGridDataList(model).subscribe((res: any) => {
-      console.log('response: ', res);
       this.DepartmentStockLocationMappingList = res?.data;
       const pagiData = JSON.parse(res.paginationData);
-      console.log('pagi Data: ', pagiData);
       this.length = pagiData.totalItems;
       //this.pageIndex=pagiData.currentPage;
     })
@@ -140,7 +141,6 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
       locationId = stringLocationId.join(',');
     }
 
-
     let payload = {
       "id": this.id,
       "deptId": $("#departmentId").val() || 0,
@@ -152,7 +152,6 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
       "extra1": "",
       "extra2": ""
     }
-
 
     if (!payload.deptId || payload.deptId == 0) {
       this.toastr.error("Store is required.");
@@ -206,8 +205,9 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
     this.service.getById(id, branchId, userId).subscribe((res: any) => {
       if (res && res.status == 200) {
         const data = res.result;
-        this.submitButton = "Update";
+        this.isEditMode = true;
         this.id = data.id;
+        this.isDeleted = false;
         $("#userId").val(data.userId).trigger('change');
         $("#departmentId").val(data.deptId).trigger('change');
         $("#storeLocationId").val(data.stockLocationId).trigger('change');
@@ -226,10 +226,69 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
     })
   }
 
+  deleteConfirmBox(id: number, branchId: number) {
+    const confirmBox = new ConfirmBoxInitializer();
+    confirmBox.setTitle('Are you sure?');
+    confirmBox.setMessage('Confirm to Delete !');
+    confirmBox.setButtonLabels('YES', 'NO');
+    // Choose layout color type
+    confirmBox.setConfig({
+      layoutType: DialogLayoutDisplay.DANGER,
+      animationIn: AppearanceAnimation.BOUNCE_IN,
+      animationOut: DisappearanceAnimation.BOUNCE_OUT,
+    });
+    // Simply open the popup and listen which button is clicked
+    //debugger;
+    if (this.isDeleted == true) {
+      confirmBox.openConfirmBox$().subscribe(resp => {
+        // do some action after user click on a button
+        if (resp.success === true && resp.clickedButtonID === 'yes') {
+          this.deleteById(id, branchId);
+          // this.toastr.error("No Permission to delete")
+        }
+      });
+    }
+    else {
+      this.toastr.error("Complete pending task!")
+    }
+    setTimeout(() => {
+
+      $('.ed-btn-danger').focus()
+
+      $('.ed-btn-danger').on('keydown', (e: any) => {
+        if (e.key === 'ArrowRight') {
+          $('.ed-btn-secondary').focus()
+        }
+      })
+
+      $('.ed-btn-secondary').on('keydown', (e: any) => {
+        if (e.key === 'ArrowLeft') {
+          $('.ed-btn-danger').focus()
+        }
+      })
+    }, 0)
+  }
+
+  deleteById(id: number, branchId: number) {
+    this.service.deleteById(id, branchId, this.userId).subscribe((res: any) => {
+      if (res && res.status == 200) {
+        this.toastr.success(res.message);
+        this.getGridList();
+        this.resetForm();
+      } else {
+        this.toastr.error(res.message);
+        this.resetForm();
+      }
+    })
+  }
+
   resetForm() {
     this.id = 0;
+    this.isDeleted = true;
+    this.isEditMode = false;
+    this.hasSubmit = false;
     setTimeout(() => {
-      //reset department
+      //reset department     
       const departmentDropdown = document.getElementById("departmentId") as HTMLInputElement | null;
       if (departmentDropdown) {
         departmentDropdown.value = "";
@@ -279,8 +338,9 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
     this.pageIndex = e.pageIndex;
     this.getGridList();
   }
+
   onSearchData(e: any) {
-    this.searchData = e.value;
+    this.searchData = e.target.value;  
     this.getGridList();
   }
 }
