@@ -1,12 +1,13 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
 import { DashboardService } from './dashboard.service';
 import { ToastrService } from 'ngx-toastr';
+import { Title } from '@angular/platform-browser';
 declare var $: any;
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
 })
-export class DashboardComponent implements  OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
   loading: boolean = false;
 
   userId = localStorage.getItem('userId') || '';
@@ -32,14 +33,38 @@ export class DashboardComponent implements  OnInit {
   nrsBank: any;
   nrsCashInHand: any;
 
+  modalAnimationClass = '';
+  isLocationVisible: boolean = false;
+  LocationList: any;
+
   constructor(
     private service: DashboardService,
-    private toastr: ToastrService
-  ) {}
+    private toastr: ToastrService,
+    private el: ElementRef,
+    private serticeTitle:Title
+  ) { }
+
+  ngAfterViewInit(): void {
+    const that = this;
+    $(this.el.nativeElement).find('select').select2();
+    $("#locationId").on("select2:select", function (e: any) {
+      const selected = e.params.data.id;
+      const selectedText = e.params.data.text;
+      const data = { locationId: selected, locationName: selectedText };
+      localStorage.setItem('locationData', JSON.stringify(data)
+      );
+
+      //that.isLocationVisible = false;
+      that.closeLocationPopup();
+    });
+  }
+
 
   ngOnInit(): void {
+    this.serticeTitle.setTitle("Dashboard");
     this.getDashboardData();
     this.GetTransaction();
+    this.getLocationList();
   }
   getDashboardData() {
     this.loading = true;
@@ -69,9 +94,9 @@ export class DashboardComponent implements  OnInit {
 
     this.service.getDashboardData(objData).subscribe({
       next: (data: any) => {
-        
+
         if (data && data.length > 0) {
-            this.loading = false;
+          this.loading = false;
           this.sales = data[0].Balance;
           this.purchase = data[1].Balance;
           this.bank = data[3].Balance;
@@ -82,35 +107,31 @@ export class DashboardComponent implements  OnInit {
           this.bankSymbol = data[3].BalanceType;
           this.cashInHandSymbol = data[2].BalanceType;
 
-          this.nrsSale = `NRS: ${
-            this.sales > 0
-              ? this.sales.toFixed(this.decimalplace)
-              : Math.abs(this.sales.toFixed(this.decimalplace))
-          } ${this.salesSymbol}`;
+          this.nrsSale = `NRS: ${this.sales > 0
+            ? this.sales.toFixed(this.decimalplace)
+            : Math.abs(this.sales.toFixed(this.decimalplace))
+            } ${this.salesSymbol}`;
 
-          this.nrsPurchase = `NRS: ${
-            this.purchase > 0
-              ? this.purchase.toFixed(this.decimalplace)
-              : Math.abs(this.purchase.toFixed(this.decimalplace))
-          } ${this.purchaseSymbol}`;
+          this.nrsPurchase = `NRS: ${this.purchase > 0
+            ? this.purchase.toFixed(this.decimalplace)
+            : Math.abs(this.purchase.toFixed(this.decimalplace))
+            } ${this.purchaseSymbol}`;
 
-          this.nrsBank = `NRS: ${
-            this.bank > 0
-              ? this.bank.toFixed(this.decimalplace)
-              : Math.abs(this.bank.toFixed(this.decimalplace))
-          } ${this.bankSymbol}`;
+          this.nrsBank = `NRS: ${this.bank > 0
+            ? this.bank.toFixed(this.decimalplace)
+            : Math.abs(this.bank.toFixed(this.decimalplace))
+            } ${this.bankSymbol}`;
 
-          this.nrsCashInHand = `NRS: ${
-            this.cashInHand > 0
-              ? this.cashInHand.toFixed(this.decimalplace)
-              : Math.abs(this.cashInHand.toFixed(this.decimalplace))
-          } ${this.cashInHandSymbol}`;
+          this.nrsCashInHand = `NRS: ${this.cashInHand > 0
+            ? this.cashInHand.toFixed(this.decimalplace)
+            : Math.abs(this.cashInHand.toFixed(this.decimalplace))
+            } ${this.cashInHandSymbol}`;
         }
       },
       error: (err) => {
         console.error('Error fetching dashboard data:', err);
         this.toastr.error('Failed to load dashboard data');
-          this.loading = false;
+        this.loading = false;
       },
     });
   }
@@ -133,7 +154,7 @@ export class DashboardComponent implements  OnInit {
 
     this.service.GetTransaction(transactionObj).subscribe(
       (res: any) => {
-        const transactionData = res.data;
+        const transactionData = res?.data;
         if (res.succeeded == true) {
           const newPurchaseArry = transactionData.filter((item: any) => {
             return item.TransactionType == 'Purchase';
@@ -161,5 +182,40 @@ export class DashboardComponent implements  OnInit {
         this.toastr.error('Failed to load transaction data');
       }
     );
+  }
+
+
+  closeLocationPopup() {
+    this.modalAnimationClass = 'modal-exit';
+    this.isLocationVisible = false;    
+  }
+
+  getLocationList() {
+    const getLocaltion = localStorage.getItem('locationData');   
+
+    if (!getLocaltion && getLocaltion == null) {
+      this.loading = true;
+      const payload = {
+        tableName: 'LocationByUser',
+        parameter: {
+          UserId: this.userId,
+        },
+      };
+
+      this.service.GetTransaction(payload).subscribe(
+        (res: any) => {
+          this.LocationList = res?.data;
+          if (this.LocationList.length > 0) {
+            this.isLocationVisible = true;
+            setTimeout(() => {$("#locationId").select2('open');}, 100);
+          }
+        },
+        (err) => {
+          console.error('Error fetching transaction data:', err);
+          this.loading = false;
+          this.toastr.error('Failed to load transaction data');
+        }
+      );
+    }
   }
 }
