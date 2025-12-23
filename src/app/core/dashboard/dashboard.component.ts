@@ -51,7 +51,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       const selected = e.params.data.id;
       const selectedText = e.params.data.text;
       const data = { locationId: selected, locationName: selectedText };
-      localStorage.setItem('locationData', JSON.stringify(data)
+      localStorage.setItem('stockLocation', JSON.stringify(data)
       );
 
       //that.isLocationVisible = false;
@@ -191,7 +191,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   getLocationList() {
-    const getLocaltion = localStorage.getItem('locationData');   
+    const getLocaltion = localStorage.getItem('stockLocation');   
 
     if (!getLocaltion && getLocaltion == null) {
       this.loading = true;
@@ -211,9 +211,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           }
         },
         (err) => {
-          console.error('Error fetching transaction data:', err);
-          this.loading = false;
-          this.toastr.error('Failed to load transaction data');
+          console.error('Error fetching location data:', err);
+          this.loading = false;          
         }
       );
     }
