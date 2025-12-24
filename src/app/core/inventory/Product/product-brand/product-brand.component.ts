@@ -11,6 +11,7 @@ import { ProductBrandService } from './service/product-brand.service';
   templateUrl: './product-brand.component.html'
 })
 export class ProductBrandComponent implements AfterViewInit {
+  isSubmitBrand:boolean=true
 showBrandForm = true;
  toggleForm() {
     this.showBrandForm = !this.showBrandForm;
@@ -48,11 +49,14 @@ showBrandForm = true;
   showFirstLastButtons = true;
   disabled = false;
 
+  productManufacturerPopupM: boolean = false
+   modalAnimationClassM = '';
 
 constructor(private el: ElementRef, public service: ProductBrandService, private toastr: ToastrService) {
 
   }
   ngAfterViewInit(): void {
+      $('#brandName').focus();
  this.globalVariablePB = JSON.parse(localStorage.getItem("globalVariable") || '');
     this.baseUrlPB = localStorage.getItem("baseUrl")
     this.userIdPB = localStorage.getItem("userId");
@@ -282,7 +286,16 @@ this.getProductBrandDropdownList()
       }
     
       // console.log(this.productBrandModel, "brand model")
-        this.InsertProductBrand()
+        
+
+         if(this.isSubmitBrand==true){
+          this.InsertProductBrand()
+        
+this.isSubmitBrand=false
+        }
+        setTimeout(() => {
+this.isSubmitBrand=true
+        },1000)
      
     }
 
@@ -551,4 +564,22 @@ this.submitButton='Save'
      this.getProductBrandFilteredList()
   }
 
+
+   //Manufacturer Popup
+  openManufacturerPopupM() {
+    this.modalAnimationClassM = 'modal-enter';
+    this.productManufacturerPopupM = true;
+     setTimeout(() =>{
+        $('#manufacturerName').focus()
+  },100) 
+  }
+
+  closeManufacturerPopupM() {
+    this.modalAnimationClassM = 'modal-exit';
+    this.productManufacturerPopupM = false;
+    this.getProductBrandDropdownList()
+     setTimeout(() =>{
+        $('#manufacture').focus()
+  },100) 
+  }
 }

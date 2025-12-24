@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row align-items-center flex-wrap">
             <div class="col-9">Product Unit</div>
-            <div class="col-3">
+            <div class="col-3 pe-3">
                 <div class="buttons-wrapper d-flex justify-content-end Gap-5">
                     <button class="btn btn-success button-sm"><i class="fa-solid fa-file-pdf"></i></button>
                     <button class="btn button-info button-sm"><i class="fa-solid fa-file-csv"></i></button>
@@ -46,7 +46,7 @@
                                 <div class="row">
                                     <div class=" col-sm-4 col-md-3 col-lg-2" [hidden]="!unitTypeStatus">
                                         <div class="custom__input-container d-flex align-items-center">
-                                            <input id="formalName" type="text" class="form-control custom__input"
+                                            <input id="formalName" type="text" class="form-control custom__input req"
                                                 autocomplete="off" name="Formal Name"
                                                 [(ngModel)]="this.service.productUnitModel.formalName" required>
                                             <label>Formal Name</label>
@@ -55,7 +55,7 @@
 
                                     <div class=" col-sm-4 col-md-3 col-lg-2" [hidden]="!unitTypeStatus">
                                         <div class="custom__input-container d-flex align-items-center">
-                                            <input id="symbol" type="text" class="form-control custom__input"
+                                            <input id="symbol" type="text" class="form-control custom__input req"
                                                 autocomplete="off" name="Symbol"
                                                 [(ngModel)]="this.service.productUnitModel.symbol" required>
                                             <label>Symbol</label>
@@ -64,7 +64,7 @@
 
                                     <div class=" col-sm-4 col-md-3 col-lg-2" [hidden]="!unitTypeStatus">
                                         <div class="custom__input-container d-flex align-items-center">
-                                            <input id="decimalPlace" type="number" class="form-control custom__input"
+                                            <input id="decimalPlace" type="number" class="form-control custom__input req"
                                                 autocomplete="off" name="Number of Decimal Place"
                                                 [(ngModel)]="this.service.productUnitModel.numberOfDecimalPlace" required>
                                             <label>No. of Decimal Place</label>
@@ -138,8 +138,8 @@
 
                                     <div class="col-sm-4 col-md-3 col-lg-1">
                                         <div class="custom__input-container d-flex align-items-center">
-                                             <button type="button" id="button"
-                                                class="button button-sm btn btn-success ms-1" [title]="submitButton" (click)="onSubmitProductUnit()" >
+                                             <button type="button" id="button10"
+                                                class="button10 button-sm btn btn-success ms-1" [title]="submitButton" (click)="onSubmitProductUnit()" >
 
                                                 <i [ngClass]="{ 'fa-solid fa-save': submitButton === 'Save' }"></i>
                                                 <i [ngClass]="{
@@ -172,7 +172,7 @@
 
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <div class="table__wrapper  table__wrapper-40 table_xxl-65 mt-3">
+                                    <div class="table__wrapper  table__wrapper-40 table_xxl-60 mt-3">
                                         <table class="table">
                                             <thead class="table__head">
                                                 <tr>

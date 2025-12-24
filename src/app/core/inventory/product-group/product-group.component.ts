@@ -11,6 +11,7 @@ import { ProductGroupService } from './service/product-group.service';
   templateUrl: './product-group.component.html'
 })
 export class ProductGroupComponent implements AfterViewInit {
+   isSubmitGroup:boolean=true
    showForm = true;
 productGroupUnderList:any;
 productGroupUnderFilterList:any;
@@ -49,7 +50,7 @@ submitButton:any='Save'
 
  constructor(private el: ElementRef, public service: ProductGroupService, private toastr: ToastrService,) {}
   ngAfterViewInit(): void {
-    
+     $('#groupName').focus();
      this.globalVariablePG = JSON.parse(localStorage.getItem("globalVariable")||'');
      this.baseUrlPG = localStorage.getItem("baseUrl")
      this.userIdPG = localStorage.getItem("userId");
@@ -270,8 +271,14 @@ let self=this
       }
     
       // console.log(this.productGroupModel, "model")
-        this.InsertProductGroup()
-     
+        // this.InsertProductGroup()
+      if(this.isSubmitGroup==true){
+          this.InsertProductGroup()
+this.isSubmitGroup=false
+        }
+        setTimeout(() => {
+this.isSubmitGroup=true
+        },1000)
     }
 
 
@@ -293,7 +300,7 @@ let self=this
             //  this.getProductUnderDropdownList()
              this.getProductUnderDropdownList()
                this.getProductGroupFilteredList()
-            this. getProductGroupGridList()
+            // this. getProductGroupGridList()
             setTimeout(() => {
   
               $('#groupName').focus()

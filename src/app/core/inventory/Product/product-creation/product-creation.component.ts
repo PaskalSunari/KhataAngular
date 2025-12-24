@@ -50,10 +50,11 @@ productCodeDisable:boolean=false
 
 
   disableBrand: boolean = true;
-  brandDropdownList: any;
+  brandedDropdownList: any;
 
   modelDropdownList: any;
   disableModel: boolean = true
+
 
   //variable having Local storage data 
   globalVariablePC: any;
@@ -87,8 +88,8 @@ productCodeDisable:boolean=false
 
   variableOptionDropdownList: any;
 
-  tempVariableFormList: any;
-
+  tempVariableFormList: any[]=[]
+isSubmittingVariableForm:boolean=false
 
   //Product unit Relatio popup Variable
 
@@ -154,6 +155,8 @@ productCodeDisable:boolean=false
   //popup Variable to show and hide popup 
 
   modalAnimationClass = '';
+  modelAnimationVariableOption=''
+  modelAnimationAddVariable=''
 
   productGroupPopup: boolean = false;
   productCategoryPopup: boolean = false;
@@ -164,6 +167,10 @@ productCodeDisable:boolean=false
   productSizePopup: boolean = false
   alternativeUnitPopup: boolean = false
 
+  productDetailsPopup:boolean=false
+
+  //To show report data variable
+  selectedProductReportData:any;
 
   constructor(private el: ElementRef, private toastr: ToastrService, public service: ProductCreationService) { }
 
@@ -201,12 +208,17 @@ this.getProductCreationFilteredList()
       if (event.target.value) {
         self.selectedSKUUnit = $('#sku option:selected').text(),
           self.getAlternativeUnitDropdownList()
+           self.disableAlternativeUnit = false
+  
+
       }
+
     })
 
     $('#manufacturer').on('change', function (event: any) {
       if (event.target.value) {
         self.getBrandDropdownList()
+        self.disableBrand=false
       }
     })
 
@@ -214,15 +226,30 @@ this.getProductCreationFilteredList()
     $('#branded').on('change', function (event: any) {
       if (event.target.value) {
         self.getModelDropdownList()
+         self.disableModel = false
       }
     })
 
 
-    $('#productStatus').on('change', function (event: any) {
-      if (event.target.value) {
+//     $('#productStatus').on('change', function (event: any) {
+//       if (event.target.value) {
+//         self.tab = 'Details'
+//         setTimeout(() =>{
+// $('#UUID').focus()
+//         },500)
+//       }
+//     })
+
+//on close event
+      $('#productStatus')
+    .select2()
+    .on('select2:close', (e:any) => {
+      // console.log('Select2 dropdown closed');
         self.tab = 'Details'
-      }
-    })
+        setTimeout(() =>{
+$('#UUID').focus()
+        },500)
+    });
 
     
 
@@ -243,9 +270,7 @@ this.getProductCreationFilteredList()
     //Addtional Details  Variable Change
 
     $('#variableType').on('change', function (event: any) {
-      setTimeout(() => {
-        $(self.el.nativeElement).find('select').select2();
-      }, 10);
+    
       if (event.target.value) {
         let variableID = +event?.target?.value?.split('-')[0]
         let variableNatureID = +event?.target?.value?.split('-')[1]
@@ -256,6 +281,7 @@ this.getProductCreationFilteredList()
 
         if (variableNatureID == 4 || variableNatureID == 5) {
           self.getVariableOptionDropdownList(variableID)
+          
         }
 
 
@@ -310,7 +336,10 @@ this.getProductCreationFilteredList()
         }
 
         else if (variableNatureID == 4) {
-
+  // setTimeout(() => {
+  //       $(self.el.nativeElement).find('select').select2();
+  //       $('#variableOption').focus()
+  //     }, 1000);
           self.service.productCreationModel.value = ''
           self.service.productCreationModel.multiSelectValue = ''
           self.service.productCreationModel.decimalNumber = 0
@@ -344,15 +373,27 @@ this.getProductCreationFilteredList()
 
 
 //Alternative unit dropdown data change
-    $('#alternativeUnit').on('change', function (event: any) {
-      if (event.target.value) {
-        if (event.target.value != 1) {
+    // $('#alternativeUnit').on('change', function (event: any) {
+    //   if (event.target.value) {
+    //     if (event.target.value != 1) {
+    //       self.selectedAlternativeUnit = $('#alternativeUnit option:selected').text()
+    //       self.openAlternativePopup()
+    //     }
+
+    //   }
+    // })
+
+     $('#alternativeUnit').select2()
+    .on('select2:close', (e:any) => {
+      if(e.target.value){
+  if (e.target.value != 1) {
           self.selectedAlternativeUnit = $('#alternativeUnit option:selected').text()
           self.openAlternativePopup()
         }
-
       }
-    })
+     
+      
+    });
 
   }
 
@@ -492,7 +533,7 @@ this.getProductCreationFilteredList()
         if (result) {
           this.alternativeUnitDropdownList = result[0]
           console.log(result, "product creation alternative unit dropdown data");
-          this.disableAlternativeUnit = false
+          // this.disableAlternativeUnit = false
         }
       },
       (error) => {
@@ -540,9 +581,9 @@ this.getProductCreationFilteredList()
         let result: any = res;
         // console.log(result, 'product manufacture dropdown data');
         if (result) {
-          this.brandDropdownList = result[0]
+          this.brandedDropdownList = result[0]
           console.log(result, "product creation brand based on manufacturer dropdown data");
-          this.disableBrand = false
+          // this.disableBrand = false
         }
       },
       (error) => {
@@ -592,7 +633,7 @@ this.getProductCreationFilteredList()
         if (result) {
           this.modelDropdownList = result[0]
           console.log(result, "product creation model based on brand dropdown data");
-          this.disableModel = false
+          // this.disableModel = false
         }
       },
       (error) => {
@@ -656,12 +697,19 @@ this.getProductCreationFilteredList()
   openGroupPopup() {
     this.modalAnimationClass = 'modal-enter';
     this.productGroupPopup = true;
+     setTimeout(() =>{
+        $('#groupName').focus()
+  },100) 
 
   }
 
   closeGroupPopup() {
     this.modalAnimationClass = 'modal-exit';
     this.productGroupPopup = false;
+    this.getProductCreationDropdownList()
+     setTimeout(() =>{
+        $('#group').focus()
+  },100) 
   }
 
 
@@ -669,11 +717,18 @@ this.getProductCreationFilteredList()
   openCategoryPopup() {
     this.modalAnimationClass = 'modal-enter';
     this.productCategoryPopup = true;
+     setTimeout(() =>{
+        $('#productCategoryName').focus()
+  },100) 
   }
 
   closeCategoryPopup() {
     this.modalAnimationClass = 'modal-exit';
     this.productCategoryPopup = false;
+     this.getProductCreationDropdownList()
+      setTimeout(() =>{
+        $('#productCategory').focus()
+  },100) 
   }
 
 
@@ -681,33 +736,53 @@ this.getProductCreationFilteredList()
   openUnitPopup() {
     this.modalAnimationClass = 'modal-enter';
     this.productUnitPopup = true;
+     setTimeout(() =>{
+        $('#unitType').focus()
+  },100) 
   }
 
   closeUnitPopup() {
     this.modalAnimationClass = 'modal-exit';
     this.productUnitPopup = false;
+      this.getProductCreationDropdownList()
+       setTimeout(() =>{
+        $('#sku').focus()
+  },100) 
   }
 
   //Manufacturer Popup
   openManufacturerPopup() {
     this.modalAnimationClass = 'modal-enter';
     this.productManufacturerPopup = true;
+     setTimeout(() =>{
+        $('#manufacturerName').focus()
+  },100) 
   }
 
   closeManufacturerPopup() {
     this.modalAnimationClass = 'modal-exit';
     this.productManufacturerPopup = false;
+     this.getProductCreationDropdownList()
+     setTimeout(() =>{
+        $('#manufacturer').focus()
+  },100) 
   }
 
   //Brand Popup
   openBrandPopup() {
     this.modalAnimationClass = 'modal-enter';
     this.productBrandPopup = true;
+     setTimeout(() =>{
+        $('#brandName').focus()
+  },100) 
   }
 
   closeBrandPopup() {
     this.modalAnimationClass = 'modal-exit';
     this.productBrandPopup = false;
+     setTimeout(() =>{
+        $('#branded').focus()
+  },100) 
   }
 
 
@@ -715,22 +790,35 @@ this.getProductCreationFilteredList()
   openModelPopup() {
     this.modalAnimationClass = 'modal-enter';
     this.productModelPopup = true;
+     setTimeout(() =>{
+        $('#modelName').focus()
+  },100) 
   }
 
   closeModelPopup() {
     this.modalAnimationClass = 'modal-exit';
     this.productModelPopup = false;
+     setTimeout(() =>{
+        $('#model').focus()
+  },100) 
   }
 
   //size Popup
   openSizePopup() {
     this.modalAnimationClass = 'modal-enter';
     this.productSizePopup = true;
+     setTimeout(() =>{
+        $('#sizeName').focus()
+  },500) 
   }
 
   closeSizePopup() {
     this.modalAnimationClass = 'modal-exit';
     this.productSizePopup = false;
+     this.getProductCreationDropdownList()
+     setTimeout(() =>{
+        $('#size').focus()
+  },100) 
   }
 
   //Alternative Popup
@@ -738,7 +826,6 @@ this.getProductCreationFilteredList()
     this.modalAnimationClass = 'modal-enter';
     this.alternativeUnitPopup = true;
     setTimeout(() =>{
-
       $('#popupSKUUnit').focus()
     },500)
   }
@@ -748,9 +835,21 @@ this.getProductCreationFilteredList()
     this.alternativeUnitPopup = false;
     this.tempProductUnitRelationReset()
       setTimeout(() =>{
-
         $('#vatable').focus()
   },100) 
+  }
+
+
+   //Product Details Popup
+  openProductDetailsPopup(ID:any) {
+    this.modalAnimationClass = 'modal-enter';
+    this.getProductDetailsById(ID)
+  }
+
+  closeProductDetailsPopup() {
+    this.modalAnimationClass = 'modal-exit';
+    this.productDetailsPopup = false;
+   
   }
 
   //Get product Creation table data
@@ -906,7 +1005,7 @@ this.getProductCreationFilteredList()
         "groupID": $("#group").val()?.toString(),
         "categoryID": $("#productCategory").val()?.toString(),
         "skuId": $("#sku").val()?.toString(),
-        "alternateUnitID": +$("#alternativeUnit").val(),
+        "alternateUnitID": +$("#alternativeUnit").val()===0?1:+$("#alternativeUnit").val(),
         "allowBatch": $("#allowBatch").val()?.toString(),
         "isVatable": $("#vatable").val()?.toString(),
         "assetsTypeID": $("#assetsType").val()?.toString(),
@@ -952,10 +1051,10 @@ this.getProductCreationFilteredList()
         "productDetailsID": this.service.productCreationModel.productDetailsID?.toString()||"0",
         "productID": this.service.productCreationModel.productID?.toString() || "0",
         "uuid": this.service.productCreationModel.UUID?.toString()||"0",
-        "brandID": $("#branded").val()?.toString()||"0",
-        "sizeID": $("#size").val()?.toString()||"0",
-        "modelNO": +$("#model").val()||"0",
-        "manufacturerID": $("#manufacturer").val()?.toString()||"0",
+        "brandID": $("#branded").val()?.toString()||"1",
+        "sizeID": $("#size").val()?.toString(),
+        "modelNO": +$("#model").val()||0,
+        "manufacturerID": $("#manufacturer").val()?.toString(),
         "minimumStock": this.service.productCreationModel.minStock?.toString() || "0",
         "maximumStock": this.service.productCreationModel.maxStock?.toString() || "0",
         "reorderLevel": this.service.productCreationModel.reorderLevel?.toString() || "0",
@@ -1240,11 +1339,11 @@ this.service.productCreationModel.productDetailsID=value?.viewProductDetail?.pro
 
 
     this.tempVariableFormList=value?.variableList,
-    this.SKUALTValue=value?.skuAltFactor
+    this.SKUALTValue=value?.skuAltFactor?value?.skuAltFactor.match(/\d+(?=\.)/g)!.join('--'):''
     setTimeout(() =>{
 
       this.tab = 'General';
-    },1000)
+    },500)
 
      setTimeout(() =>{
 
@@ -1349,6 +1448,48 @@ this.service.productCreationModel.productDetailsID=value?.viewProductDetail?.pro
 
 
   }
+
+  //
+//Product details for report
+  //Get Product Creation data by id
+
+ getProductDetailsById(Id: any) {
+
+
+    let Model = {
+      "userId": this.userIdPC,
+      "fiscalID": this.fiscalPC.financialYearId,
+      "branchDepartmentId": this.branchIdPC,
+      "branchId": this.branchIdPC,
+      "dbName": "",
+      "isEngOrNepaliDate": this.otherInfoPC.isEngOrNepali,
+      "isMenuVerified": true,
+      "isPrintView": true,
+      "filterId": 0,
+      "refId": 0,
+      "mainId": Id,
+      "strId": "",
+      "startDate": this.fiscalPC.fromDate,
+      "fromDate": this.fiscalPC.fromDate,
+      "endDate": this.fiscalPC.toDate,
+      "toDate": this.fiscalPC.toDate,
+      "decimalPlace": this.globalVariablePC[2].value,
+      "bookClose": 0,
+      "sessionId": this.sessionIdPC,
+      "id": Id,
+      "searchtext": "",
+      "cid": 0
+    };
+
+    this.service.getProductDetails(Model).subscribe((data: any) => {
+ this.selectedProductReportData = data;
+ this.productDetailsPopup = true;
+      console.log("get product details for report", data);
+    });
+
+  }
+
+  //
 
 
   //Reset  product Creation
@@ -1547,9 +1688,6 @@ this.productCodeDisable=false
         }
       }
 
-
-
-
     }, 100);
     $('#productName').focus()
 
@@ -1627,22 +1765,25 @@ this.productCodeDisable=false
   //Submit additional form
 
   submitVariableForm() {
+ if (this.isSubmittingVariableForm) {
+    return;
+  }
+
+  this.isSubmittingVariableForm = true;
+
+   
     if (this.variableFormValidation() == true) {
-      const exists = this.tempVariableFormList.some(
+      const exists = this.tempVariableFormList?.some(
         (item:any) => item?.variableId == $('#variableType').val()?.split('-')[0].toString()
       );
 
       if (!exists) {
         this.tempVariableFormList.push(
+      
           {
-            //   "variableTypeID":$('#variableType').val(),
-            //   "variableTypeName":$('#variableType option:selected').text(),
-            //   "valueID":this.selectedNatureID==4?$('#variableType').val():this.selectedNatureID==5?this.service.productCreationModel.multiSelectValue:0,
-            //   "valueName":this.selectedNatureID==1?this.service.productCreationModel.value:this.selectedNatureID==2?this.service.productCreationModel.wholeNumber:this.selectedNatureID==3?this.service.productCreationModel.decimalNumber:this.selectedNatureID==4?$('#variableOption option:selected').text():this.selectedNatureID==5 && this.service.productCreationModel.multiSelectValue.length>0?this.service.productCreationModel.multiSelectValue.map((item: any) => item.optionName).join(','):'',
-
             "productInfoId": 0,
-            "variableId": $('#variableType').val()?.split('-')[0].toString(),
-            "variableNatureID": $('#variableType').val()?.split('-')[1].toString(),
+            "variableId": $('#variableType').val()?.split('-')[0]?.toString(),
+            "variableNatureID": $('#variableType').val()?.split('-')[1]?.toString(),
             "variableText": $('#variableType option:selected').text(),
             "variableValue": this.selectedNatureID == 1 ? this.service.productCreationModel.value : this.selectedNatureID == 2 ? this.service.productCreationModel.wholeNumber : this.selectedNatureID == 3 ? this.service.productCreationModel.decimalNumber : this.selectedNatureID == 4 ? $('#variableOption option:selected').text() : this.selectedNatureID == 5 && this.service.productCreationModel.multiSelectValue.length > 0 ? this.service.productCreationModel.multiSelectValue.map((item: any) => item.optionName).join(',') : ''
           }
@@ -1651,13 +1792,18 @@ this.productCodeDisable=false
         setTimeout(() => {
 
           $('#variableType').focus()
+           this.isSubmittingVariableForm=false
         }, 100)
       }
       else {
         this.toastr.error("Already Exist")
         $('#variableType').focus()
+         this.isSubmittingVariableForm=false
       }
 
+    }
+    else{
+       this.isSubmittingVariableForm=false
     }
     console.log(this.tempVariableFormList, "temp list variable");
 
@@ -1750,7 +1896,7 @@ this.productCodeDisable=false
 
   //open ADD varibale Popup
   openAddVariablePopup() {
-    this.modalAnimationClass = 'modal-enter';
+    this.modelAnimationAddVariable = 'modal-enter';
     this.addVariablePopup = true;
     this.getNatureDropdownList()
     this.getAddVariableFilteredList()
@@ -1758,10 +1904,11 @@ this.productCodeDisable=false
 
   //Close ADD varibale Popup
   closeAddVariablePopup() {
-    this.modalAnimationClass = 'modal-exit';
+    this.modelAnimationAddVariable = 'modal-exit';
     this.addVariablePopup = false;
     this.getProductCreationDropdownList()
     this.addVariableReset()
+
 
   }
 
@@ -2215,7 +2362,7 @@ this.productCodeDisable=false
   //ADD variable Option in ADD Variable page
   //open ADD varibale Popup
   openVariableOptionPopup(id: any) {
-    this.modalAnimationClass = 'modal-enter';
+    this.modelAnimationVariableOption = 'modal-enter';
     this.variableOptionPopup = true;
     this.selectedAddVariableID = id
     this.getVariableOptionList(id)
@@ -2223,7 +2370,7 @@ this.productCodeDisable=false
   //Close ADD varibale Popup
   closeVariableOptionPopup() {
     this.selectedAddVariableID = 0
-    this.modalAnimationClass = 'modal-exit';
+    this.modelAnimationVariableOption = 'modal-exit';
     this.variableOptionPopup = false;
   }
 
@@ -2376,11 +2523,8 @@ this.productCodeDisable=false
 
       )
 
-
-
     }
     setTimeout(() => {
-
       this.insertedVariableOption = true
     }, 1000)
   }

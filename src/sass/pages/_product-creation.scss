@@ -66,3 +66,40 @@
 .customPopup-product-group{
     overflow: initial;
 }
+
+
+
+
+// Report css
+// body {
+//   margin: 0;
+//   font-family: Arial, Helvetica, sans-serif;
+//   background: #f5f5f5;
+// }
+
+.details-card {
+  background: #ffffff;
+//   border-top: 4px solid #1aa3b3; /* teal top line */
+  padding: 20px 30px;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* two main columns */
+  column-gap: 80px;
+}
+
+.rowData {
+  display: grid;
+  grid-template-columns: 160px auto; /* label | value */
+  margin-bottom: 10px;
+}
+
+.labelData {
+  font-weight: bold;
+  color: #000;
+}
+
+.valueData {
+  color: #444;
+}
