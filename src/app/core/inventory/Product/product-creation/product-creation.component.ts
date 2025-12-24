@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef } from '@angular/core';
 declare var $: any;
 declare const setFocusOnNextElement: any;
-
+import { Router } from '@angular/router';
 import 'select2';
 import { ToastrService } from 'ngx-toastr';
 
@@ -172,7 +172,10 @@ isSubmittingVariableForm:boolean=false
   //To show report data variable
   selectedProductReportData:any;
 
-  constructor(private el: ElementRef, private toastr: ToastrService, public service: ProductCreationService) { }
+//confirmation popup of opening stock
+openingStockConfPopup:boolean=false
+productInfo:any
+  constructor(private el: ElementRef, private toastr: ToastrService, public service: ProductCreationService, private router: Router) { }
 
   ngAfterViewInit(): void {
     $('#productName').focus();
@@ -1092,13 +1095,20 @@ $('#UUID').focus()
         }
         else if (response.success == true) {
           this.toastr.success(response?.msg);
-          this.resetProductCreation()
+          if(response?.strId=='add'){
+this.openOpeningStockConfirmation(response?.productInfo)
+          }
+          else if(response?.strId=='edit'){
+ this.resetProductCreation()
           this.getProductCreationFilteredList()
-
-          setTimeout(() => {
+             setTimeout(() => {
 
             $('#productName').focus()
           }, 50)
+          }
+         
+
+       
 
         }
 
@@ -1704,6 +1714,8 @@ this.productCodeDisable=false
 
     this.SKUALTValue = ''
     this.selectedNatureID = 1
+
+    this.productInfo=''
   }
 
   //Pagination of Product Creation
@@ -2636,6 +2648,35 @@ this.productCodeDisable=false
     if (invalidKeys.includes(event.key)) {
       event.preventDefault(); 
     }
+  }
+
+
+  //opening stock confirmation  popup
+openOpeningStockConfirmation(productInfo:any) {
+    this.modalAnimationClass = 'modal-enter';
+    this.openingStockConfPopup = true;
+    this.productInfo=productInfo
+
+    
+  }
+
+   closeOpeningStockConfirmation() {
+    this.modalAnimationClass = 'modal-exit';
+    this.openingStockConfPopup = false;
+     this.resetProductCreation()
+          this.getProductCreationFilteredList()
+             setTimeout(() => {
+
+            $('#productName').focus()
+          }, 50)
+  } 
+  redirectToOpeningStock(){
+     this.resetProductCreation()
+          this.getProductCreationFilteredList()
+           this.openingStockConfPopup = false;
+//           this.router.navigate(['/inventory/productbrand'], {
+//   queryParams: { user: 1 }
+// });
   }
 
 }

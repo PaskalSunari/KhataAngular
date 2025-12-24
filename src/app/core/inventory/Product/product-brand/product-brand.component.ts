@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef } from '@angular/core';
 declare var $: any;
 declare const setFocusOnNextElement: any;
+import { ActivatedRoute } from '@angular/router';
 import 'select2';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmBoxInitializer, DialogLayoutDisplay, DisappearanceAnimation, AppearanceAnimation } from '@costlydeveloper/ngx-awesome-popup';
@@ -52,7 +53,7 @@ showBrandForm = true;
   productManufacturerPopupM: boolean = false
    modalAnimationClassM = '';
 
-constructor(private el: ElementRef, public service: ProductBrandService, private toastr: ToastrService) {
+constructor(private el: ElementRef, public service: ProductBrandService, private toastr: ToastrService,private route: ActivatedRoute) {
 
   }
   ngAfterViewInit(): void {
@@ -73,6 +74,11 @@ this.enterFun();
 
 this.getProductBrandFilteredList()
 this.getProductBrandDropdownList()
+
+
+
+  // const id = this.route.snapshot.queryParamMap.get('id');
+  // console.log(id,"p code"); // PC-11-82/83
   }
     // Enter functon
   enterFun() {

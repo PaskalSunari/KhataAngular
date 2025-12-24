@@ -1247,3 +1247,34 @@
 
     </div>
 </div>
+
+
+<!--opening stock Confirmation Popup -->
+<div *ngIf="openingStockConfPopup">
+    <div class="confirmationPopupContainer">
+        <div class="confirmationPopup"
+            [ngClass]="modalAnimationClass">
+            <div class="confirmationHeader"><span>Opening Stock Confirmation</span>
+                <span class="closeIcon" (click)="closeOpeningStockConfirmation()">
+                    <i class="fa-solid fa-xmark"></i>
+                </span>
+            </div>
+
+            <div class="page-body-conf">
+<h4 class="px-3 py-2">Do you want to add opening stock?</h4>
+            </div>
+
+            <div class="page-footer-conf">
+<!-- <a id="btnConfirmAddOpeningStock" class="btn btnProduct btn-success"  [routerLink]="['/inventory/productbrand']"
+  [queryParams]="{id: productInfo?.productCode }"
+  target="_blank"
+  rel="noopener" (click)="redirectToOpeningStock()">YES</a> -->
+  <a id="btnConfirmAddOpeningStock" class="btn btnProduct btn-success"
+  target="_blank"
+   (click)="closeOpeningStockConfirmation()">YES</a>
+<button id="btnCancelOpeningStock" class="btn btnProduct btn-danger ms-4" type="button" (click)="closeOpeningStockConfirmation()">NO</button>
+            </div>
+        </div>
+
+    </div>
+</div>
