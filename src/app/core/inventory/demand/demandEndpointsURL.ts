@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class DemandUrl {
   
   getRequestedByDropdownList: string = 'inventory/Demand/RequestedBy'
-  getRequestedToDropdownList: string = 'inventory/Demand/RequestedTo?userId='
+  getRequestedToDropdownList: string = 'inventory/Demand/RequestedTo'
   getDepartmentDropdownList: string = 'inventory/Demand/DepartmentList'
   getProductDropdownList: string = 'inventory/Demand/ProductList'
   getUnitDropdownList: string = 'inventory/Demand/UnitList'

@@ -44,6 +44,7 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     setTimeout(() => {
       $(this.el.nativeElement).find('select').select2();
       this.getDepartmentDropdownList();
+      this.getRequestToDropdownList();
       this.getProductList();
       this.enterFun();
       if (this.department && this.department.nativeElement){
@@ -85,11 +86,11 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
           });
       }
     })
-    $('#requestedToDepartment').on('change', function (event: any) {
-      if(event.target.value){
-      self.getRequestToDropdownList($('#requestBY').val(),$('#requestedToDepartment').val())
-      }
-       })
+    // $('#requestedToDepartment').on('change', function (event: any) {
+    //   if(event.target.value){
+    //   self.getRequestToDropdownList($('#requestBY').val(),$('#requestedToDepartment').val())
+    //   }
+    //    })
   }
   ngOnDestroy(): void {
     try {
@@ -267,12 +268,10 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     );
   }
 
-  getRequestToDropdownList(userId: number, departmentId: number) {
-    if (!userId || this.lockDropdown) return;  
-    this.service.getRequestedToDropdownList(userId, departmentId).subscribe(
+  getRequestToDropdownList() {
+    this.service.getRequestedToDropdownList().subscribe(
 
       (res) => {
-        debugger;
         let result: any = res;
         if (result) {
           this.requestedToDropdownList = result?.result;
@@ -336,11 +335,33 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     );
   }
   addRowToTable() {
-    const requestByDeptValue = $('#requestByDepartment').val();
-    const requestByDeptText = $('#requestByDepartment').find('option:selected').text();
+    if (
+      !this.requestTo?.nativeElement ||
+      !this.product?.nativeElement ||
+      !this.quantity?.nativeElement ||
+      !this.unit?.nativeElement
+    )
+    {
+      this.toastr.error('Some required fields are missing in the form.', 'Error');
+      return;
+    }
+     const requestByValue = localStorage.getItem('userId');
+     const userInfo = localStorage.getItem('userInfo');
+     const requestByText = userInfo
+        ? JSON.parse(userInfo).strUsername
+        : '';
+     const stockLocation = localStorage.getItem('stockLocation');
+     const requestByDeptValue = stockLocation
+    ? JSON.parse(stockLocation).locationId
+    : null;
+     const requestByDeptText = stockLocation
+    ? JSON.parse(stockLocation).locationName
+    : '';
+    // const requestByDeptValue = $('#requestByDepartment').val();
+    // const requestByDeptText = $('#requestByDepartment').find('option:selected').text();
 
-    const requestByValue = $(this.requestBy.nativeElement).val();
-    const requestByText = $(this.requestBy.nativeElement).find('option:selected').text();
+    // const requestByValue = $(this.requestBy.nativeElement).val();
+    // const requestByText = $(this.requestBy.nativeElement).find('option:selected').text();
 
     const requestToValue = $(this.requestTo.nativeElement).val();
     const requestToText = $(this.requestTo.nativeElement).find('option:selected').text();
@@ -379,9 +400,7 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     const isDuplilcate = this.tableRows.some(row =>
       row.requestedByValue === requestByValue &&
       row.requestedToValue === requestToValue &&
-      //row.departmentValue === departmentValue &&
-      row.productValue === productValue &&
-      row.productValue === productValue
+      row.productValue === productValue 
     );
     if (isDuplilcate) {
       this.toastr.warning('This item is already added to the table.', 'Duplicate Item');
