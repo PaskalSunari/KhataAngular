@@ -21,9 +21,13 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   stockLocationId: number | null = null;
   stockLocationName: string | null = null;
   modalAnimationClass: any = "";
+  demandMasterId: any;
 
   demandList: any;
   LocationList: any;
+  fromLocationList: any;
+  toLocationList: any;
+  assignedToList: any;
 
   constructor(
     private el: ElementRef,
@@ -42,26 +46,50 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     this.fiscalId = fy.financialYearId
 
   }
+
   ngAfterViewInit(): void {
-    const that = this;
     $(this.el.nativeElement).find('select').select2();
+    const self = this;
+    $('#demandId').focus();
+    this.getStockLocation();
+    this.focusNextFun();
 
-    $("#locationId").on("select2:select", function (e: any) {
-      const selected = e.params.data.id;
-      const selectedText = e.params.data.text;
-      const el = e.params.data.element;
-      const departmentId = $(el).data("department-id");
-
-      const data = { locationId: selected, locationName: selectedText, departmentId: departmentId };
-      localStorage.setItem('stockLocation', JSON.stringify(data)
-      );
-      that.getStockLocation();
-      that.closeLocationPopup();
+    //debugger;
+    $('#demandId').on('select2:close', function (e: any) {
+      const demandId = e.target.value;
+      self.demandMasterId = demandId;
+      console.log(e.target.value);
+      self.getDropDownList();
     });
 
-    this.getStockLocation();
 
+  }
 
+  // Enter focus next function
+  focusNextFun() {
+    $(document).ready(function () {
+      // Keydown event handler for inputs and selects
+      $('input, select, .focussable, textarea ,button').on(
+        'keydown blur',
+        function (this: HTMLElement, event: any) {
+          if (event.keyCode === 13) {
+            event.preventDefault();
+            const current = $(event.target);
+            if (!current.hasClass('select2-hidden-accessible')) {
+              setFocusOnNextElement.call(current);
+            }
+          }
+        }
+      );
+
+      $('select').on('select2:close', function (this: HTMLElement, event: any) {
+        const $this = $(this);
+        // Wait for Select2 dropdown to close completely
+        setTimeout(() => {
+          setFocusOnNextElement.call($this);
+        }, 0);
+      });
+    });
   }
 
   toggleForm() {
@@ -79,13 +107,28 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     }
   }
 
+  //Fill dropdown list
+  getDropDownList() {
+    this.service.getDropDownList(this.userId, this.branchId, this.fiscalId, this.demandMasterId).subscribe((res: any) => {
+      this.fromLocationList = res?.fromLocation || [];
+      this.toLocationList = res?.toLocation || [];
+      this.assignedToList = res?.assignedToUser || [];
+    })
+  }
+
+  //Get Demand List
   getDemandList() {
+    const storeLocation: any = localStorage.getItem("stockLocation");
+
+    const data = JSON.parse(storeLocation);
+
     const payload = {
       tableName: 'Supply',
       parameter: {
         Flag: "GetDemandList",
         UserId: this.userId?.toString() ?? '',
-        FiscalId:  this.fiscalId?.toString() ?? ''
+        FiscalId: this.fiscalId?.toString() ?? '',
+        LocationId: data?.locationId?.toString() ?? ''
       }
     };
 
@@ -93,7 +136,12 @@ export class SupplyComponent implements OnInit, AfterViewInit {
       const data = res?.data;
       if (data && data.length > 0) {
         this.demandList = res?.data;
+        $("#departmentId").focus();
       } else {
+        this.demandList = [];
+        this.fromLocationList = [];
+        this.toLocationList = [];
+        this.assignedToList = [];
         this.toastr.error('Demand not available.');
       }
     },
@@ -104,12 +152,11 @@ export class SupplyComponent implements OnInit, AfterViewInit {
 
   closeLocationPopup() {
     this.modalAnimationClass = 'modal-exit';
-    this.isLocationVisible = false;
+    this.isLocationVisible = false;    
   }
 
+  //Get List and set new localStorege 
   getStockLocationList() {
-    const getLocaltion = localStorage.getItem('stockLocation');
-
     const payload = {
       tableName: 'LocationByUser',
       parameter: {
@@ -117,28 +164,54 @@ export class SupplyComponent implements OnInit, AfterViewInit {
       },
     };
 
-    this.service.getStockLocationList(payload).subscribe(
-      (res: any) => {
-        this.LocationList = res?.data;
-        //console.log('stock Location List:', this.LocationList)
+    this.service.getStockLocationList(payload).subscribe((res: any) => {
+      this.LocationList = res?.data || [];
 
-        if (this.LocationList.length > 0) {
-          this.isLocationVisible = true;
-          setTimeout(() => { $("#locationId").select2('open'); }, 100);
-        }
-      },
-      (err) => {
-        console.error('Error fetching location data:', err);
+      if (this.LocationList.length > 0) {
+        this.modalAnimationClass = '';
+        this.isLocationVisible = true;
 
+        setTimeout(() => {
+          const $location = $('#locationId');
+
+          // Destroy previous instance if exists
+          if ($location.hasClass('select2-hidden-accessible')) {
+            $location.select2('destroy');
+          }
+
+          // Init select2
+          $location.select2();
+
+          // Remove old handlers and bind fresh
+          $location.off('select2:select').on('select2:select', (e: any) => {
+            const selected = e.params.data.id;
+            const selectedText = e.params.data.text;
+            const el = e.params.data.element;
+            const departmentId = $(el).data('department-id');
+
+            const data = {
+              locationId: selected,
+              locationName: selectedText,
+              departmentId: departmentId
+            };
+
+            localStorage.setItem('stockLocation', JSON.stringify(data));
+            this.getStockLocation();
+            this.closeLocationPopup();
+            $('#demandId').focus();
+          });
+
+          // Auto open dropdown
+          $location.select2('open');
+
+        }, 0);
       }
-    );
+    });
   }
 
-  changeStockDepartment() {
-    this.isLocationVisible = true;
-    setTimeout(() => {
-      this.getStockLocationList();
-    }, 10);
+  //Open Location Popup Modal
+  openStockDepartmentModel() {
+    this.getStockLocationList();
   }
 
 }

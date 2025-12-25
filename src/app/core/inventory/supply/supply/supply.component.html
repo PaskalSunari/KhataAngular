@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row align-items-center flex-wrap">
             <div class="col-4">Supply</div>
-            <div class="col-4" (dblclick)="changeStockDepartment()">{{stockLocationName}}</div>
+            <div class="col-4" (dblclick)="openStockDepartmentModel()">{{stockLocationName}}</div>
             <div class="col-4">
                 <div class="buttons-wrapper d-flex justify-content-end Gap-5">
                     <!-- <div><button type="button" class="button button-sm btn btn-light ms-1">Demand</button></div>                 -->
@@ -25,31 +25,33 @@
                             <div class="row">
                                 <div class="col-sm-4 col-md-4 col-lg-2">
                                     <div class="custom__input-container">
-                                        <select class="input-field custom__input  w-100 req" id="departmentId"
-                                            name="Department" data-placeholder="--Choose--" required>
-                                            <option *ngFor="let item of demandList" value="{{item?.RequestedToDept}}">
+                                        <select class="input-field custom__input  w-100 req" id="demandId"
+                                            name="demandId" data-placeholder="--Choose--" required>
+                                            <option *ngFor="let item of demandList" value="{{item?.demandMasterId}}">
                                                 {{item?.VoucherNo}}</option>
 
                                         </select>
                                         <label>Demand List</label>
                                     </div>
                                 </div>
-                                <div class="col-sm-4 col-md-4 col-lg-2">
+                                <div class="col-sm-4 col-md-4 col-lg-3">
                                     <div class="custom__input-container">
                                         <select class="input-field custom__input  w-100 req" id="fromLocationId"
-                                            name="Department" data-placeholder="--Choose--" required>
+                                            name="fromLocation" data-placeholder="--Choose--" required>
                                             <option value=""></option>
-
+                                            <option *ngFor="let item of fromLocationList" value="item.locationId">
+                                                {{item.locationName}}</option>
                                         </select>
                                         <label>From Location</label>
                                     </div>
                                 </div>
-                                <div class="col-sm-4 col-md-4 col-lg-2">
+                                <div class="col-sm-4 col-md-4 col-lg-3">
                                     <div class="custom__input-container">
                                         <select class="input-field custom__input  w-100 req" id="toLocationId"
-                                            name="Department" data-placeholder="--Choose--" required>
+                                            name="toLocationId" data-placeholder="--Choose--" required>
                                             <option value=""></option>
-
+                                            <option *ngFor="let item of toLocationList" value="item.locationId">
+                                                {{item.locationName}}</option>
                                         </select>
                                         <label>To Location</label>
                                     </div>
@@ -59,17 +61,15 @@
                                         <select class="input-field custom__input  w-100 req" id="assignedTo" name="User"
                                             data-placeholder="--Choose--" required>
                                             <option value=""></option>
+                                            <option *ngFor="let item of assignedToList" value="item.userId">
+                                                {{item.userName}}</option>
                                         </select>
                                         <label>Assigned To</label>
                                     </div>
                                 </div>
-                                <div class="col-sm-4 col-md-3 col-lg-1">
+                                <div class="col-sm-4 col-md-3 col-lg-1 d-flex align-items-center justify-content-left text-left">
                                     <div class="custom__input-container d-flex align-items-center">
                                         <button type="button" id="button" class="button button-sm btn btn-success ms-1">
-                                            <i class="fa-solid fa-plus"></i>
-                                        </button>
-                                        <button type="button" class="button-sm btn btn-danger ms-1" title="Reset"
-                                            id="salesBtn_refresh">
                                             <i class="fa-solid fa-rotate-left"></i>
                                         </button>
                                     </div>
@@ -95,7 +95,19 @@
                                         <thead class="table__head">
                                             <tr>
                                                 <th class="sales-main-table__sn">S.N.</th>
-                                                <th class="sales-main-table__item">Type</th>
+                                                <th class="sales-main-table__type ">
+                                                    <div 
+                                                        class="d-flex align-items-center justify-content-center text-center">
+                                                        <label class="me-2 mb-0">Type</label>
+                                                        <select class="transferType" id="transferType"
+                                                            name="transferType">
+                                                            <option value="1">Consumer</option>
+                                                            <option value="2">Transfer</option>
+                                                        </select>
+                                                    </div>
+
+                                                </th>
+
                                                 <th class="sales-main-table__qty">Batch</th>
                                                 <th class="sales-main-batch">Unit</th>
                                                 <th class="sales-main-batch">Req. Qty</th>
@@ -124,10 +136,10 @@
 
 
 <!-- Location popup -->
-<div [hidden]="!isLocationVisible">
-    <div class="customPopupContainer" (click)="closeLocationPopup()">
-        <div (click)="$event.stopPropagation()"
-            class="customPopup customPopup--location customPopup-md-hgt-40 customPopup-md-30"
+<!-- <div [hidden]="!isLocationVisible"> -->
+<div *ngIf="isLocationVisible">
+    <div class="customPopupContainer">
+        <div class="customPopup customPopup--location customPopup-md-hgt-40 customPopup-md-30"
             [ngClass]="modalAnimationClass">
             <div class="modal-body p-2">
                 <div class="row">
