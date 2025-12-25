@@ -9,4 +9,5 @@ export class DeptLocationMappingUrl{
     insertUpdate:string='inventory/DepartmentLocationMapping/AddUpdate';
     deleteById:string='inventory/DepartmentLocationMapping/Delete';
     getById:string='inventory/DepartmentLocationMapping/GetById';
+    gemericApi: string = 'Account/GlobalUtility/GenericAPI';
 }

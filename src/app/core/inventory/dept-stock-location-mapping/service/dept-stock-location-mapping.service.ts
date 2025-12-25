@@ -13,24 +13,29 @@ export class DeptStockLocationMappingService {
 
   storeLocationModel: DeptStockLocationMapping = new DeptStockLocationMapping();
 
-  constructor(private http: HttpClient, private endPoint: DeptLocationMappingUrl) { }
+  constructor(private http: HttpClient, private urls: DeptLocationMappingUrl) { }
 
-  getDropdownList(userId: number, branchId: number) {
-    return this.http.get(`${this.baseUrl}${this.endPoint.getDropdownList}/${userId}/${branchId}`);
+  getDropdownList(deptId: number, branchId: number) {
+    return this.http.get(`${this.baseUrl}${this.urls.getDropdownList}/${deptId}/${branchId}`);
   }
 
   getGridDataList(model: any) {
-    return this.http.post(`${this.baseUrl}${this.endPoint.getGridList}`, model);
+    return this.http.post(`${this.baseUrl}${this.urls.getGridList}`, model);
   }
 
   insertUpdate(data: any) {
-    return this.http.post(`${this.baseUrl}${this.endPoint.insertUpdate}`, data);
+    return this.http.post(`${this.baseUrl}${this.urls.insertUpdate}`, data);
   }
 
   getById(id: any, branchId: any, userId: any) {
-    return this.http.get(`${this.baseUrl}${this.endPoint.getById}/${id}/${branchId}/${userId}`)
+    return this.http.get(`${this.baseUrl}${this.urls.getById}/${id}/${branchId}/${userId}`)
   }
   deleteById(id: number, branchId: number, userId: any) {
-    return this.http.get(`${this.baseUrl}${this.endPoint.deleteById}/${id}/${branchId}/${userId}`);
+    return this.http.get(`${this.baseUrl}${this.urls.deleteById}/${id}/${branchId}/${userId}`);
   }
+
+   getDepartmentList(data:any){
+    return this.http.post(`${this.baseUrl}${this.urls.gemericApi}`, data);   
+  }
+
 }

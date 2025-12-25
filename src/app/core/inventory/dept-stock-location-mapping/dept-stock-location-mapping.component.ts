@@ -16,13 +16,13 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
 
   id: number = 0;
   userId: any = 0;
-  branchId: any = 0;  
+  branchId: any = 0;
   isSelect2Show: boolean = true;
   hasSubmit = false;
-  isDeleted = true;  
-  isEditMode: boolean = false; 
+  isDeleted = true;
+  isEditMode: boolean = false;
   isFormVisible = true;
-  
+
   toggleForm() {
     this.isFormVisible = !this.isFormVisible;
   }
@@ -70,13 +70,19 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
   ngAfterViewInit(): void {
     this.userId = localStorage.getItem("userId");
     this.branchId = localStorage.getItem("branch");
+    const that = this;
+    this.getDepartmentList();
     setTimeout(() => {
       $("#departmentId").focus();
     }, 100);
 
     this.enterFun();
     $(this.el.nativeElement).find('select').select2();
-    this.getDropdownList();
+
+    $("#departmentId").on("change", function (e: any) {
+      const selected = e.target.value;
+      that.getDropdownList(selected);
+    });
     this.getGridList();
   }
 
@@ -107,10 +113,33 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
     });
   }
 
-  getDropdownList() {
-    this.service.getDropdownList(this.userId, this.branchId).subscribe((res: any) => {
-      //let result:any:res;      
-      this.DepartmentList = res.department || [];
+
+  getDepartmentList() {
+    const payload = {
+      tableName: 'DepartmentStockLocationMapping',
+      parameter: {
+        Flag: "DepartmentList"
+      }
+    };
+
+    this.service.getDepartmentList(payload).subscribe((res: any) => {
+      const data = res?.data;
+      console.log('data:', data);
+      if (data && data.length > 0) {
+        this.DepartmentList = res?.data;
+      } else {
+        this.toastr.error('Department list not found.');
+      }
+
+    },
+      (err) => {
+        console.error('Error fetching department list:', err);
+      })
+  }
+
+  getDropdownList(deptId: number) {
+    this.service.getDropdownList(deptId, this.branchId).subscribe((res: any) => {
+      //let result:any:res;            
       this.UserList = res.user || [];
       this.StockLocationList = res.location || [];
     })
@@ -209,9 +238,14 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
         this.isEditMode = true;
         this.id = data.id;
         this.isDeleted = false;
-        $("#userId").val(data.userId).trigger('change');
+
         $("#departmentId").val(data.deptId).trigger('change');
-        $("#storeLocationId").val(data.stockLocationId).trigger('change');
+        
+        setTimeout(() => {
+          $("#userId").val(data.userId).trigger('change');
+          $("#storeLocationId").val(data.stockLocationId).trigger('change');
+        }, 200);
+
         $("#status").val(data.status ? 1 : 0).trigger('change');
 
         // destroy select2 instance
@@ -341,7 +375,7 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
   }
 
   onSearchData(e: any) {
-    this.searchData = e.target.value;  
+    this.searchData = e.target.value;
     this.getGridList();
   }
 }

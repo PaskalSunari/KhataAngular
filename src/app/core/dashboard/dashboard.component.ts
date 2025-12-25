@@ -41,7 +41,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     private service: DashboardService,
     private toastr: ToastrService,
     private el: ElementRef,
-    private serticeTitle:Title
+    private serticeTitle: Title
   ) { }
 
   ngAfterViewInit(): void {
@@ -50,7 +50,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     $("#locationId").on("select2:select", function (e: any) {
       const selected = e.params.data.id;
       const selectedText = e.params.data.text;
-      const data = { locationId: selected, locationName: selectedText };
+      const el = e.params.data.element;
+      const departmentId = $(el).data("department-id");
+
+      const data = { locationId: selected, locationName: selectedText, departmentId: departmentId };
       localStorage.setItem('stockLocation', JSON.stringify(data)
       );
 
@@ -172,7 +175,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           this.paymentList = newPaymentArry;
           this.loading = false;
 
-          console.log(this.paymentList);
+          //console.log(this.paymentList);
         }
       },
       (err) => {
@@ -187,11 +190,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   closeLocationPopup() {
     this.modalAnimationClass = 'modal-exit';
-    this.isLocationVisible = false;    
+    this.isLocationVisible = false;
   }
 
   getLocationList() {
-    const getLocaltion = localStorage.getItem('stockLocation');   
+    const getLocaltion = localStorage.getItem('stockLocation');
 
     if (!getLocaltion && getLocaltion == null) {
       this.loading = true;
@@ -205,14 +208,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.service.GetTransaction(payload).subscribe(
         (res: any) => {
           this.LocationList = res?.data;
+          //console.log('stock Location List:', this.LocationList)
           if (this.LocationList.length > 0) {
             this.isLocationVisible = true;
-            setTimeout(() => {$("#locationId").select2('open');}, 100);
+            setTimeout(() => { $("#locationId").select2('open'); }, 100);
           }
         },
         (err) => {
           console.error('Error fetching location data:', err);
-          this.loading = false;          
+          this.loading = false;
         }
       );
     }

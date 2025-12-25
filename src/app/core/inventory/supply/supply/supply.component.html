@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row align-items-center flex-wrap">
             <div class="col-4">Supply</div>
-            <div class="col-4">{{stockLocationName}}</div>
+            <div class="col-4" (dblclick)="changeStockDepartment()">{{stockLocationName}}</div>
             <div class="col-4">
                 <div class="buttons-wrapper d-flex justify-content-end Gap-5">
                     <!-- <div><button type="button" class="button button-sm btn btn-light ms-1">Demand</button></div>                 -->
@@ -115,6 +115,35 @@
                             </div>
                         </div>
 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Location popup -->
+<div [hidden]="!isLocationVisible">
+    <div class="customPopupContainer" (click)="closeLocationPopup()">
+        <div (click)="$event.stopPropagation()"
+            class="customPopup customPopup--location customPopup-md-hgt-40 customPopup-md-30"
+            [ngClass]="modalAnimationClass">
+            <div class="modal-body p-2">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <h2 class="text-center mb-4">Select Location</h2>
+                        <div class="custom__input-container">
+                            <select class="input-field custom__input  w-90 req" id="locationId" name="Nature"
+                                data-placeholder="--Choose--">
+                                <option value=""></option>
+                                <option *ngFor="let item of LocationList" [value]="item.id"
+                                    [attr.data-department-id]="item.departmentId">
+                                    {{ item.text }}
+                                </option>
+
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
