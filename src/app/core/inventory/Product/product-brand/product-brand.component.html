@@ -10,7 +10,7 @@
                     <button class="btn btn-danger button-sm"><i class="fa-solid fa-print"></i></button>
                     <div class="plus-btn" (click)="toggleForm()">
 
-                        <i class="fa-solid " [ngClass]="showForm ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                        <i class="fa-solid " [ngClass]="showBrandForm ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
                     </div>
                 </div>
             </div>
@@ -27,13 +27,14 @@
                 <div class="" id="sales-form-container">
                     <form class="">
                         <div class="container-fluid pt-0 px-1 pb-1">
-                            <div class="sales__form-box m-2 pb-2 " *ngIf="showForm">
+                            <div class="sales__form-box m-2 pb-2 " *ngIf="showBrandForm">
 
                                 <div class="row">
                                     <div class=" col-sm-4 col-md-3 col-lg-2">
                                         <div class="custom__input-container d-flex align-items-center">
-                                            <input id="groupName" type="text" class="form-control custom__input"
-                                                autocomplete="off">
+                                            <input id="brandName" type="text" class="form-control custom__input req"
+                                                autocomplete="off" name="Brand Name"
+                                                [(ngModel)]="this.service.productBrandModel.brandName" required>
                                             <label>Name</label>
                                         </div>
                                     </div>
@@ -42,19 +43,24 @@
                                             <div class="col-10">
                                                 <div class="custom__input-container">
                                                     <select class="input-field custom__input  w-100 req"
-                                                        id="groupUnder">
-                                                        <option>test1</option>
-                                                        <option>test2</option>
+                                                        id="manufacture" name="Manufacturer"
+                                                        data-placeholder="--Choose--" required>
+                                                        <option value=""></option>
+                                                        <option *ngFor="let data of ManufacturerDropdownList"
+                                                            value="{{data.value}}">
+                                                            {{data.text}} </option>
                                                     </select>
                                                     <label>Manufacturer</label>
                                                 </div>
                                             </div>
-                                            <div class="col-1" style="justify-content: center; align-items: center;margin: 12px;">
+                                            <div class="col-1"
+                                                style="justify-content: center; align-items: center;margin: 12px;">
 
-    <div class="plus-btn d-flex justify-content-center align-items-center p-2" style="color: white;">
+                                                <div class="plus-btn d-flex justify-content-center align-items-center p-2"
+                                                    style="color: white;">
 
-     <i class="fa-solid fa-plus"></i>
- </div>
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </div>
 
 
                                             </div>
@@ -65,15 +71,16 @@
 
                                     <div class=" col-sm-4 col-md-3 col-lg-3">
                                         <div class="custom__input-container d-flex align-items-center">
-                                            <input id="groupRemarks" type="text" class="form-control custom__input"
-                                                autocomplete="off">
+                                            <input id="brandRemarks" type="text" class="form-control custom__input"
+                                                autocomplete="off" name="Remarks"
+                                                [(ngModel)]="this.service.productBrandModel.brandRemarks">
                                             <label>Remarks</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-4 col-md-4 col-lg-2">
 
                                         <div class="custom__input-container">
-                                            <select class="input-field custom__input  w-100 req" id="groupStatus">
+                                            <select class="input-field custom__input  w-100 req" id="brandStatus">
                                                 <option value="1">Active</option>
                                                 <option value="0">InActive</option>
                                             </select>
@@ -83,14 +90,19 @@
 
                                     <div class="col-sm-4 col-md-3 col-lg-1">
                                         <div class="custom__input-container d-flex align-items-center">
-                                            <button id="button1" class="button-sm btn btn-success ms-1"
-                                                title="Insert Item">
-                                                <i class="fa-solid fa-plus"></i>
+                                            <button type="button" id="button"
+                                                class="button button-sm btn btn-success ms-1" [title]="submitButton"
+                                                (click)="onSubmitProductBrand()">
+
+                                                <i [ngClass]="{ 'fa-solid fa-save': submitButton === 'Save' }"></i>
+                                                <i [ngClass]="{
+                                        'fa-solid fa-rotate-right': submitButton === 'Update'
+                                        }"></i>
                                             </button>
 
 
                                             <button class="button-sm btn btn-danger ms-1" title="Reset"
-                                                id="salesBtn_refresh" href="">
+                                                id="salesBtn_refresh" (click)=" resetProductBrand()">
                                                 <i class="fa-solid fa-rotate-left"></i>
                                             </button>
                                         </div>
@@ -100,12 +112,14 @@
                             </div>
 
                             <div class="filter sales__form-box m-2 pb-2">
-                                <div class="row d-flex justify-content-between">
+                                <div class="row d-flex justify-content-end">
                                     <div class=" col-sm-4 col-md-3 col-lg-2">
                                         <div class="custom__input-container d-flex align-items-center">
-                                            <input id="groupRemarks" type="text" class="form-control custom__input"
-                                                autocomplete="off">
-                                            <label>Search</label>
+                                            <input id="brandSearchString" type="text"
+                                                class="form-control custom__input search-icon-padding"
+                                                placeholder="Search" autocomplete="off"
+                                                (input)="onSearchProductBrand($event)">
+                                            <button class="search-icon"><i class="fa fa-search"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -114,7 +128,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="table__wrapper  table__wrapper-40 table_xxl-65 mt-3">
-                                        <table class="table" style="height: 300px;">
+                                        <table class="table">
                                             <thead class="table__head">
                                                 <tr>
                                                     <th class="sales-main-table__sn">S.N.</th>
@@ -126,13 +140,25 @@
                                                 </tr>
                                             </thead>
                                             <tbody class="table__body" id="sales-main-table__body">
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
+                                                <tr *ngFor="let data of productBrandGridList; let i = index">
+                                                    <td>{{productBrandGridDetails.pageStartIndex+i}}</td>
+                                                    <td>{{data?.brandName}}</td>
+                                                    <td>{{data?.name}}</td>
+                                                    <td>{{data?.remarks}}</td>
+                                                    <td>{{data?.bStatus=='True'?'Active':'InActive'}}</td>
+                                                    <td>
+                                                        <button
+                                                            class="button button--extra-small button--success button--rounded-sm me-2"
+                                                            (click)="getProductBrandById(data?.brandID)">
+                                                            <i class="fa-regular fa-pen-to-square"></i>
+                                                        </button>
+                                                        <button
+                                                            class="button button--extra-small button--danger button--rounded-sm me-2"
+                                                            (click)="confirmBoxProductBrandDelete(data?.brandID)">
+                                                            <i class="fa-solid fa-trash"></i>
+                                                        </button>
+
+                                                    </td>
 
 
                                                 </tr>
@@ -144,7 +170,12 @@
                                 </div>
 
                             </div>
-
+                            <mat-paginator #paginatorPopup (page)="handlePageEvent($event)" class="demo-paginator"
+                                [length]="length" [pageSize]="pageSize" [disabled]="disabled"
+                                [showFirstLastButtons]="showFirstLastButtons"
+                                [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+                                [hidePageSize]="hidePageSize" [pageIndex]="pageIndex" aria-label="Select page">
+                            </mat-paginator>
                         </div>
                     </form>
                 </div>

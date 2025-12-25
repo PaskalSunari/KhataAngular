@@ -1,6 +1,6 @@
 export class ProductGroup {
-      country:string =''
-    allowedCountry:any=''
-    restrictedCountry:any=''
-    orgid:string =''
+  groupID:any=0
+      groupName:string =''
+    remarks:any=''
+    
 }

@@ -71,6 +71,11 @@
   &--primary {
     background-color: $color-cyan-500;
     color: #fff;
+
+    &:hover {
+      background-color: $color-cyan-500;
+      color: #fff;
+    }
   }
 
   &--success {
@@ -364,4 +369,15 @@
     font-size: 12px;
    
    
+}
+.search-icon{
+background: transparent;
+    color: gray;
+    font-size: 12px;
+    position: absolute;
+    left: 0;
+    top: 10%;
+    border: none;
+    outline: none;
+    padding: 0 5px;
 }
