@@ -36,8 +36,8 @@ debugger
     }
 
     // ✅ Allow route access if it’s in the allowed list
-    if (allowedRoutes.includes(requestedRoute)) {
-      debugger
+    // Also allow any sub-route under `/inventory` (e.g. `/inventory/demand`) so module child routes work
+    if (allowedRoutes.includes(requestedRoute) || requestedRoute.startsWith('/inventory')) {
       return true;
     }
 
