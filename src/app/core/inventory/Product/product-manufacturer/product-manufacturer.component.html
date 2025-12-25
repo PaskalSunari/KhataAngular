@@ -1,20 +1,20 @@
-<div  class="page-head-bar">
+<div class="page-head-bar">
     <div class="container-fluid">
         <div class="row align-items-center flex-wrap">
-           <div class="col-9">Product Manufacturer</div>
-           <div class="col-3">
-            <div class="buttons-wrapper d-flex justify-content-end Gap-5">
-                <button class="btn btn-success button-sm" ><i class="fa-solid fa-file-pdf"></i></button>
-                 <button class="btn button-info button-sm"><i class="fa-solid fa-file-csv"></i></button>
+            <div class="col-9">Product Manufacturer</div>
+            <div class="col-3">
+                <div class="buttons-wrapper d-flex justify-content-end Gap-5">
+                    <button class="btn btn-success button-sm"><i class="fa-solid fa-file-pdf"></i></button>
+                    <button class="btn button-info button-sm"><i class="fa-solid fa-file-csv"></i></button>
 
-<button class="btn btn-danger button-sm"><i class="fa-solid fa-print"></i></button>
- <div class="plus-btn" (click)="toggleForm()">
+                    <button class="btn btn-danger button-sm"><i class="fa-solid fa-print"></i></button>
+                    <div class="plus-btn" (click)="toggleForm()">
 
-     <i class="fa-solid "  [ngClass]="showForm ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
- </div>
+                        <i class="fa-solid " [ngClass]="showManufacturerForm ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                    </div>
+                </div>
             </div>
-           </div>
-            
+
         </div>
 
     </div>
@@ -22,141 +22,168 @@
 
 <div class="page-body">
     <div class="container-fluid px-0">
-       <div class="row">
+        <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-0">
                 <div class="" id="sales-form-container">
                     <form class="">
                         <div class="container-fluid pt-0 px-1 pb-1">
-                             <div class="sales__form-box m-2 pb-2 " *ngIf="showForm">
-                               
-                                        <div class="row">
-                                            <div class=" col-sm-4 col-md-3 col-lg-2">
-                                                <div class="custom__input-container d-flex align-items-center">
-                                                    <input id="groupName" type="text" class="form-control custom__input"
-                                                        autocomplete="off">
-                                                    <label>Name</label>
-                                                </div>
-                                            </div>
+                            <div class="sales__form-box m-2 pb-2 " *ngIf="showManufacturerForm">
 
-                                             <div class=" col-sm-4 col-md-3 col-lg-2">
-                                                <div class="custom__input-container d-flex align-items-center">
-                                                    <input id="groupName" type="text" class="form-control custom__input"
-                                                        autocomplete="off">
-                                                    <label>Address</label>
-                                                </div>
-                                            </div>
-
-                                              <div class=" col-sm-4 col-md-3 col-lg-2">
-                                                <div class="custom__input-container d-flex align-items-center">
-                                                    <input id="groupName" type="text" class="form-control custom__input"
-                                                        autocomplete="off">
-                                                    <label>Contact No</label>
-                                                </div>
-                                            </div>
-
-                                             <div class=" col-sm-4 col-md-3 col-lg-2">
-                                                <div class="custom__input-container d-flex align-items-center">
-                                                    <input id="groupName" type="text" class="form-control custom__input"
-                                                        autocomplete="off">
-                                                    <label>Email Address</label>
-                                                </div>
-                                            </div>
-
-                                             <div class=" col-sm-4 col-md-3 col-lg-2">
-                                                <div class="custom__input-container d-flex align-items-center">
-                                                    <input id="groupName" type="text" class="form-control custom__input"
-                                                        autocomplete="off">
-                                                    <label>Remarks</label>
-                                                </div>
-                                            </div>
-
-                                           
-
-                                           
-                                              <div class="col-sm-4 col-md-4 col-lg-1">
-
-                                                <div class="custom__input-container">
-                                                    <select class="input-field custom__input  w-100 req" id="groupStatus">
-                                                        <option value="1">Active</option>
-                                                        <option value="0">InActive</option>
-                                                    </select>
-                                                    <label>Status</label>
-                                                </div>
-                                            </div>
-
-                                             <div class="col-sm-4 col-md-3 col-lg-1">
-                                                <div class="custom__input-container d-flex align-items-center">
-                                                    <button id="button1" class="button-sm btn btn-success ms-1"
-                                                        title="Insert Item">
-                                                        <i class="fa-solid fa-plus"></i>
-                                                    </button>
-
-
-                                                    <button class="button-sm btn btn-danger ms-1" title="Reset"
-                                                        id="salesBtn_refresh" href="">
-                                                        <i class="fa-solid fa-rotate-left"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
+                                <div class="row">
+                                    <div class=" col-sm-4 col-md-3 col-lg-2">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <input id="manufacturerName" type="text" class="form-control custom__input"
+                                                name="Manufacturer Name" autocomplete="off"
+                                                [(ngModel)]="this.service.productManufacturerModel.manufacturerName" required>
+                                            <label>Name</label>
                                         </div>
-                                   
+                                    </div>
+
+                                    <div class=" col-sm-4 col-md-3 col-lg-2">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <input id="manufacturerAddress" type="text"
+                                                class="form-control custom__input" autocomplete="off" name="Address"
+                                                [(ngModel)]="this.service.productManufacturerModel.manufacturerAddress" required>
+                                            <label>Address</label>
+                                        </div>
+                                    </div>
+
+                                    <div class=" col-sm-4 col-md-3 col-lg-2">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <input id="manufacturerContact" type="text"
+                                                class="form-control custom__input" autocomplete="off" name="Contact"
+                                                [(ngModel)]="this.service.productManufacturerModel.manufacturerContactNumber" required>
+                                            <label>Contact No</label>
+                                        </div>
+                                    </div>
+
+                                    <div class=" col-sm-4 col-md-3 col-lg-2">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <input id="manufacturerEmail" type="text" class="form-control custom__input"
+                                                autocomplete="off" name="Email"
+                                                [(ngModel)]="this.service.productManufacturerModel.manufacturerEmail" required>
+                                            <label>Email Address</label>
+                                        </div>
+                                    </div>
+
+                                    <div class=" col-sm-4 col-md-3 col-lg-2">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <input id="manufacturerRemarks" type="text"
+                                                class="form-control custom__input" autocomplete="off" name="Remarks"
+                                                [(ngModel)]="this.service.productManufacturerModel.manufacturerRemarks">
+                                            <label>Remarks</label>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div class="col-sm-4 col-md-4 col-lg-1">
+
+                                        <div class="custom__input-container">
+                                            <select class="input-field custom__input  w-100 req" id="manufacturerStatus"
+                                                name="Status" required>
+                                                <option value="1">Active</option>
+                                                <option value="0">InActive</option>
+                                            </select>
+                                            <label>Status</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-3 col-lg-1">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <button type="button" id="button"
+                                                class="button button-sm btn btn-success ms-1" [title]="submitButton" (click)="onSubmitProductManufacturer()">
+
+                                                <i [ngClass]="{ 'fa-solid fa-save': submitButton === 'Save' }"></i>
+                                                <i [ngClass]="{
+                                        'fa-solid fa-rotate-right': submitButton === 'Update'
+                                        }"></i>
+                                            </button>
+
+
+                                            <button class="button-sm btn btn-danger ms-1" title="Reset"
+                                                id="salesBtn_refresh" (click)="resetProductManufacturer()">
+                                                <i class="fa-solid fa-rotate-left"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
-<div class="filter sales__form-box m-2 pb-2">
-    <div class="row d-flex justify-content-between">
-    
-          <div class=" col-sm-4 col-md-3 col-lg-2">
-                                                <div class="custom__input-container d-flex align-items-center">
-                                                    <input id="groupName" type="text" class="form-control custom__input"
-                                                        autocomplete="off">
-                                                    <label>Search</label>
-                                                </div>
-                                            </div>                                  
-    </div>
-</div>
+                            <div class="filter sales__form-box m-2 pb-2">
+                                <div class="row d-flex justify-content-end">
 
-  <div class="row">
-                    <div class="col-lg-12">
-                        <div class="table__wrapper  table__wrapper-40 table_xxl-65 mt-3">
-                            <table class="table" style="height: 300px;">
-                                <thead class="table__head">
-                                    <tr>
-                                        <th class="sales-main-table__sn">S.N.</th>
-                                        <th class="sales-main-table__item">Manufacturer</th>
-                                        <th class="sales-main-table__qty">Address</th>
-                                        <th class="sales-main-batch">Contact</th>
-                                         <th class="sales-main-batch">Email</th>
-                                          <th class="sales-main-batch">Remarks</th>
-                                        <th class="sales-main-expirydate">Status</th>
-                                        <th class="sales-main-table__action">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="table__body" id="sales-main-table__body">
-                                      <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                         <td></td>
-                                        <td></td>
-                                       
+                                    <div class=" col-sm-4 col-md-3 col-lg-2">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <input id="manufacturerSearchString" type="text"
+                                                class="form-control custom__input search-icon-padding"
+                                                autocomplete="off" placeholder="Search"
+                                                (input)="onSearchProductUnit($event)">
+                                            <button class="search-icon"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table__wrapper  table__wrapper-40 table_xxl-65 mt-3">
+                                        <table class="table">
+                                            <thead class="table__head">
+                                                <tr>
+                                                    <th class="sales-main-table__sn">S.N.</th>
+                                                    <th class="sales-main-table__item">Manufacturer</th>
+                                                    <th class="sales-main-table__qty">Address</th>
+                                                    <th class="sales-main-batch">Contact</th>
+                                                    <th class="sales-main-batch">Email</th>
+                                                    <th class="sales-main-batch">Remarks</th>
+                                                    <th class="sales-main-expirydate">Status</th>
+                                                    <th class="sales-main-table__action">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table__body" id="sales-main-table__body">
+                                                <tr *ngFor="let data of productManufacturerGridList; let i = index">
+                                                    <td>{{productManufacturerGridDetails.pageStartIndex+i}}</td>
+                                                    <td>{{data?.name}}</td>
+                                                    <td>{{data?.address}}</td>
+                                                    <td>{{data?.contactNo}}</td>
+                                                    <td>{{data?.email}}</td>
+                                                    <td>{{data?.remarks}}</td>
+                                                    <td>{{data?.status=='True'?'Active':'InActive'}}</td>
+                                                    <td>
+                                                         <button
+                                                            class="button button--extra-small button--success button--rounded-sm me-2" (click)="getProductManufacturerById(data?.manufacturerID)" >
+                                                            <i class="fa-regular fa-pen-to-square"></i>
+                                                        </button>
+                                                        <button
+                                                            class="button button--extra-small button--danger button--rounded-sm me-2" (click)="confirmBoxProductManufacturerDelete(data?.manufacturerID)">
+                                                            <i class="fa-solid fa-trash"></i>
+                                                        </button>
+                                                    </td>
+
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                              <mat-paginator #paginatorPopup (page)="handlePageEvent($event)" class="demo-paginator"
+                                [length]="length" [pageSize]="pageSize" [disabled]="disabled"
+                                [showFirstLastButtons]="showFirstLastButtons"
+                                [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+                                [hidePageSize]="hidePageSize" [pageIndex]="pageIndex" aria-label="Select page">
+                            </mat-paginator>
                         </div>
-
-
-                    </div>
-
+                    </form>
                 </div>
-
-                            </div>
-                            </form>
-                            </div>
+            </div>
         </div>
     </div>
-    </div>
-    </div>
+</div>

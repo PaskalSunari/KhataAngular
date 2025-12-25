@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SalesRoutingModule } from './sales-routing.module';
 import { SalesComponent } from './sales/sales.component';
 import { PosComponent } from './pos/pos.component';
+import { FormsModule } from "@angular/forms";
 
 
 
@@ -13,7 +14,8 @@ import { PosComponent } from './pos/pos.component';
   ],
   imports: [
     CommonModule,
-    SalesRoutingModule
-  ]
+    SalesRoutingModule,
+    FormsModule
+]
 })
 export class SalesModule { }

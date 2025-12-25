@@ -24,7 +24,7 @@ debugger
     const requestedRoute = state.url.split(/[?#]/)[0];
 
     // ✅ Define routes that are allowed only for logged-in users
-    const allowedRoutes = ['/dashboard', '/sales/pos', 'organization','/inventory/productgroup','/inventory/productcategory','/inventory/productunit','/inventory/productmanufacturer','/inventory/productbrand','/inventory/productmodel','/inventory/productsize','/inventory/demand'];
+    const allowedRoutes = ['/dashboard', '/sales/pos', 'organization','/inventory/productgroup','/inventory/productcategory','/inventory/productunit','/inventory/productmanufacturer','/inventory/productbrand','/inventory/productmodel','/inventory/productsize','/inventory/productcreate','/inventory/supply','/inventory/deptstocklocationmapping'];
 
     // 🚫 If not logged in → redirect to login
     if (!this.loginservice.isLoggedIn()) {
@@ -36,8 +36,8 @@ debugger
     }
 
     // ✅ Allow route access if it’s in the allowed list
-    if (allowedRoutes.includes(requestedRoute)) {
-      debugger
+    // Also allow any sub-route under `/inventory` (e.g. `/inventory/demand`) so module child routes work
+    if (allowedRoutes.includes(requestedRoute) || requestedRoute.startsWith('/inventory')) {
       return true;
     }
 

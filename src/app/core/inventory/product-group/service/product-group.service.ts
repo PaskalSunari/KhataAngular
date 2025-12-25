@@ -11,18 +11,29 @@ import { ProductGroup } from '../product-group.model';
 export class ProductGroupService {
 
 baseurl = environment.appURL;
-  productGroupmodel: ProductGroup = new ProductGroup();
+  productGroupModel: ProductGroup = new ProductGroup();
   constructor(private http: HttpClient, private endPoint: productGroupUrl) {}
 
    getGroupUnderDropdownList(model:any) {
     return this.http.post(`${this.baseurl}${this.endPoint.getGroupUnderDropdownList}`,model);
   }
-   getProductGroupList() {
-    return this.http.get(`${this.baseurl}${this.endPoint.getProductGroupList}`);
+   getProductGroupList(model:any) {
+    return this.http.post(`${this.baseurl}${this.endPoint.getProductGroupList}`,model);
   }
  
 
-  insertProductGroup(data: any) {
-    return this.http.post(`${this.baseurl}${this.endPoint.insertProductGroup}`,data);
+  insertUpdateProductGroup(data: any) {
+    return this.http.post(`${this.baseurl}${this.endPoint.insertUpdateProductGroup}`,data);
+  }
+  getProductGroupByID(data:any){
+      return this.http.post(`${this.baseurl}${this.endPoint.getProductGroupDataByID}`,data);
+  }
+
+   deleteProductGroup(data:any){
+      return this.http.post(`${this.baseurl}${this.endPoint.deleteProductGroup}`,data);
+  }
+
+    getProductGroupFilteredList(data:any){
+      return this.http.post(`${this.baseurl}${this.endPoint.productGroupFilteredData}`,data);
   }
 }

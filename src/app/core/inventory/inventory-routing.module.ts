@@ -8,6 +8,9 @@ import { ProductBrandComponent } from './Product/product-brand/product-brand.com
 import { DemandComponent } from './demand/demand.component';
 import { ProductModelComponent } from './Product/product-model/product-model.component';
 import { ProductSizeComponent } from './Product/product-size/product-size.component';
+import { ProductCreationComponent } from './Product/product-creation/product-creation.component';
+import { SupplyComponent } from './supply/supply/supply.component';
+import { DeptStockLocationMappingComponent } from './dept-stock-location-mapping/dept-stock-location-mapping.component';
 
 const routes: Routes = [
  {
@@ -23,7 +26,7 @@ const routes: Routes = [
     component: ProductUnitComponent,
   },
    {
-    path: 'productmanufacturer',
+    path: 'productmanufacture',
     component: ProductManufacturerComponent,
   },
    {
@@ -42,6 +45,18 @@ const routes: Routes = [
     path: 'demand',
     component: DemandComponent,
   },
+    {
+    path: 'productcreate',
+    component: ProductCreationComponent,
+  },
+  {
+    path:'supply',
+    component:SupplyComponent
+  },
+  {
+    path:'deptstocklocationmapping',
+    component:DeptStockLocationMappingComponent
+  }
 ];
 
 @NgModule({

@@ -1,0 +1,152 @@
+<div class="page-head-bar">
+    <div class="container-fluid">
+        <div class="row align-items-center flex-wrap">
+            <div class="col-4">Supply</div>
+            <div class="col-4" (dblclick)="changeStockDepartment()">{{stockLocationName}}</div>
+            <div class="col-4">
+                <div class="buttons-wrapper d-flex justify-content-end Gap-5">
+                    <!-- <div><button type="button" class="button button-sm btn btn-light ms-1">Demand</button></div>                 -->
+                    <div class="plus-btn" (click)="toggleForm()">
+                        <i class="fa-solid " [ngClass]="isFormVisible ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-body">
+    <div class="container-fluid px-0">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-0">
+                <div class="" id="sales-form-container">
+                    <div class="container-fluid pt-0 px-0 pb-0">
+                        <div class="sales__form-box m-1 pb-4 " *ngIf="isFormVisible">
+                            <div class="row">
+                                <div class="col-sm-4 col-md-4 col-lg-2">
+                                    <div class="custom__input-container">
+                                        <select class="input-field custom__input  w-100 req" id="departmentId"
+                                            name="Department" data-placeholder="--Choose--" required>
+                                            <option *ngFor="let item of demandList" value="{{item?.RequestedToDept}}">
+                                                {{item?.VoucherNo}}</option>
+
+                                        </select>
+                                        <label>Demand List</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-md-4 col-lg-2">
+                                    <div class="custom__input-container">
+                                        <select class="input-field custom__input  w-100 req" id="fromLocationId"
+                                            name="Department" data-placeholder="--Choose--" required>
+                                            <option value=""></option>
+
+                                        </select>
+                                        <label>From Location</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-md-4 col-lg-2">
+                                    <div class="custom__input-container">
+                                        <select class="input-field custom__input  w-100 req" id="toLocationId"
+                                            name="Department" data-placeholder="--Choose--" required>
+                                            <option value=""></option>
+
+                                        </select>
+                                        <label>To Location</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-md-4 col-lg-2">
+                                    <div class="custom__input-container">
+                                        <select class="input-field custom__input  w-100 req" id="assignedTo" name="User"
+                                            data-placeholder="--Choose--" required>
+                                            <option value=""></option>
+                                        </select>
+                                        <label>Assigned To</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-md-3 col-lg-1">
+                                    <div class="custom__input-container d-flex align-items-center">
+                                        <button type="button" id="button" class="button button-sm btn btn-success ms-1">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                        <button type="button" class="button-sm btn btn-danger ms-1" title="Reset"
+                                            id="salesBtn_refresh">
+                                            <i class="fa-solid fa-rotate-left"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="filter sales__form-box m-1 pb-0">
+                            <div class="row d-flex justify-content-end">
+                                <div class=" col-sm-4 col-md-3 col-lg-2 mb-2">
+                                    <div class="custom__input-container d-flex align-items-center mt-0">
+                                        <input id="mappingSearchString" type="text"
+                                            class="form-control custom__input search-icon-padding" placeholder="Search"
+                                            autocomplete="off">
+                                        <button class="search-icon"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="row mt-1">
+                            <div class="col-lg-12">
+                                <div class="table__wrapper  table__wrapper-55 table_xxl-65 m-1">
+                                    <table class="table">
+                                        <thead class="table__head">
+                                            <tr>
+                                                <th class="sales-main-table__sn">S.N.</th>
+                                                <th class="sales-main-table__item">Type</th>
+                                                <th class="sales-main-table__qty">Batch</th>
+                                                <th class="sales-main-batch">Unit</th>
+                                                <th class="sales-main-batch">Req. Qty</th>
+                                                <th class="sales-main-batch">Qty</th>
+                                                <th class="sales-main-batch">Aviable Qty</th>
+                                                <th class="sales-main-batch">Satus</th>
+                                                <th class="sales-main-table__action">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="table__body" id="sales-main-table__body">
+                                            <tr>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Location popup -->
+<div [hidden]="!isLocationVisible">
+    <div class="customPopupContainer" (click)="closeLocationPopup()">
+        <div (click)="$event.stopPropagation()"
+            class="customPopup customPopup--location customPopup-md-hgt-40 customPopup-md-30"
+            [ngClass]="modalAnimationClass">
+            <div class="modal-body p-2">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <h2 class="text-center mb-4">Select Location</h2>
+                        <div class="custom__input-container">
+                            <select class="input-field custom__input  w-90 req" id="locationId" name="Nature"
+                                data-placeholder="--Choose--">
+                                <option value=""></option>
+                                <option *ngFor="let item of LocationList" [value]="item.id"
+                                    [attr.data-department-id]="item.departmentId">
+                                    {{ item.text }}
+                                </option>
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

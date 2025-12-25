@@ -11,6 +11,12 @@ import { ProductBrandComponent } from './Product/product-brand/product-brand.com
 import { DemandComponent } from './demand/demand.component';
 import { ProductModelComponent } from './Product/product-model/product-model.component';
 import { ProductSizeComponent } from './Product/product-size/product-size.component';
+import { FormsModule } from '@angular/forms';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ProductCreationComponent } from './Product/product-creation/product-creation.component';
+import { SupplyComponent } from './supply/supply/supply.component';
+import { DeptStockLocationMappingComponent } from './dept-stock-location-mapping/dept-stock-location-mapping.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -21,12 +27,19 @@ import { ProductSizeComponent } from './Product/product-size/product-size.compon
     ProductBrandComponent,
     DemandComponent,
     ProductModelComponent,
-    ProductSizeComponent
+    ProductSizeComponent,
+    ProductCreationComponent,
+    SupplyComponent,
+    DeptStockLocationMappingComponent
   ],
   imports: [
     CommonModule,
     InventoryRoutingModule,
-    SharedModule
-  ]
+    SharedModule,
+    FormsModule,
+    MatPaginatorModule,
+      NgMultiSelectDropDownModule,
+  
+]
 })
 export class InventoryModule { }

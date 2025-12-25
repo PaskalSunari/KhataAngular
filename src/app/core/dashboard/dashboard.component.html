@@ -68,7 +68,7 @@
                                 <td>{{item?.voucherNo}}</td>
                                 <td>{{item?.Amount}}</td>
                                 <td>{{item?.Username}}</td>
-                                <td>{{ item?.EntryDate | date:'yyyy-MM-dd' }}</td>
+                                <td>{{ item?.EntryDate }}</td>
                             </tr>
 
                         </tbody>
@@ -137,4 +137,32 @@
 
 <div class="loading" *ngIf="loading">
     <img src="../../../assets/img/loding---img2.gif" alt="">
+</div>
+
+<!-- Location popup -->
+<div [hidden]="!isLocationVisible">
+    <div class="customPopupContainer" (click)="closeLocationPopup()">
+        <div (click)="$event.stopPropagation()"
+            class="customPopup customPopup--location customPopup-md-hgt-40 customPopup-md-30"
+            [ngClass]="modalAnimationClass">
+            <div class="modal-body p-2">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <h2 class="text-center mb-4">Select Location</h2>
+                        <div class="custom__input-container">
+                            <select class="input-field custom__input  w-90 req" id="locationId" name="Nature"
+                                data-placeholder="--Choose--">
+                                <option value=""></option>
+                                <option *ngFor="let item of LocationList" [value]="item.id"
+                                    [attr.data-department-id]="item.departmentId">
+                                    {{ item.text }}
+                                </option>
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
