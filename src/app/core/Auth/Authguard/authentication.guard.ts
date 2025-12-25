@@ -19,14 +19,13 @@ export class AuthGuardService implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-debugger
-    // ✅ Extract only the clean route path (remove query params and hash)
+
+
     const requestedRoute = state.url.split(/[?#]/)[0];
 
-    // ✅ Define routes that are allowed only for logged-in users
+
     const allowedRoutes = ['/dashboard', '/sales/pos', 'organization','/inventory/productgroup','/inventory/productcategory','/inventory/productunit','/inventory/productmanufacturer','/inventory/productbrand','/inventory/productmodel','/inventory/productsize','/inventory/productcreate','/inventory/supply','/inventory/deptstocklocationmapping'];
 
-    // 🚫 If not logged in → redirect to login
     if (!this.loginservice.isLoggedIn()) {
       this.toastr.info('Please login to access this page.');
       this.loginservice.removetoken();
@@ -35,18 +34,13 @@ debugger
 
     }
 
-    // ✅ Allow route access if it’s in the allowed list
-    // Also allow any sub-route under `/inventory` (e.g. `/inventory/demand`) so module child routes work
+    
     if (allowedRoutes.includes(requestedRoute) || requestedRoute.startsWith('/inventory')) {
       return true;
     }
 
-    // 🔁 Otherwise redirect to dashboard (default page)
     this.router.navigate(['/dashboard']);
     return false;
   }
 }
 
-//Note:
-// allowedRoutes → Array of strings (['/dashboard', '/sales/pos', 'organization'])
-// requestedRoute → String ('/dashboard')

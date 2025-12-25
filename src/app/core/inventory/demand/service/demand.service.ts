@@ -19,11 +19,24 @@ baseurl = environment.appURL;
     }
     return this.http.get(`${this.baseurl}${this.endPoint.getRequestedByDropdownList}`, {params});
   }
-  getRequestedToDropdownList(userId: number, departmentId : number) {
-    return this.http.get(`${this.baseurl}${this.endPoint.getRequestedToDropdownList}${userId}&departmentId=${departmentId}`);
+  getRequestedToDropdownList() {
+    const userId = Number(localStorage.getItem('userId'));
+    const stockLocation = localStorage.getItem('stockLocation');
+    const departmentId = stockLocation ? Number(JSON.parse(stockLocation).locationId) : 0;
+    return this.http.get(`${this.baseurl}${this.endPoint.getRequestedToDropdownList}`,{
+      params: {
+        userId: userId.toString(),
+        departmentId: departmentId.toString()
+      }
+    });
   }
   getDepartmentDropdownList() {
-    return this.http.get(`${this.baseurl}${this.endPoint.getDepartmentDropdownList}`);
+    const userId = Number(localStorage.getItem('userId'));
+    return this.http.get(`${this.baseurl}${this.endPoint.getDepartmentDropdownList}`,{
+      params: {
+        userId: userId.toString()
+      }
+    });
   }
   getProductList() {
     return this.http.get(`${this.baseurl}${this.endPoint.getProductDropdownList}`);
