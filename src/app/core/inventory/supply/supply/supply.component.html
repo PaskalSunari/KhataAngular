@@ -26,7 +26,8 @@
                                 <div class="col-sm-4 col-md-4 col-lg-2">
                                     <div class="custom__input-container">
                                         <select class="input-field custom__input  w-100 req" id="demandId"
-                                            name="demandId" data-placeholder="--Choose--" required>
+                                            name="demandId" data-placeholder="--Choose--" [disabled]="isDisabled"
+                                            required>
                                             <option *ngFor="let item of demandList" value="{{item?.demandMasterId}}">
                                                 {{item?.VoucherNo}}</option>
 
@@ -37,7 +38,8 @@
                                 <div class="col-sm-4 col-md-4 col-lg-3">
                                     <div class="custom__input-container">
                                         <select class="input-field custom__input  w-100 req" id="fromLocationId"
-                                            name="fromLocation" data-placeholder="--Choose--" required>
+                                            name="fromLocation" data-placeholder="--Choose--" [disabled]="isDisabled"
+                                            required>
                                             <option value=""></option>
                                             <option *ngFor="let item of fromLocationList" value="{{item.locationId}}">
                                                 {{item.locationName}}</option>
@@ -48,7 +50,8 @@
                                 <div class="col-sm-4 col-md-4 col-lg-3">
                                     <div class="custom__input-container">
                                         <select class="input-field custom__input  w-100 req" id="toLocationId"
-                                            name="toLocationId" data-placeholder="--Choose--" required>
+                                            name="toLocationId" data-placeholder="--Choose--" [disabled]="isDisabled"
+                                            required>
                                             <option value=""></option>
                                             <option *ngFor="let item of toLocationList" value="{{item.locationId}}">
                                                 {{item.locationName}}</option>
@@ -59,7 +62,7 @@
                                 <div class="col-sm-4 col-md-4 col-lg-2">
                                     <div class="custom__input-container">
                                         <select class="input-field custom__input  w-100 req" id="assignedToUserId"
-                                            name="User" data-placeholder="--Choose--" required>
+                                            name="User" data-placeholder="--Choose--" [disabled]="isDisabled" required>
                                             <option value=""></option>
                                             <option *ngFor="let item of assignedToList" value="{{item.userId}}">
                                                 {{item.userName}}</option>
@@ -71,7 +74,11 @@
                                     class="col-sm-4 col-md-3 col-lg-1 d-flex align-items-center justify-content-left text-left">
                                     <div class="custom__input-container d-flex align-items-center">
                                         <button type="button" id="button" class="button button-sm btn btn-success ms-1"
-                                            (click)="loadDemandDataIntoSupply()">
+                                            [disabled]="isDisabled" (click)="transformDemandToSupply()">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                        <button type="button" id="button" class="button button-sm btn btn-danger ms-1"
+                                            (click)="resetSupply()">
                                             <i class="fa-solid fa-rotate-left"></i>
                                         </button>
                                     </div>
@@ -114,7 +121,7 @@
                                                 <th class="sales-main-batch">Unit</th>
                                                 <th class="sales-main-batch">Req. Qty</th>
                                                 <th class="sales-main-batch">Qty</th>
-                                                <th class="sales-main-batch">Aviable Qty</th>
+                                                <th class="sales-main-batch">Available Qty</th>
                                                 <th class="sales-main-batch">Satus</th>
                                                 <th class="sales-main-table__action">Action</th>
                                             </tr>
@@ -145,10 +152,10 @@
                                         <button type="button" id="button" class="button button-sm btn btn-success ms-1">
                                             <i class="fa-solid fa-save"></i>
                                         </button>
-                                         <button type="button" id="button" class="button button-sm btn btn-danger ms-1">
-                                              <i class="fa-solid fa-trash"></i>
+                                        <button type="button" id="button" class="button button-sm btn btn-danger ms-1">
+                                            <i class="fa-solid fa-trash"></i>
                                         </button>
-                                        
+
                                     </div>
                                 </div>
                             </div>

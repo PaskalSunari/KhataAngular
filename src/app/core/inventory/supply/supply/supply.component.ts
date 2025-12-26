@@ -15,6 +15,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   isLocationVisible: boolean = false;
   isEditMode: boolean = false;
   isPrefixSuffix: boolean = false;
+  isDisabled: boolean = false;
 
   userId: any;
   branchId: any;
@@ -131,7 +132,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
       }
     };
 
-    this.service.getPrefixSuffix(payload).subscribe((res: any) => {
+    this.service.getGenericServices(payload).subscribe((res: any) => {
       this.isPrefixSuffix = !!(res?.data?.length > 0);
       if (this.isPrefixSuffix) {
         this.getStockLocation();   // ✅ CALL HERE
@@ -187,22 +188,14 @@ export class SupplyComponent implements OnInit, AfterViewInit {
       }
     };
 
-    this.service.getDemandList(payload).subscribe((res: any) => {
+    this.service.getGenericServices(payload).subscribe((res: any) => {
       const data = res?.data;
       if (data && data?.length > 0) {
         this.demandMasterId = data[0]?.demandMasterId;
         this.demandList = res?.data;
         $("#departmentId").focus();
       } else {
-        this.demandMasterId = 0;
-        this.fromLocationId = 0;
-        this.toLocationId = 0;
-        this.assignToUserId = 0;
-
-        this.demandList = [];
-        this.fromLocationList = [];
-        this.toLocationList = [];
-        this.assignedToList = [];
+        this.resetSupply();
         this.toastr.error('Demand not available.');
       }
     },
@@ -225,7 +218,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
       },
     };
 
-    this.service.getStockLocationList(payload).subscribe((res: any) => {
+    this.service.getGenericServices(payload).subscribe((res: any) => {
       this.LocationList = res?.data || [];
 
       if (this.LocationList.length > 0) {
@@ -275,29 +268,75 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     this.getStockLocationList();
   }
 
-  loadDemandDataIntoSupply() {
-    console.log(this.demandMasterId);
+  private isInvalidId(value: any): boolean {
+    return Number(value) <= 0 || isNaN(Number(value));
+  }
 
-    if (this.demandMasterId == 0) {
+  transformDemandToSupply() {
+
+    if (this.isInvalidId(this.demandMasterId)) {
       this.toastr.error('Demand is required.');
       $('#demandId').focus();
+      return;
     }
 
-    else if (this.fromLocationId == 0) {
+    if (this.isInvalidId(this.fromLocationId)) {
       this.toastr.error('From Location is required.');
-      $("#fromLocationId").focus();
+      $('#demandId').focus();
+      return;
     }
 
-    else if (this.toLocationId == 0) {
+    if (this.isInvalidId(this.toLocationId)) {
       this.toastr.error('To Location is required.');
-      $("#toLocationId").focus();
+      $('#toLocationId').focus();
+      return;
     }
 
-    else if (this.assignToUserId == 0) {
+    if (this.isInvalidId(this.assignToUserId)) {
       this.toastr.error('Assigned to user is required.');
-      $("#assignedToUserId").focus();
+      $('#assignedToUserId').focus();
+      return;
     }
 
-    console.log('hello');
+    const payload = {
+      tableName: 'Supply',
+      parameter: {
+        Flag: 'transformDemandToSupply',
+        UserId: String(this.userId ?? ''),
+        FiscalId: String(this.fiscalId ?? ''),
+        fromLocationId: String(this.fromLocationId),
+        toLocationId: String(this.toLocationId),
+        demandId: String(this.demandMasterId),
+        branchId: String(this.branchId)
+      }
+    };
+
+    this.service.getGenericServices(payload).subscribe((res: any) => {
+      const data = res?.data;
+      if (data?.length > 0) {
+        if (data[0].status == 200) {
+          this.toastr.success(data[0].message);
+          this.isDisabled = true;
+        }
+        else { this.toastr.error(data[0].message); }
+      }
+    });
   }
+
+  resetSupply() {
+    this.isDisabled = false;
+    this.demandMasterId = 0;
+    this.fromLocationId = 0;
+    this.toLocationId = 0;
+    this.assignToUserId = 0;
+
+    // this.demandList = [];
+    this.fromLocationList = [];
+    this.toLocationList = [];
+    this.assignedToList = [];
+
+    $("#demandId").focus();
+
+  }
+
 }
