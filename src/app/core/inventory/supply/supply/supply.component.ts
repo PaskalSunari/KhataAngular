@@ -14,6 +14,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   isFormVisible: boolean = true;
   isLocationVisible: boolean = false;
   isEditMode: boolean = false;
+  isPrefixSuffix: boolean = false;
 
   userId: any;
   branchId: any;
@@ -22,8 +23,16 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   stockLocationName: string | null = null;
   modalAnimationClass: any = "";
 
+  demandMasterId: any;
+  fromLocationId: any;
+  toLocationId: any;
+  assignToUserId: any;
+
   demandList: any;
   LocationList: any;
+  fromLocationList: any;
+  toLocationList: any;
+  assignedToList: any;
 
   constructor(
     private el: ElementRef,
@@ -40,33 +49,109 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     const fiscalYear = localStorage.getItem('fiscalYear') || '';
     const fy = JSON.parse(fiscalYear);
     this.fiscalId = fy.financialYearId
-
   }
+
   ngAfterViewInit(): void {
-    const that = this;
     $(this.el.nativeElement).find('select').select2();
+    const self = this;
+    $('#demandId').focus();
 
-    $("#locationId").on("select2:select", function (e: any) {
-      const selected = e.params.data.id;
-      const selectedText = e.params.data.text;
-      const el = e.params.data.element;
-      const departmentId = $(el).data("department-id");
+    this.getPrefixSuffix();
+    this.focusNextFun();
 
-      const data = { locationId: selected, locationName: selectedText, departmentId: departmentId };
-      localStorage.setItem('stockLocation', JSON.stringify(data)
-      );
-      that.getStockLocation();
-      that.closeLocationPopup();
+    $('#demandId').on('select2:close', function (e: any) {
+      const id = e.target.value;
+      self.demandMasterId = id;
+      console.log('Demand MasterId:', id);
+
+      if (id != '' || id != 0) {
+        self.getDropDownList();
+      }
+
     });
 
-    this.getStockLocation();
+    $('#fromLocationId').on('select2:close', function (e: any) {
+      const id = e.target.value;
+      self.fromLocationId = id || 0;
+      console.log('From LocationId: ', id);
+    });
 
+    $('#toLocationId').on('select2:close', function (e: any) {
+      const id = e.target.value;
+      self.toLocationId = id || 0;
+      console.log('To LocationId: ', id);
+    });
 
+    $('#assignedToUserId').on('select2:close', function (e: any) {
+      const id = e.target.value;
+      self.assignToUserId = id || 0;
+      console.log('Assign to userId: ', id);
+    });
+
+  }
+
+  // Enter focus next function
+  focusNextFun() {
+    $(document).ready(function () {
+      // Keydown event handler for inputs and selects
+      $('input, select, .focussable, textarea ,button').on(
+        'keydown blur',
+        function (this: HTMLElement, event: any) {
+          if (event.keyCode === 13) {
+            event.preventDefault();
+            const current = $(event.target);
+            if (!current.hasClass('select2-hidden-accessible')) {
+              setFocusOnNextElement.call(current);
+            }
+          }
+        }
+      );
+
+      $('select').on('select2:close', function (this: HTMLElement, event: any) {
+        const $this = $(this);
+        // Wait for Select2 dropdown to close completely
+        setTimeout(() => {
+          setFocusOnNextElement.call($this);
+        }, 10);
+      });
+    });
   }
 
   toggleForm() {
     this.isFormVisible = !this.isFormVisible;
   }
+
+  getPrefixSuffix() {
+    const payload = {
+      tableName: 'Supply',
+      parameter: {
+        Flag: "getPrefixSuffix",
+        FiscalId: this.fiscalId?.toString() ?? '',
+        BranchId: this.branchId?.toString() ?? ''
+      }
+    };
+
+    this.service.getPrefixSuffix(payload).subscribe((res: any) => {
+      this.isPrefixSuffix = !!(res?.data?.length > 0);
+      if (this.isPrefixSuffix) {
+        this.getStockLocation();   // ✅ CALL HERE
+      } else {
+        this.isPrefixSuffix = false;
+        this.toastr.error('Prefix/Suffix not found.');
+        this.demandMasterId = 0;
+        this.fromLocationId = 0;
+        this.toLocationId = 0;
+        this.assignToUserId = 0;
+
+        this.demandList = [];
+        this.fromLocationList = [];
+        this.toLocationList = [];
+        this.assignedToList = [];
+        return;
+      }
+    });
+  }
+
 
   getStockLocation() {
     const storeLocation: any = localStorage.getItem("stockLocation");
@@ -79,21 +164,45 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     }
   }
 
+  //Fill dropdown list
+  getDropDownList() {
+    this.service.getDropDownList(this.userId, this.branchId, this.fiscalId, this.demandMasterId).subscribe((res: any) => {
+      this.fromLocationList = res?.fromLocation || [];
+      this.toLocationList = res?.toLocation || [];
+      this.assignedToList = res?.assignedToUser || [];
+    })
+  }
+
+  //Get Demand List
   getDemandList() {
+    const storeLocation: any = localStorage.getItem("stockLocation");
+    const data = JSON.parse(storeLocation);
     const payload = {
       tableName: 'Supply',
       parameter: {
         Flag: "GetDemandList",
         UserId: this.userId?.toString() ?? '',
-        FiscalId:  this.fiscalId?.toString() ?? ''
+        FiscalId: this.fiscalId?.toString() ?? '',
+        LocationId: data?.locationId?.toString() ?? ''
       }
     };
 
     this.service.getDemandList(payload).subscribe((res: any) => {
       const data = res?.data;
-      if (data && data.length > 0) {
+      if (data && data?.length > 0) {
+        this.demandMasterId = data[0]?.demandMasterId;
         this.demandList = res?.data;
+        $("#departmentId").focus();
       } else {
+        this.demandMasterId = 0;
+        this.fromLocationId = 0;
+        this.toLocationId = 0;
+        this.assignToUserId = 0;
+
+        this.demandList = [];
+        this.fromLocationList = [];
+        this.toLocationList = [];
+        this.assignedToList = [];
         this.toastr.error('Demand not available.');
       }
     },
@@ -107,9 +216,8 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     this.isLocationVisible = false;
   }
 
+  //Get List and set new localStorege 
   getStockLocationList() {
-    const getLocaltion = localStorage.getItem('stockLocation');
-
     const payload = {
       tableName: 'LocationByUser',
       parameter: {
@@ -117,28 +225,79 @@ export class SupplyComponent implements OnInit, AfterViewInit {
       },
     };
 
-    this.service.getStockLocationList(payload).subscribe(
-      (res: any) => {
-        this.LocationList = res?.data;
-        //console.log('stock Location List:', this.LocationList)
+    this.service.getStockLocationList(payload).subscribe((res: any) => {
+      this.LocationList = res?.data || [];
 
-        if (this.LocationList.length > 0) {
-          this.isLocationVisible = true;
-          setTimeout(() => { $("#locationId").select2('open'); }, 100);
-        }
-      },
-      (err) => {
-        console.error('Error fetching location data:', err);
+      if (this.LocationList.length > 0) {
+        this.modalAnimationClass = '';
+        this.isLocationVisible = true;
 
+        setTimeout(() => {
+          const $location = $('#locationId');
+
+          // Destroy previous instance if exists
+          if ($location.hasClass('select2-hidden-accessible')) {
+            $location.select2('destroy');
+          }
+
+          // Init select2
+          $location.select2();
+
+          // Remove old handlers and bind fresh
+          $location.off('select2:select').on('select2:select', (e: any) => {
+            const selected = e.params.data.id;
+            const selectedText = e.params.data.text;
+            const el = e.params.data.element;
+            const departmentId = $(el).data('department-id');
+
+            const data = {
+              locationId: selected,
+              locationName: selectedText,
+              departmentId: departmentId
+            };
+
+            localStorage.setItem('stockLocation', JSON.stringify(data));
+            this.getStockLocation();
+            this.closeLocationPopup();
+            $('#demandId').focus();
+          });
+
+          // Auto open dropdown
+          $location.select2('open');
+
+        }, 0);
       }
-    );
+    });
   }
 
-  changeStockDepartment() {
-    this.isLocationVisible = true;
-    setTimeout(() => {
-      this.getStockLocationList();
-    }, 10);
+  //Open Location Popup Modal
+  openStockDepartmentModel() {
+    this.getStockLocationList();
   }
 
+  loadDemandDataIntoSupply() {
+    console.log(this.demandMasterId);
+
+    if (this.demandMasterId == 0) {
+      this.toastr.error('Demand is required.');
+      $('#demandId').focus();
+    }
+
+    else if (this.fromLocationId == 0) {
+      this.toastr.error('From Location is required.');
+      $("#fromLocationId").focus();
+    }
+
+    else if (this.toLocationId == 0) {
+      this.toastr.error('To Location is required.');
+      $("#toLocationId").focus();
+    }
+
+    else if (this.assignToUserId == 0) {
+      this.toastr.error('Assigned to user is required.');
+      $("#assignedToUserId").focus();
+    }
+
+    console.log('hello');
+  }
 }

@@ -22,7 +22,7 @@ baseurl = environment.appURL;
   getRequestedToDropdownList() {
     const userId = Number(localStorage.getItem('userId'));
     const stockLocation = localStorage.getItem('stockLocation');
-    const departmentId = stockLocation ? Number(JSON.parse(stockLocation).locationId) : 0;
+    const departmentId = stockLocation ? Number(JSON.parse(stockLocation).departmentId) : 0;
     return this.http.get(`${this.baseurl}${this.endPoint.getRequestedToDropdownList}`,{
       params: {
         userId: userId.toString(),
@@ -52,5 +52,9 @@ baseurl = environment.appURL;
   AvailableQuantity(productId: number,unitId:any) {
     // const params = { productId: productId.toString(), unitId:unitId.toString() };
     return this.http.get(`${this.baseurl}${this.endPoint.availableQuantity}${productId}&unitId=${unitId}`);
+  }
+
+  getStockLocationList(data: any) {
+    return this.http.post(`${this.baseurl}${this.endPoint.gemericApi}`, data);
   }
 }
