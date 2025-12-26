@@ -429,6 +429,7 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
       removing: false
     };
     this.tableRows.push(rowData);
+    
     const shouldLockDropdowns = !this.lockDropdown;
     if (shouldLockDropdowns) {
       this.lockDropdown = true;
@@ -518,6 +519,7 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     const fiscalYearId = fiscalYear ? JSON.parse(fiscalYear).financialYearId : 0;
     const userId = Number(localStorage.getItem('userId')) || 0;
     const remarks = this.remarks.nativeElement.value;
+    const branchId = Number(localStorage.getItem('branch')) || 0;
     const expectedDate = this.expectedDate.nativeElement.value;
     if (this.tableRows.length === 0) {
       this.toastr.warning('Please add at least one item to the table.', 'Validation Error');
@@ -549,6 +551,7 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
       status: true,
       entryDate: new Date(),
       entryBy: userId,
+      branchId: branchId,
       items: items
     };
     this.service.postDemand(payload).subscribe(
