@@ -377,3 +377,13 @@ ng-multiselect-dropdown .multiselect-dropdown {
   outline: none;
   padding: 0 5px;
 }
+
+.sales-main-table__type {
+    width: 140px;          /* fixed width */
+    min-width: 140px;
+    max-width: 140px;   
+}
+
+.sales-main-table__type select {
+    width: 100%;
+}
