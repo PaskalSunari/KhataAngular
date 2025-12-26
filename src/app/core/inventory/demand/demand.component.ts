@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy, OnChanges, SimpleChanges, numberAttribute, ChangeDetectorRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, OnDestroy, OnChanges, SimpleChanges, numberAttribute, ChangeDetectorRef, OnInit } from '@angular/core';
 declare var $: any;
 declare var bootstrap: any;
 declare const setFocusOnNextElement: any;
@@ -11,7 +11,7 @@ import { timestamp } from 'rxjs';
   selector: 'app-demand',
   templateUrl: './demand.component.html'
 })
-export class DemandComponent implements AfterViewInit, OnDestroy {
+export class DemandComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChild('requestBy') requestBy!: ElementRef;
   @ViewChild('requestTo') requestTo!: ElementRef;
   @ViewChild('department') department!: ElementRef;
@@ -36,10 +36,20 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
   availableQtyPopover: any = null;
   unitName: string = '';
   stockWarningMessage: string = '';
+  isLocationVisible: boolean = false;
+  modalAnimationClass: any = "";
+  LocationList: any;
+  userId: any;
+  stockLocationId: number | null = null;
+  stockLocationName: string | null = null;
   toggleForm() {
     this.showForm = !this.showForm;
   }
   constructor(private el: ElementRef, public service: DemandService, private toastr: ToastrService, private cdRef: ChangeDetectorRef) { }
+  ngOnInit(): void {
+    this.userId = localStorage.getItem('userId') || '';
+    this.getStockLocation();
+  }
   ngAfterViewInit(): void {
     setTimeout(() => {
       $(this.el.nativeElement).find('select').select2();
@@ -610,4 +620,78 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
 
   this.toastr.info('Form reset successfully.', 'Info');
 }
+
+  getStockLocation() {
+    const storeLocation: any = localStorage.getItem("stockLocation");
+    if (storeLocation) {
+      const data = JSON.parse(storeLocation);
+      this.stockLocationId = data?.locationId;
+      this.stockLocationName = data?.locationName;
+      this.cdRef.detectChanges();
+    }
+  }
+
+  closeLocationPopup() {
+    this.modalAnimationClass = 'modal-exit';
+    this.isLocationVisible = false;
+  }
+
+  //Get List and set new localStorage 
+  getStockLocationList() {
+    const payload = {
+      tableName: 'LocationByUser',
+      parameter: {
+        UserId: this.userId,
+      },
+    };
+
+    this.service.getStockLocationList(payload).subscribe((res: any) => {
+      this.LocationList = res?.data || [];
+
+      if (this.LocationList.length > 0) {
+        this.modalAnimationClass = '';
+        this.isLocationVisible = true;
+
+        setTimeout(() => {
+          const $location = $('#locationId');
+
+          // Destroy previous instance if exists
+          if ($location.hasClass('select2-hidden-accessible')) {
+            $location.select2('destroy');
+          }
+
+          // Init select2
+          $location.select2();
+
+          // Remove old handlers and bind fresh
+          $location.off('select2:select').on('select2:select', (e: any) => {
+            const selected = e.params.data.id;
+            const selectedText = e.params.data.text;
+            const el = e.params.data.element;
+            const departmentId = $(el).data('department-id');
+
+            const data = {
+              locationId: selected,
+              locationName: selectedText,
+              departmentId: departmentId
+            };
+
+            localStorage.setItem('stockLocation', JSON.stringify(data));
+            this.getStockLocation();
+            this.closeLocationPopup();
+            // Optional: Focus on another element, e.g., $('#someElement').focus();
+          });
+
+          // Auto open dropdown
+          $location.select2('open');
+
+        }, 0);
+      }
+    });
+  }
+
+  //Open Location Popup Modal
+  openStockDepartmentModel() {
+    this.getStockLocationList();
+  }
 }

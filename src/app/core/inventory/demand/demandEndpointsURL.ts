@@ -12,4 +12,5 @@ export class DemandUrl {
   getUnitDropdownList: string = 'inventory/Demand/UnitList'
   postDemand: string = 'inventory/Demand/PostDemand'
   availableQuantity: string = 'inventory/Demand/AvailableQuantity?productId='
+  gemericApi: string = 'Account/GlobalUtility/GenericAPI';
 }
