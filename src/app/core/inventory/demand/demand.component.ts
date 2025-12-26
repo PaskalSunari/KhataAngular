@@ -47,18 +47,15 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
       this.getRequestToDropdownList();
       this.getProductList();
       this.enterFun();
-      if (this.department && this.department.nativeElement){
-        const $department = $(this.department.nativeElement);
-        setTimeout(() => {
-          try{
-            $department.next('.select2-container').find('.select2-selection').trigger('focus').trigger('click');
-          }catch{
-            try{
-              (this.department.nativeElement as HTMLElement).focus();
-            }catch {}
-          }
-        }, 100)
-      }
+      setTimeout(() => {
+        try {
+          $('#requestedToDepartment').next('.select2-container').find('.select2-selection').trigger('focus').trigger('click');
+        } catch {
+          try {
+            ($('#requestedToDepartment')[0] as HTMLElement).focus();
+          } catch {}
+        }
+      }, 100)
     }, 0);
     let self = this
     $('#unit').on('change', function (event: any) {
@@ -436,14 +433,10 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     }
     setTimeout(() => {
       if (shouldLockDropdowns) {
-        $(this.requestBy.nativeElement).prop('disabled', true).trigger('change.select2');
         $(this.requestTo.nativeElement).prop('disabled', true).trigger('change.select2');
-        $(this.department.nativeElement).prop('disabled', true).trigger('change.select2');
         $('#requestedToDepartment').prop('disabled', true).trigger('change.select2');
       }else{
-        $(this.requestBy.nativeElement).prop('disabled', false).trigger('change.select2');
         $(this.requestTo.nativeElement).prop('disabled', false).trigger('change.select2');
-        $(this.department.nativeElement).prop('disabled', false).trigger('change.select2');
         $('#requestedToDepartment').prop('disabled', false).trigger('change.select2');
       }
       if (this.product && this.product.nativeElement) {
@@ -507,9 +500,8 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     this.tableRows.forEach((row, idx) => { row.sn = idx + 1;});
     if (this.tableRows.length === 0 && this.lockDropdown) {
       this.lockDropdown = false;
-      $(this.requestBy.nativeElement).prop('disabled', false).trigger('change.select2');
       $(this.requestTo.nativeElement).prop('disabled', false).trigger('change.select2');
-      $(this.department.nativeElement).prop('disabled', false).trigger('change.select2');
+      $('#requestedToDepartment').prop('disabled', false).trigger('change.select2');
     }
     this.toastr.success('Item removed from table.', 'Success');
     }, 1000);    
@@ -559,20 +551,18 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
         this.toastr.success('Demand posted successfully.', 'Success');
         this.tableRows = [];
         this.lockDropdown = false;
-         $(this.requestBy.nativeElement).prop('disabled', false).val(userId).trigger('change.select2');
          $(this.requestTo.nativeElement).prop('disabled', false).val('Choose').trigger('change.select2');
-         $(this.department.nativeElement).prop('disabled', false).val('Choose').trigger('change.select2');
          $('#requestedToDepartment').prop('disabled', false).val('Choose').trigger('change.select2');
       try { this.remarks.nativeElement.value = ''; } catch {}
        setTimeout(() => {
         try {
-          const $dep = $('#requestByDepartment');
+          const $dep = $('#requestedToDepartment');
           $dep.next('.select2-container')
               .find('.select2-selection')
               .trigger('focus')
               .trigger('click');
         } catch {
-          try { ($('#requestByDepartment')[0] as HTMLElement).focus(); } catch {}
+          try { ($('#requestedToDepartment')[0] as HTMLElement).focus(); } catch {}
         }
       }, 150);
     },        
@@ -608,13 +598,13 @@ export class DemandComponent implements AfterViewInit, OnDestroy {
     this.getDepartmentDropdownList(); 
     this.getProductList(); 
     try {
-      $(this.department.nativeElement)
+      $('#requestedToDepartment')
         .next('.select2-container')
         .find('.select2-selection')
         .trigger('focus')
         .trigger('click');
     } catch {
-      this.department.nativeElement.focus();
+      $('#requestedToDepartment')[0].focus();
     }
   }, 100);
 
