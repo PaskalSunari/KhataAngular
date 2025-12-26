@@ -10,6 +10,10 @@ export class SupplyService {
   baseUrl = environment.appURL;
   constructor(private http: HttpClient, private urls: SupplyURL) { }
 
+    getPrefixSuffix(data: any) {
+    return this.http.post(`${this.baseUrl}${this.urls.gemericApi}`, data);
+  }
+
   getDemandList(data: any) {
     return this.http.post(`${this.baseUrl}${this.urls.gemericApi}`, data);
   }

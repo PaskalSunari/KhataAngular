@@ -14,6 +14,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   isFormVisible: boolean = true;
   isLocationVisible: boolean = false;
   isEditMode: boolean = false;
+  isPrefixSuffix: boolean = false;
 
   userId: any;
   branchId: any;
@@ -21,7 +22,11 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   stockLocationId: number | null = null;
   stockLocationName: string | null = null;
   modalAnimationClass: any = "";
+
   demandMasterId: any;
+  fromLocationId: any;
+  toLocationId: any;
+  assignToUserId: any;
 
   demandList: any;
   LocationList: any;
@@ -44,24 +49,44 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     const fiscalYear = localStorage.getItem('fiscalYear') || '';
     const fy = JSON.parse(fiscalYear);
     this.fiscalId = fy.financialYearId
-
   }
 
   ngAfterViewInit(): void {
     $(this.el.nativeElement).find('select').select2();
     const self = this;
     $('#demandId').focus();
-    this.getStockLocation();
+
+    this.getPrefixSuffix();
     this.focusNextFun();
 
-    //debugger;
     $('#demandId').on('select2:close', function (e: any) {
-      const demandId = e.target.value;
-      self.demandMasterId = demandId;
-      console.log(e.target.value);
-      self.getDropDownList();
+      const id = e.target.value;
+      self.demandMasterId = id;
+      console.log('Demand MasterId:', id);
+
+      if (id != '' || id != 0) {
+        self.getDropDownList();
+      }
+
     });
 
+    $('#fromLocationId').on('select2:close', function (e: any) {
+      const id = e.target.value;
+      self.fromLocationId = id || 0;
+      console.log('From LocationId: ', id);
+    });
+
+    $('#toLocationId').on('select2:close', function (e: any) {
+      const id = e.target.value;
+      self.toLocationId = id || 0;
+      console.log('To LocationId: ', id);
+    });
+
+    $('#assignedToUserId').on('select2:close', function (e: any) {
+      const id = e.target.value;
+      self.assignToUserId = id || 0;
+      console.log('Assign to userId: ', id);
+    });
 
   }
 
@@ -87,7 +112,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         // Wait for Select2 dropdown to close completely
         setTimeout(() => {
           setFocusOnNextElement.call($this);
-        }, 0);
+        }, 10);
       });
     });
   }
@@ -95,6 +120,38 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   toggleForm() {
     this.isFormVisible = !this.isFormVisible;
   }
+
+  getPrefixSuffix() {
+    const payload = {
+      tableName: 'Supply',
+      parameter: {
+        Flag: "getPrefixSuffix",
+        FiscalId: this.fiscalId?.toString() ?? '',
+        BranchId: this.branchId?.toString() ?? ''
+      }
+    };
+
+    this.service.getPrefixSuffix(payload).subscribe((res: any) => {
+      this.isPrefixSuffix = !!(res?.data?.length > 0);
+      if (this.isPrefixSuffix) {
+        this.getStockLocation();   // ✅ CALL HERE
+      } else {
+        this.isPrefixSuffix = false;
+        this.toastr.error('Prefix/Suffix not found.');
+        this.demandMasterId = 0;
+        this.fromLocationId = 0;
+        this.toLocationId = 0;
+        this.assignToUserId = 0;
+
+        this.demandList = [];
+        this.fromLocationList = [];
+        this.toLocationList = [];
+        this.assignedToList = [];
+        return;
+      }
+    });
+  }
+
 
   getStockLocation() {
     const storeLocation: any = localStorage.getItem("stockLocation");
@@ -119,9 +176,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   //Get Demand List
   getDemandList() {
     const storeLocation: any = localStorage.getItem("stockLocation");
-
     const data = JSON.parse(storeLocation);
-
     const payload = {
       tableName: 'Supply',
       parameter: {
@@ -134,10 +189,16 @@ export class SupplyComponent implements OnInit, AfterViewInit {
 
     this.service.getDemandList(payload).subscribe((res: any) => {
       const data = res?.data;
-      if (data && data.length > 0) {
+      if (data && data?.length > 0) {
+        this.demandMasterId = data[0]?.demandMasterId;
         this.demandList = res?.data;
         $("#departmentId").focus();
       } else {
+        this.demandMasterId = 0;
+        this.fromLocationId = 0;
+        this.toLocationId = 0;
+        this.assignToUserId = 0;
+
         this.demandList = [];
         this.fromLocationList = [];
         this.toLocationList = [];
@@ -152,7 +213,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
 
   closeLocationPopup() {
     this.modalAnimationClass = 'modal-exit';
-    this.isLocationVisible = false;    
+    this.isLocationVisible = false;
   }
 
   //Get List and set new localStorege 
@@ -214,4 +275,29 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     this.getStockLocationList();
   }
 
+  loadDemandDataIntoSupply() {
+    console.log(this.demandMasterId);
+
+    if (this.demandMasterId == 0) {
+      this.toastr.error('Demand is required.');
+      $('#demandId').focus();
+    }
+
+    else if (this.fromLocationId == 0) {
+      this.toastr.error('From Location is required.');
+      $("#fromLocationId").focus();
+    }
+
+    else if (this.toLocationId == 0) {
+      this.toastr.error('To Location is required.');
+      $("#toLocationId").focus();
+    }
+
+    else if (this.assignToUserId == 0) {
+      this.toastr.error('Assigned to user is required.');
+      $("#assignedToUserId").focus();
+    }
+
+    console.log('hello');
+  }
 }
