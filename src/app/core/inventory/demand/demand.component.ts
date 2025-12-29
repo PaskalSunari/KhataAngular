@@ -364,11 +364,6 @@ export class DemandComponent implements AfterViewInit, OnDestroy, OnInit {
      const requestByDeptText = stockLocation
     ? JSON.parse(stockLocation).locationName
     : '';
-    // const requestByDeptValue = $('#requestByDepartment').val();
-    // const requestByDeptText = $('#requestByDepartment').find('option:selected').text();
-
-    // const requestByValue = $(this.requestBy.nativeElement).val();
-    // const requestByText = $(this.requestBy.nativeElement).find('option:selected').text();
 
     const requestToValue = $(this.requestTo.nativeElement).val();
     const requestToText = $(this.requestTo.nativeElement).find('option:selected').text();
@@ -602,7 +597,6 @@ export class DemandComponent implements AfterViewInit, OnDestroy, OnInit {
   $(this.department.nativeElement).prop('disabled', false);
   $('#requestedToDepartment').prop('disabled', false);
 
-  // Destroy any popovers
   this.destroyAvailableQtyPopover();
   setTimeout(() => {
     this.getDepartmentDropdownList(); 
@@ -636,7 +630,6 @@ export class DemandComponent implements AfterViewInit, OnDestroy, OnInit {
     this.isLocationVisible = false;
   }
 
-  //Get List and set new localStorage 
   getStockLocationList() {
     const payload = {
       tableName: 'LocationByUser',
@@ -655,15 +648,10 @@ export class DemandComponent implements AfterViewInit, OnDestroy, OnInit {
         setTimeout(() => {
           const $location = $('#locationId');
 
-          // Destroy previous instance if exists
           if ($location.hasClass('select2-hidden-accessible')) {
             $location.select2('destroy');
           }
-
-          // Init select2
           $location.select2();
-
-          // Remove old handlers and bind fresh
           $location.off('select2:select').on('select2:select', (e: any) => {
             const selected = e.params.data.id;
             const selectedText = e.params.data.text;
