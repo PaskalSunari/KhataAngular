@@ -111,26 +111,78 @@
                                                         <select class="custom__select2" id="supplyType"
                                                             name="transferType" data-placeholder="--Choose--">
                                                             <option value=""></option>
-                                                            <option value="1">Consumer</option>
+                                                            <option value="1">Consum</option>
                                                             <option value="2">Transfer</option>
                                                         </select>
                                                     </div>
                                                 </th>
 
+                                                <th class="sales-main-table__qty">Product Name</th>
                                                 <th class="sales-main-table__qty">Batch</th>
                                                 <th class="sales-main-batch">Unit</th>
                                                 <th class="sales-main-batch">Req. Qty</th>
                                                 <th class="sales-main-batch">Qty</th>
                                                 <th class="sales-main-batch">Available Qty</th>
-                                                <th class="sales-main-batch">Satus</th>
                                                 <th class="sales-main-table__action">Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody class="table__body" id="sales-main-table__body">
-                                            <tr>
 
+                                        <tbody class="table__body" id="sales-main-table__body">
+                                            <tr *ngFor="let item of supplyDetailsList; let i = index">
+                                                <td>{{ i + 1 }}</td>
+
+                                                <td>
+                                                    <select class="from-select" name="transferType">
+                                                        <option value="">--Choose--</option>
+                                                        <option value="1">Consum</option>
+                                                        <option value="2">Transfer</option>
+                                                    </select>
+                                                </td>
+
+                                                <td>{{ item?.productName }}</td>
+
+                                                <!-- Batch dropdown -->
+                                                <td>
+                                                    <select class="batch-select form-select" 
+                                                    [attr.data-index]="i"
+                                                        [disabled]="item?.stockInfoList.length === 0">
+                                                        <option value="">--Choose--</option>
+
+                                                        <option *ngFor="let stock of item?.stockInfoList"
+                                                            [attr.data-stock]="stock?.stockQty">
+                                                            {{ stock.batch }} (Qty: {{ stock?.stockQty | number:'1.0-2'
+                                                            }})
+                                                        </option>
+                                                    </select>
+
+                                                </td>
+
+                                                <td>{{ item?.units }}</td>
+                                                <td>{{ item?.transactionQty }}</td>
+
+                                                <!-- Qty input -->
+                                                <td>
+                                                    <input type="number" class="form-control qty-input" style="width: 100px !important;"
+                                                        [attr.data-index]="i">
+                                                </td>
+
+                                                <td>{{ truncateDecimal(item?.stockQty, 2) }}</td>
+
+
+                                                <td>
+                                                    <button type="button"
+                                                        class="button button--extra-small button--success button--rounded-sm me-2">
+                                                        <i class="fa-solid fa-save"></i>
+                                                    </button>
+                                                    <button type="button"
+                                                        class="button button--extra-small button--danger button--rounded-sm me-2">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>
+                                                </td>
                                             </tr>
                                         </tbody>
+
+
                                     </table>
                                 </div>
                             </div>

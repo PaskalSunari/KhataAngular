@@ -23,6 +23,8 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   stockLocationId: number | null = null;
   stockLocationName: string | null = null;
   modalAnimationClass: any = "";
+  masterId: any;
+  stockQty: any = 0;
 
   demandMasterId: any;
   fromLocationId: any;
@@ -34,6 +36,8 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   fromLocationList: any;
   toLocationList: any;
   assignedToList: any;
+  supplyDetailsList: any;
+
 
   constructor(
     private el: ElementRef,
@@ -88,6 +92,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
       self.assignToUserId = id || 0;
       console.log('Assign to userId: ', id);
     });
+
 
   }
 
@@ -318,9 +323,59 @@ export class SupplyComponent implements OnInit, AfterViewInit {
           this.toastr.success(data[0].message);
           this.isDisabled = true;
         }
-        else { this.toastr.error(data[0].message); }
+        else {
+          //this.toastr.error(data[0].message);
+          console.log('message: ', data);
+          if (data.length > 0) {
+            //this.isDisabled = true;
+            this.masterId = data[0].supplyId;
+            this.getSupplyDraftList();
+          }
+
+
+          console.log('masterId: ', this.masterId);
+
+        }
       }
     });
+  }
+
+  //Fill supply draft list
+  getSupplyDraftList() {
+    this.service.getSupplyDraftList(this.userId, this.branchId, this.fiscalId, this.masterId).subscribe((res: any) => {
+      console.log('draft list: ', res);
+      //const detailsList = res.supplyDetails;
+      this.supplyDetailsList = res.supplyDetails;
+      console.log(this.supplyDetailsList);
+
+      // Initialize Select2 for table batch selects after view render
+      setTimeout(() => {
+        $('.batch-select, .from-select').select2();
+
+        $('.batch-select').on('change', (event: any) => {
+          const $select = $(event.target);
+          const index = $select.data('index');
+
+          const selectedOption = $select.find('option:selected');
+          const stockQty = Number(selectedOption.data('stock')) || 0;
+
+          if (this.supplyDetailsList[index]) {
+            this.supplyDetailsList[index].stockQty = stockQty;
+
+            // Optional: reset qty if greater than stock
+            // if (this.supplyDetailsList[index].transactionQty > stockQty) {
+            //   this.supplyDetailsList[index].transactionQty = stockQty;
+            // }
+          }
+
+          // Update qty input UI
+          //$select.closest('tr').find('.qty-input').val(this.supplyDetailsList[index].transactionQty);
+        });
+
+
+      }, 10);
+
+    })
   }
 
   resetSupply() {
@@ -337,6 +392,21 @@ export class SupplyComponent implements OnInit, AfterViewInit {
 
     $("#demandId").focus();
 
+  }
+  truncateDecimal(value: number | string, digits: number = 2): string {
+    if (value === null || value === undefined) {
+      return '0.00';
+    }
+
+    const num = Number(value);
+    if (isNaN(num)) {
+      return '0.00';
+    }
+
+    const factor = Math.pow(10, digits);
+    const truncated = Math.trunc(num * factor) / factor;
+
+    return truncated.toFixed(digits);
   }
 
 }

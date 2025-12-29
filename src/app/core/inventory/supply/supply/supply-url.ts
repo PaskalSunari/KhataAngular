@@ -4,6 +4,7 @@ import { Injectable } from "@angular/core";
   providedIn: 'root',
 })
 export class SupplyURL {
-  getDropdownList: string = 'inventory/Supply/GetDropdownList';  
   genericApi: string = 'Account/GlobalUtility/GenericAPI';
+  getDropdownList: string = 'inventory/Supply/GetDropdownList';  
+  GetSupplyDraftList: string = 'inventory/Supply/GetSupplyDraftList';  
 }

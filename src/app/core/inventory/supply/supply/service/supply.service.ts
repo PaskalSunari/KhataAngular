@@ -18,4 +18,8 @@ export class SupplyService {
     return this.http.get(`${this.baseUrl}${this.urls.getDropdownList}/${userId}/${branchId}/${fiscalId}/${masterId}`);
   }
 
+   getSupplyDraftList(userId: number, branchId: number, fiscalId: number, masterId: number) {
+    return this.http.get(`${this.baseUrl}${this.urls.GetSupplyDraftList}/${userId}/${branchId}/${fiscalId}/${masterId}`);
+  }
+
 }
