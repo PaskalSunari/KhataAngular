@@ -20,11 +20,14 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   userId: any;
   branchId: any;
   fiscalId: any;
+  decimalPlace: any;
   stockLocationId: number | null = null;
   stockLocationName: string | null = null;
   modalAnimationClass: any = "";
   masterId: any;
   stockQty: any = 0;
+  supplyId: any;
+  supplyDetailsId: any;
 
   demandMasterId: any;
   fromLocationId: any;
@@ -54,6 +57,9 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     const fiscalYear = localStorage.getItem('fiscalYear') || '';
     const fy = JSON.parse(fiscalYear);
     this.fiscalId = fy.financialYearId
+    const globalVariable = localStorage.getItem("globalVariable") || '';
+    const gv = JSON.parse(globalVariable);
+    this.decimalPlace = gv[2].value;
   }
 
   ngAfterViewInit(): void {
@@ -67,7 +73,6 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     $('#demandId').on('select2:close', function (e: any) {
       const id = e.target.value;
       self.demandMasterId = id;
-      console.log('Demand MasterId:', id);
 
       if (id != '' || id != 0) {
         self.getDropDownList();
@@ -78,19 +83,16 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     $('#fromLocationId').on('select2:close', function (e: any) {
       const id = e.target.value;
       self.fromLocationId = id || 0;
-      console.log('From LocationId: ', id);
     });
 
     $('#toLocationId').on('select2:close', function (e: any) {
       const id = e.target.value;
       self.toLocationId = id || 0;
-      console.log('To LocationId: ', id);
     });
 
     $('#assignedToUserId').on('select2:close', function (e: any) {
       const id = e.target.value;
       self.assignToUserId = id || 0;
-      console.log('Assign to userId: ', id);
     });
 
 
@@ -153,6 +155,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         this.fromLocationList = [];
         this.toLocationList = [];
         this.assignedToList = [];
+        this.supplyDetailsList = [];
         return;
       }
     });
@@ -344,9 +347,26 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   getSupplyDraftList() {
     this.service.getSupplyDraftList(this.userId, this.branchId, this.fiscalId, this.masterId).subscribe((res: any) => {
       console.log('draft list: ', res);
+
+      const supplyMaster = JSON.parse(res?.supplyMaster);
+
+      this.supplyDetailsList = res?.supplyDetails || [];
+      this.supplyId = supplyMaster.supplyId;
+
+
       //const detailsList = res.supplyDetails;
-      this.supplyDetailsList = res.supplyDetails;
-      console.log(this.supplyDetailsList);
+      //this.supplyDetailsList = res.supplyDetails;
+      //console.log('Supply Details from local Storage:', this.supplyDetailsList);
+
+      setTimeout(() => {
+        const firstValidIndex = this.supplyDetailsList.findIndex(
+          (x: any) => x.stockInfoList && x.stockInfoList.length > 0
+        );
+
+        if (firstValidIndex > -1) {
+          $(`#transferType${firstValidIndex}`).focus();
+        }
+      }, 100);
 
       // Initialize Select2 for table batch selects after view render
       setTimeout(() => {
@@ -360,22 +380,199 @@ export class SupplyComponent implements OnInit, AfterViewInit {
           const stockQty = Number(selectedOption.data('stock')) || 0;
 
           if (this.supplyDetailsList[index]) {
+            this.supplyDetailsList[index].batch = selectedOption.val();
             this.supplyDetailsList[index].stockQty = stockQty;
-
-            // Optional: reset qty if greater than stock
-            // if (this.supplyDetailsList[index].transactionQty > stockQty) {
-            //   this.supplyDetailsList[index].transactionQty = stockQty;
-            // }
           }
-
-          // Update qty input UI
-          //$select.closest('tr').find('.qty-input').val(this.supplyDetailsList[index].transactionQty);
         });
 
 
-      }, 10);
+      }, 0);
 
+      this.initRowWiseFocus();
     })
+  }
+
+  initRowWiseFocus() {
+
+    // TransferType → Batch
+    $(document).off('select2:select.transfer')
+      .on('select2:select.transfer', '.from-select', (e: any) => {
+
+        const id = e.target.id;
+        const rowId = id.match(/\d+$/)?.[0];
+        if (!rowId) return;
+
+        setTimeout(() => {
+          $(`#batch${rowId}`).focus();
+        }, 50);
+      });
+
+    // Batch → Qty
+    $(document).off('select2:select.batch')
+      .on('select2:select.batch', '.batch-select', (e: any) => {
+
+        const id = e.target.id;
+        const rowId = id.match(/\d+$/)?.[0];
+        // debugger
+        if (!rowId) return;
+
+        setTimeout(() => {
+          $(`#inputQty${rowId}`).focus();
+        }, 50);
+      });
+
+    // Qty → Save (ENTER)
+    $(document).off('keydown.qty')
+      .on('keydown.qty', '.qty-input', (e: any) => {
+
+        if (e.keyCode !== 13) return;
+        e.preventDefault();
+
+        const index = Number($(e.target).data('index'));
+        const inputQty = Number($(e.target).val());
+        const stockQty = Number(this.supplyDetailsList[index]?.stockQty || 0);
+
+        if (inputQty <= 0) {
+          this.toastr.error('Input quantity must be greater than 1.');
+          $(e.target).focus();
+          $(e.target).select();
+          return;
+        }
+        if (inputQty > stockQty) {
+          this.toastr.error('Input Qty cannot exceed available Qty.');
+          $(e.target).focus();
+          return;
+        }
+
+        // store qty
+        this.supplyDetailsList[index].inputQty = inputQty;
+        //const stockQty = this.supplyDetailsList[index].stockQty;
+        //const remQty = this.truncateDecimal(stockQty,0)  - inputQty;
+        this.supplyDetailsList[index].stockQty = this.supplyDetailsList[index].stockQty - inputQty;
+        this.supplyDetailsList[index].isPosting = 1;
+        // move to save
+        $(`#save${index}`).focus();
+      });
+
+
+    // Save → Next Row
+    const handleSave = (e: any) => {
+      // Allow click OR Enter key
+      if (e.type === 'keydown' && e.keyCode !== 13) return;
+
+      e.preventDefault();
+
+      const btn = e.currentTarget as HTMLElement;
+      const index = Number(btn.id.match(/\d+$/)?.[0]);
+
+      const transferType = Number($(`#transferType${index}`).val());
+      const batch = $(`#batch${index}`).val();
+      const qty = Number($(`#inputQty${index}`).val());
+
+      // 🔒 VALIDATION
+      if (!transferType || transferType === 0) {
+        this.toastr.error('Please choose Transfer Type');
+        $(`#transferType${index}`).focus();
+        return;
+      }
+
+      if (!batch || batch === '0') {
+        this.toastr.error('Please choose Batch');
+        $(`#batch${index}`).focus();
+        return;
+      }
+
+      if (!qty || qty <= 0) {
+        this.toastr.error('Quantity must be greater than 0');
+        $(`#inputQty${index}`).focus();
+        return;
+      }
+
+      // ✅ Only executes if all values are valid
+      this.supplyDetailsId = Number(btn.dataset?.['supplydetailsid']);
+
+      console.log('index:', index);
+      console.log('Supply Details Id:', this.supplyDetailsId);
+      console.log('Qty:', qty);
+      console.log('supply details data: ', this.supplyDetailsList.filter);
+
+      const detailsId = 2;
+
+      const result = this.supplyDetailsList.filter((d: { supplyDetailsId: number; }) =>
+        d.supplyDetailsId === this.supplyDetailsId
+      );
+
+      console.log('partiuclar row data:', result[0]);
+
+
+    const payload = {
+      tableName: 'Supply',
+      parameter: {
+        Flag: 'updateSupplyDetails',
+        UserId: String(this.userId ?? ''),
+        FiscalId: String(this.fiscalId ?? ''),
+        fromLocationId: String(this.fromLocationId),
+        toLocationId: String(this.toLocationId),
+        demandId: String(this.demandMasterId),
+        branchId: String(this.branchId),
+        jsonStringData : String(JSON.stringify(result))
+      }
+    };
+
+    this.service.getGenericServices(payload).subscribe((res: any) => {
+      const data = res?.data;
+      console.log('update response:', data);
+      // if (data?.length > 0) {
+      //   if (data[0].status == 200) {
+      //     this.toastr.success(data[0].message);
+      //     this.isDisabled = true;
+      //   }
+      //   else {
+      //     //this.toastr.error(data[0].message);
+      //     console.log('message: ', data);
+      //     if (data.length > 0) {
+      //       //this.isDisabled = true;
+      //       this.masterId = data[0].supplyId;
+      //       this.getSupplyDraftList();
+      //     }
+
+
+      //     console.log('masterId: ', this.masterId);
+
+      //   }
+      // }
+    });
+  
+
+      this.toastr.success('Update successfully.');
+      this.focusNextValidRow(index);
+    };
+
+    $(document)
+      .off('keydown.save click.save')
+      .on('keydown.save click.save', '[id^="save"]', handleSave);
+
+
+
+  }
+
+  focusNextValidRow(currentIndex: number) {
+    for (let i = currentIndex + 1; i < this.supplyDetailsList.length; i++) {
+      if (this.supplyDetailsList[i].stockInfoList?.length > 0) {
+        setTimeout(() => {
+          $(`#transferType${i}`).focus();
+        }, 50);
+        return;
+      }
+    }
+
+    setTimeout(() => {
+      $('#narration').focus();
+    }, 50);
+  }
+
+  postingSupply() {
+    console.log(this.supplyDetailsList);
   }
 
   resetSupply() {
@@ -389,11 +586,13 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     this.fromLocationList = [];
     this.toLocationList = [];
     this.assignedToList = [];
+    this.supplyDetailsList = [];
 
     $("#demandId").focus();
-
   }
-  truncateDecimal(value: number | string, digits: number = 2): string {
+
+
+  truncateDecimal(value: number | string, digits: number = this.decimalPlace): string {
     if (value === null || value === undefined) {
       return '0.00';
     }
@@ -408,5 +607,6 @@ export class SupplyComponent implements OnInit, AfterViewInit {
 
     return truncated.toFixed(digits);
   }
+
 
 }
