@@ -2,6 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit } from 
 import { Title } from '@angular/platform-browser';
 import { SupplyService } from './service/supply.service';
 import { ToastrService } from 'ngx-toastr';
+import { timeout } from 'rxjs';
 declare var $: any;
 declare const setFocusOnNextElement: any;
 @Component({
@@ -33,6 +34,11 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   fromLocationId: any;
   toLocationId: any;
   assignToUserId: any;
+
+  transferTypeList: any = [
+    { id: 1, name: 'Consume' },
+    { id: 2, name: 'Transfer' }
+  ];
 
   demandList: any;
   LocationList: any;
@@ -325,6 +331,8 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         if (data[0].status == 200) {
           this.toastr.success(data[0].message);
           this.isDisabled = true;
+          this.masterId = data[0].supplyId;
+          this.getSupplyDraftList();
         }
         else {
           //this.toastr.error(data[0].message);
@@ -347,16 +355,18 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   getSupplyDraftList() {
     this.service.getSupplyDraftList(this.userId, this.branchId, this.fiscalId, this.masterId).subscribe((res: any) => {
       console.log('draft list: ', res);
-
+      if (!res && res == null) {
+        this.toastr.error('No supply details found.');
+        return;
+      }
       const supplyMaster = JSON.parse(res?.supplyMaster);
 
       this.supplyDetailsList = res?.supplyDetails || [];
       this.supplyId = supplyMaster.supplyId;
-
-
-      //const detailsList = res.supplyDetails;
-      //this.supplyDetailsList = res.supplyDetails;
-      //console.log('Supply Details from local Storage:', this.supplyDetailsList);
+      this.isDisabled = true;
+      // if (this.supplyDetailsList.length > 0) {
+      //   this.isDisabled = true;
+      // }      
 
       setTimeout(() => {
         const firstValidIndex = this.supplyDetailsList.findIndex(
@@ -370,23 +380,61 @@ export class SupplyComponent implements OnInit, AfterViewInit {
 
       // Initialize Select2 for table batch selects after view render
       setTimeout(() => {
-        $('.batch-select, .from-select').select2();
+        // Initialize Select2 for TransferType and From selects
+        $('.transferType-select, .from-select').select2();
+        $('.transferType-select').on('change', (event: any) => {
+          const $select = $(event.target);
+          const index = $select.data('index');
+          const selectedOption = $select.find('option:selected');
 
+          if (this.supplyDetailsList[index]) {
+            this.supplyDetailsList[index].supplyType = selectedOption.val();
+            console.log('supply details list updated supply type:', this.supplyDetailsList);
+
+          }
+        });
+
+        // Initialize Select2 for Batch selects
+        $('.batch-select, .from-select').select2();
         $('.batch-select').on('change', (event: any) => {
           const $select = $(event.target);
           const index = $select.data('index');
 
           const selectedOption = $select.find('option:selected');
           const stockQty = Number(selectedOption.data('stock')) || 0;
+          console.log('select from batch:', stockQty);
 
           if (this.supplyDetailsList[index]) {
             this.supplyDetailsList[index].batch = selectedOption.val();
             this.supplyDetailsList[index].stockQty = stockQty;
+            this.supplyDetailsList[index].remainingQty = stockQty;
           }
         });
-
-
       }, 0);
+
+      setTimeout(() => {
+        this.supplyDetailsList.forEach((item: any, index: any) => {
+          $("#transferType" + index).select2();
+          $("#batch" + index).select2();
+
+          $("#transferType" + index).val(item.supplyType).trigger('change');
+          $("#batch" + index).val(item.batch).trigger('change');
+          $("#inputQty" + index).val(item.inputQty).trigger('change');
+
+          const stockQty = Number(item.stockQty) || 0;
+          const inputQty = Number(item.inputQty) || 0;
+
+          if (stockQty <= 0) {
+            this.supplyDetailsList[index].stockQty = 0;
+          } else {
+            const remainingQty = stockQty - inputQty;
+
+            this.supplyDetailsList[index].stockQty = this.truncateDecimal(stockQty);
+            this.supplyDetailsList[index].remainingQty = remainingQty <= 0 ? 0 : this.truncateDecimal(remainingQty);
+          }
+
+        });
+      }, 50);
 
       this.initRowWiseFocus();
     })
@@ -413,9 +461,9 @@ export class SupplyComponent implements OnInit, AfterViewInit {
 
         const id = e.target.id;
         const rowId = id.match(/\d+$/)?.[0];
+
         // debugger
         if (!rowId) return;
-
         setTimeout(() => {
           $(`#inputQty${rowId}`).focus();
         }, 50);
@@ -446,9 +494,13 @@ export class SupplyComponent implements OnInit, AfterViewInit {
 
         // store qty
         this.supplyDetailsList[index].inputQty = inputQty;
-        //const stockQty = this.supplyDetailsList[index].stockQty;
-        //const remQty = this.truncateDecimal(stockQty,0)  - inputQty;
-        this.supplyDetailsList[index].stockQty = this.supplyDetailsList[index].stockQty - inputQty;
+        const stQty = this.supplyDetailsList[index].stockQty;
+        const remQty = this.truncateDecimal(stQty) - inputQty;
+        console.log('remQty:', remQty);
+        console.log('StockQty:', stQty);
+
+        this.supplyDetailsList[index].stockQty = stQty;
+        this.supplyDetailsList[index].remainingQty = remQty < 0 ? 0 : this.truncateDecimal(remQty);
         this.supplyDetailsList[index].isPosting = 1;
         // move to save
         $(`#save${index}`).focus();
@@ -491,69 +543,94 @@ export class SupplyComponent implements OnInit, AfterViewInit {
       // ✅ Only executes if all values are valid
       this.supplyDetailsId = Number(btn.dataset?.['supplydetailsid']);
 
-      console.log('index:', index);
-      console.log('Supply Details Id:', this.supplyDetailsId);
-      console.log('Qty:', qty);
-      console.log('supply details data: ', this.supplyDetailsList.filter);
+      const result = this.supplyDetailsList.filter((d: { supplyDetailsId: number; }) =>
+        d.supplyDetailsId === this.supplyDetailsId
+      );
 
-      const detailsId = 2;
+      const payload = {
+        tableName: 'Supply',
+        parameter: {
+          Flag: 'updateSupplyDetails',
+          UserId: String(this.userId ?? ''),
+          FiscalId: String(this.fiscalId ?? ''),
+          fromLocationId: String(this.fromLocationId),
+          toLocationId: String(this.toLocationId),
+          demandId: String(this.demandMasterId),
+          branchId: String(this.branchId),
+          jsonStringData: String(JSON.stringify(result))
+        }
+      };
+
+      this.service.getGenericServices(payload).subscribe((res: any) => {
+        const data = res?.data;
+        console.log('update response:', data);
+        if (data?.length > 0) {
+          if (data[0].status == 200) {
+            this.toastr.success(data[0].message);
+            this.focusNextValidRow(index);
+          }
+          else {
+            this.toastr.error(data[0].message);
+          }
+        }
+      });
+    };
+
+    $(document).off('keydown.save click.save').on('keydown.save click.save', '[id^="save"]', handleSave);
+
+
+    // Delete → Next Row
+    const handleDelete = (e: any) => {
+      // Allow click OR Enter key
+      if (e.type === 'keydown' && e.keyCode !== 13) return;
+
+      e.preventDefault();
+
+      const btn = e.currentTarget as HTMLElement;
+      const index = Number(btn.id.match(/\d+$/)?.[0]);
+
+      // ✅ Only executes if all values are valid
+      this.supplyDetailsId = Number(btn.dataset?.['supplydetailsid']);
 
       const result = this.supplyDetailsList.filter((d: { supplyDetailsId: number; }) =>
         d.supplyDetailsId === this.supplyDetailsId
       );
 
-      console.log('partiuclar row data:', result[0]);
+      const payload = {
+        tableName: 'Supply',
+        parameter: {
+          Flag: 'deleteSupplyDetails',
+          UserId: String(this.userId ?? ''),
+          FiscalId: String(this.fiscalId ?? ''),
+          fromLocationId: String(this.fromLocationId),
+          toLocationId: String(this.toLocationId),
+          demandId: String(this.demandMasterId),
+          branchId: String(this.branchId),
+          masterId: String(result[0].supplyMasterId),
+          supplyDetailsId: String(result[0].supplyDetailsId)
+        }
+      };
 
-
-    const payload = {
-      tableName: 'Supply',
-      parameter: {
-        Flag: 'updateSupplyDetails',
-        UserId: String(this.userId ?? ''),
-        FiscalId: String(this.fiscalId ?? ''),
-        fromLocationId: String(this.fromLocationId),
-        toLocationId: String(this.toLocationId),
-        demandId: String(this.demandMasterId),
-        branchId: String(this.branchId),
-        jsonStringData : String(JSON.stringify(result))
-      }
+      this.service.getGenericServices(payload).subscribe((res: any) => {
+        const data = res?.data;
+        console.log('Delete response:', data);
+        if (data?.length > 0) {
+          if (data[0].status == 200) {
+            this.toastr.success(data[0].message);
+            if (data[0].isDelete == 0) {
+              this.resetSupply();
+              return;
+            }
+            this.getSupplyDraftList();
+          }
+          else {
+            this.toastr.error(data[0].message);
+          }
+        }
+      });
     };
 
-    this.service.getGenericServices(payload).subscribe((res: any) => {
-      const data = res?.data;
-      console.log('update response:', data);
-      // if (data?.length > 0) {
-      //   if (data[0].status == 200) {
-      //     this.toastr.success(data[0].message);
-      //     this.isDisabled = true;
-      //   }
-      //   else {
-      //     //this.toastr.error(data[0].message);
-      //     console.log('message: ', data);
-      //     if (data.length > 0) {
-      //       //this.isDisabled = true;
-      //       this.masterId = data[0].supplyId;
-      //       this.getSupplyDraftList();
-      //     }
-
-
-      //     console.log('masterId: ', this.masterId);
-
-      //   }
-      // }
-    });
-  
-
-      this.toastr.success('Update successfully.');
-      this.focusNextValidRow(index);
-    };
-
-    $(document)
-      .off('keydown.save click.save')
-      .on('keydown.save click.save', '[id^="save"]', handleSave);
-
-
-
+    $(document).off('keydown.delete click.delete').on('keydown.delete click.delete', '[id^="delete"]', handleDelete);
   }
 
   focusNextValidRow(currentIndex: number) {
@@ -578,6 +655,9 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   resetSupply() {
     this.isDisabled = false;
     this.demandMasterId = 0;
+    this.supplyId = 0;
+    this.masterId = 0;
+    this.supplyDetailsId = 0;
     this.fromLocationId = 0;
     this.toLocationId = 0;
     this.assignToUserId = 0;
@@ -588,25 +668,29 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     this.assignedToList = [];
     this.supplyDetailsList = [];
 
-    $("#demandId").focus();
+    setTimeout(() => {
+      $("#demandId").focus();
+    }, 100);
   }
 
 
-  truncateDecimal(value: number | string, digits: number = this.decimalPlace): string {
+  truncateDecimal(
+    value: number | string,
+    digits: number = this.decimalPlace
+  ): number {
     if (value === null || value === undefined) {
-      return '0.00';
+      return 0;
     }
 
     const num = Number(value);
     if (isNaN(num)) {
-      return '0.00';
+      return 0;
     }
 
     const factor = Math.pow(10, digits);
-    const truncated = Math.trunc(num * factor) / factor;
-
-    return truncated.toFixed(digits);
+    return Math.trunc(num * factor) / factor;
   }
+
 
 
 }

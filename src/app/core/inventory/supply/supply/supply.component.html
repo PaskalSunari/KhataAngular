@@ -74,10 +74,10 @@
                                     class="col-sm-4 col-md-3 col-lg-1 d-flex align-items-center justify-content-left text-left">
                                     <div class="custom__input-container d-flex align-items-center">
                                         <button type="button" id="button" class="button button-sm btn btn-success ms-1"
-                                            [disabled]="isDisabled" (click)="transformDemandToSupply()">
-                                            <i class="fa-solid fa-plus"></i>
+                                             (click)="transformDemandToSupply()">
+                                            <i class="fa-solid fa-rotate-left"></i>
                                         </button>
-                                        <button type="button" id="button" class="button button-sm btn btn-danger ms-1"
+                                        <button hidden type="button" id="button" class="button button-sm btn btn-danger ms-1"
                                             (click)="resetSupply()">
                                             <i class="fa-solid fa-rotate-left"></i>
                                         </button>
@@ -109,10 +109,10 @@
                                                         class="d-flex align-items-center justify-content-center text-center">
                                                         <label class="me-2 mb-0">Type</label>
                                                         <select class="custom__select2" id="supplyType"
-                                                            name="transferType" data-placeholder="--Choose--">
+                                                            data-placeholder="--Choose--">
                                                             <option value=""></option>
-                                                            <option value="1">Consume</option>
-                                                            <option value="2">Transfer</option>
+                                                            <option *ngFor="let item of transferTypeList"
+                                                                [value]="item.id">{{ item.name }}</option>
                                                         </select>
                                                     </div>
                                                 </th>
@@ -133,11 +133,12 @@
                                                 <td>{{ i + 1 }}</td>
 
                                                 <td>
-                                                    <select class="from-select" id="transferType{{i}}"
+                                                    <select class="transferType-select from-select"
+                                                        id="transferType{{i}}" [attr.data-index]="i"
                                                         [disabled]="item?.stockInfoList.length === 0">
                                                         <option value="0">--Choose--</option>
-                                                        <option value="1">Consume</option>
-                                                        <option value="2">Transfer</option>
+                                                        <option *ngFor="let item of transferTypeList" [value]="item.id"
+                                                            [attr.data-transferType]="item?.id">{{ item.name }}</option>
                                                     </select>
                                                 </td>
 
@@ -148,7 +149,7 @@
                                                     <select class="batch-select form-select"
                                                         [disabled]="item?.stockInfoList.length === 0" id="batch{{i}}"
                                                         [attr.data-index]="i">
-                                                        <option value="0">--Choose--</option>
+                                                        <option value="">--Choose--</option>
 
                                                         <option *ngFor="let stock of item?.stockInfoList"
                                                             [attr.data-stock]="stock?.stockQty" [value]="stock?.batch">
@@ -169,7 +170,7 @@
                                                         style="width: 100px !important;" [attr.data-index]="i">
                                                 </td>
 
-                                                <td>{{ truncateDecimal(item?.stockQty) }}</td>
+                                                <td>{{ truncateDecimal(item?.remainingQty) }}</td>
 
 
                                                 <td>
@@ -181,6 +182,7 @@
                                                     </button>
 
                                                     <button type="button" id="delete{{i}}"
+                                                       [attr.data-supplydetailsid]="item?.supplyDetailsId"
                                                         class="button button--extra-small button--danger button--rounded-sm me-2">
                                                         <i class="fa-solid fa-trash"></i>
                                                     </button>
