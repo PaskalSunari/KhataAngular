@@ -11,12 +11,14 @@ declare const setFocusOnNextElement: any;
 })
 
 export class SupplyComponent implements OnInit, AfterViewInit {
-  isLoading = true;
+  isLoading:boolean = true;
   isFormVisible: boolean = true;
   isLocationVisible: boolean = false;
   isEditMode: boolean = false;
   isPrefixSuffix: boolean = false;
   isDisabled: boolean = false;
+  isQtyDisabled: boolean = false;
+  isBtnDisabled: boolean = true;
 
   userId: any;
   branchId: any;
@@ -359,6 +361,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         this.toastr.error('No supply details found.');
         return;
       }
+      this.isBtnDisabled = false;
       const supplyMaster = JSON.parse(res?.supplyMaster);
 
       this.supplyDetailsList = res?.supplyDetails || [];
@@ -383,33 +386,15 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         // Initialize Select2 for TransferType and From selects
         $('.transferType-select, .from-select').select2();
         $('.transferType-select').on('change', (event: any) => {
-          const $select = $(event.target);
-          const index = $select.data('index');
-          const selectedOption = $select.find('option:selected');
+          // const $select = $(event.target);
+          // const index = $select.data('index');
+          // const selectedOption = $select.find('option:selected');
 
-          if (this.supplyDetailsList[index]) {
-            this.supplyDetailsList[index].supplyType = selectedOption.val();
-            console.log('supply details list updated supply type:', this.supplyDetailsList);
-
-          }
+          // if (this.supplyDetailsList[index]) {
+          //   this.supplyDetailsList[index].supplyType = selectedOption.val();
+          // }
         });
 
-        // Initialize Select2 for Batch selects
-        $('.batch-select, .from-select').select2();
-        $('.batch-select').on('change', (event: any) => {
-          const $select = $(event.target);
-          const index = $select.data('index');
-
-          const selectedOption = $select.find('option:selected');
-          const stockQty = Number(selectedOption.data('stock')) || 0;
-          console.log('select from batch:', stockQty);
-
-          if (this.supplyDetailsList[index]) {
-            this.supplyDetailsList[index].batch = selectedOption.val();
-            this.supplyDetailsList[index].stockQty = stockQty;
-            this.supplyDetailsList[index].remainingQty = stockQty;
-          }
-        });
       }, 0);
 
       setTimeout(() => {
@@ -442,32 +427,89 @@ export class SupplyComponent implements OnInit, AfterViewInit {
 
   initRowWiseFocus() {
 
+
     // TransferType → Batch
-    $(document).off('select2:select.transfer')
-      .on('select2:select.transfer', '.from-select', (e: any) => {
+    $(document).off('select2:close.transfer')
+      .on('select2:close.transfer', '.from-select', (e: any) => {
+
+        const $select = $(e.target);
+        const selectedVal = $select.val();
+
+        // If value is '' OR 0 → do NOT move next
+        if (selectedVal === '' || selectedVal === 0 || selectedVal === '0' || selectedVal == null) {
+          return;
+        }
 
         const id = e.target.id;
         const rowId = id.match(/\d+$/)?.[0];
         if (!rowId) return;
+
+        const index = $select.data('index');
+        const selectedOption = $select.find('option:selected');
+
+        if (this.supplyDetailsList[index]) {
+          this.supplyDetailsList[index].supplyType = selectedOption.val();
+        }
 
         setTimeout(() => {
           $(`#batch${rowId}`).focus();
         }, 50);
       });
 
+
     // Batch → Qty
-    $(document).off('select2:select.batch')
-      .on('select2:select.batch', '.batch-select', (e: any) => {
+    $(document).off('select2:close.batch', '.batch-select')
+      .on('select2:close.batch', '.batch-select', (e: any) => {
+
+        const $select = $(e.target);
+        const selectedVal = $select.val();
+
+        //  If no value selected, do NOT move to qty
+        if (!selectedVal) {
+          return;
+        }
 
         const id = e.target.id;
         const rowId = id.match(/\d+$/)?.[0];
-
-        // debugger
         if (!rowId) return;
+
+        const index = $select.data('index');
+        const selectedOption = $select.find('option:selected');
+
+        $(`#inputQty${index}`).prop('readonly', false);
+        const stockQty = Number(selectedOption.data('stock')) || 0;
+        const inputQty = Number($("#inputQty" + index).val()) || 0;
+
+        if (this.supplyDetailsList[index]) {
+          this.supplyDetailsList[index].batch = selectedVal;
+          this.supplyDetailsList[index].stockQty = stockQty;
+          this.supplyDetailsList[index].remainingQty = stockQty - inputQty;
+        }
+        this.isQtyDisabled = false;
+        // ✅ Move focus only when valid batch selected
         setTimeout(() => {
-          $(`#inputQty${rowId}`).focus();
+          const $qty = $(`#inputQty${rowId}`);
+          $qty.focus();
+          $qty.select();
         }, 50);
+
       });
+
+    // Double-click → enable Qty input
+    $(document).off('dblclick.qty')
+      .on('dblclick.qty', '.qty-input', (e: JQuery.DoubleClickEvent) => {
+
+        const input = e.currentTarget as HTMLInputElement;
+
+        $(input).prop('readonly', false);
+
+        setTimeout(() => {
+          input.focus();
+          input.select();
+        }, 0);
+      });
+
+
 
     // Qty → Save (ENTER)
     $(document).off('keydown.qty')
@@ -496,8 +538,6 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         this.supplyDetailsList[index].inputQty = inputQty;
         const stQty = this.supplyDetailsList[index].stockQty;
         const remQty = this.truncateDecimal(stQty) - inputQty;
-        console.log('remQty:', remQty);
-        console.log('StockQty:', stQty);
 
         this.supplyDetailsList[index].stockQty = stQty;
         this.supplyDetailsList[index].remainingQty = remQty < 0 ? 0 : this.truncateDecimal(remQty);
@@ -566,11 +606,13 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         console.log('update response:', data);
         if (data?.length > 0) {
           if (data[0].status == 200) {
+            $(`#inputQty${index}`).prop('readonly', true);
             this.toastr.success(data[0].message);
             this.focusNextValidRow(index);
           }
           else {
             this.toastr.error(data[0].message);
+            this.isQtyDisabled = false;
           }
         }
       });
@@ -612,8 +654,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
       };
 
       this.service.getGenericServices(payload).subscribe((res: any) => {
-        const data = res?.data;
-        console.log('Delete response:', data);
+        const data = res?.data;        
         if (data?.length > 0) {
           if (data[0].status == 200) {
             this.toastr.success(data[0].message);
@@ -652,8 +693,40 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     console.log(this.supplyDetailsList);
   }
 
+  deleteSupply() {    
+      const payload = {
+        tableName: 'Supply',
+        parameter: {
+          Flag: 'deleteSupplyData',
+          UserId: String(this.userId ?? ''),
+          FiscalId: String(this.fiscalId ?? ''),          
+          branchId: String(this.branchId),
+          masterId: String(this.masterId),
+          demandId: String(this.demandMasterId),
+          fromLocationId: String(this.fromLocationId),
+          toLocationId: String(this.toLocationId),
+          
+        }
+      };
+
+      this.service.getGenericServices(payload).subscribe((res: any) => {
+        const data = res?.data;        
+        if (data?.length > 0) {
+          if (data[0].status == 200) {
+            this.toastr.success(data[0].message);            
+            this.resetSupply();
+          }
+          else {
+            this.toastr.error(data[0].message);
+          }
+        }
+      });    
+  }
+
   resetSupply() {
     this.isDisabled = false;
+    this.isQtyDisabled = true;
+    this.isBtnDisabled = true;
     this.demandMasterId = 0;
     this.supplyId = 0;
     this.masterId = 0;
