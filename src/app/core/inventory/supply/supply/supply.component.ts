@@ -11,7 +11,7 @@ declare const setFocusOnNextElement: any;
 })
 
 export class SupplyComponent implements OnInit, AfterViewInit {
-  isLoading:boolean = true;
+  isLoading: boolean = true;
   isFormVisible: boolean = true;
   isLocationVisible: boolean = false;
   isEditMode: boolean = false;
@@ -96,6 +96,22 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     $('#toLocationId').on('select2:close', function (e: any) {
       const id = e.target.value;
       self.toLocationId = id || 0;
+      const payload = {
+        tableName: 'Supply',
+        parameter: {
+          Flag: 'getUserByLocation',
+          UserId: String(self.userId ?? ''),
+          FiscalId: String(self.fiscalId ?? ''),
+          fromLocationId: String(self.fromLocationId),
+          toLocationId: String(self.toLocationId),
+          branchId: String(self.branchId)
+        }
+      };
+
+      self.service.getGenericServices(payload).subscribe((res: any) => {
+        const data = res?.data;        
+        self.assignedToList = data || [];
+      });
     });
 
     $('#assignedToUserId').on('select2:close', function (e: any) {
@@ -212,6 +228,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         $("#departmentId").focus();
       } else {
         this.resetSupply();
+        this.demandList = [];
         this.toastr.error('Demand not available.');
       }
     },
@@ -323,7 +340,8 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         fromLocationId: String(this.fromLocationId),
         toLocationId: String(this.toLocationId),
         demandId: String(this.demandMasterId),
-        branchId: String(this.branchId)
+        branchId: String(this.branchId),
+        assignToUserId: String(this.assignToUserId)
       }
     };
 
@@ -654,7 +672,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
       };
 
       this.service.getGenericServices(payload).subscribe((res: any) => {
-        const data = res?.data;        
+        const data = res?.data;
         if (data?.length > 0) {
           if (data[0].status == 200) {
             this.toastr.success(data[0].message);
@@ -693,34 +711,34 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     console.log(this.supplyDetailsList);
   }
 
-  deleteSupply() {    
-      const payload = {
-        tableName: 'Supply',
-        parameter: {
-          Flag: 'deleteSupplyData',
-          UserId: String(this.userId ?? ''),
-          FiscalId: String(this.fiscalId ?? ''),          
-          branchId: String(this.branchId),
-          masterId: String(this.masterId),
-          demandId: String(this.demandMasterId),
-          fromLocationId: String(this.fromLocationId),
-          toLocationId: String(this.toLocationId),
-          
-        }
-      };
+  deleteSupply() {
+    const payload = {
+      tableName: 'Supply',
+      parameter: {
+        Flag: 'deleteSupplyData',
+        UserId: String(this.userId ?? ''),
+        FiscalId: String(this.fiscalId ?? ''),
+        branchId: String(this.branchId),
+        masterId: String(this.masterId),
+        demandId: String(this.demandMasterId),
+        fromLocationId: String(this.fromLocationId),
+        toLocationId: String(this.toLocationId),
 
-      this.service.getGenericServices(payload).subscribe((res: any) => {
-        const data = res?.data;        
-        if (data?.length > 0) {
-          if (data[0].status == 200) {
-            this.toastr.success(data[0].message);            
-            this.resetSupply();
-          }
-          else {
-            this.toastr.error(data[0].message);
-          }
+      }
+    };
+
+    this.service.getGenericServices(payload).subscribe((res: any) => {
+      const data = res?.data;
+      if (data?.length > 0) {
+        if (data[0].status == 200) {
+          this.toastr.success(data[0].message);
+          this.resetSupply();
         }
-      });    
+        else {
+          this.toastr.error(data[0].message);
+        }
+      }
+    });
   }
 
   resetSupply() {

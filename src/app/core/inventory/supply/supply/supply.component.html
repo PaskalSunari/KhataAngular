@@ -153,8 +153,7 @@
 
                                                         <option *ngFor="let stock of item?.stockInfoList"
                                                             [attr.data-stock]="stock?.stockQty" [value]="stock?.batch">
-                                                            {{ stock.batch }} (Qty: {{
-                                                            truncateDecimal(stock?.stockQty)}})
+                                                            {{ stock.batch }} (Qty: {{truncateDecimal(stock?.stockQty)}} )
                                                         </option>
                                                     </select>
 
