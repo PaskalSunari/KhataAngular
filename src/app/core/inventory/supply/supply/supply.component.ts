@@ -19,6 +19,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   isDisabled: boolean = false;
   isQtyDisabled: boolean = false;
   isBtnDisabled: boolean = true;
+  isDisabledToUser: boolean = false;
 
   userId: any;
   branchId: any;
@@ -48,6 +49,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   toLocationList: any;
   assignedToList: any;
   supplyDetailsList: any;
+  requestedToList: any;
 
 
   constructor(
@@ -104,13 +106,17 @@ export class SupplyComponent implements OnInit, AfterViewInit {
           FiscalId: String(self.fiscalId ?? ''),
           fromLocationId: String(self.fromLocationId),
           toLocationId: String(self.toLocationId),
-          branchId: String(self.branchId)
+          branchId: String(self.branchId),
+          demandId: String(self.demandMasterId)
         }
       };
 
       self.service.getGenericServices(payload).subscribe((res: any) => {
-        const data = res?.data;        
+        self.isDisabledToUser = true;
+        const data = res?.data;
         self.assignedToList = data || [];
+        $("#requestedTo").val(self.requestedToList[0].userId).trigger('change');
+        $("#assignedToUserId").focus();
       });
     });
 
@@ -202,7 +208,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     this.service.getDropDownList(this.userId, this.branchId, this.fiscalId, this.demandMasterId).subscribe((res: any) => {
       this.fromLocationList = res?.fromLocation || [];
       this.toLocationList = res?.toLocation || [];
-      this.assignedToList = res?.assignedToUser || [];
+      this.requestedToList = res?.requestedToList || [];
     })
   }
 
@@ -355,17 +361,11 @@ export class SupplyComponent implements OnInit, AfterViewInit {
           this.getSupplyDraftList();
         }
         else {
-          //this.toastr.error(data[0].message);
-          console.log('message: ', data);
           if (data.length > 0) {
             //this.isDisabled = true;
             this.masterId = data[0].supplyId;
             this.getSupplyDraftList();
           }
-
-
-          console.log('masterId: ', this.masterId);
-
         }
       }
     });
@@ -403,15 +403,15 @@ export class SupplyComponent implements OnInit, AfterViewInit {
       setTimeout(() => {
         // Initialize Select2 for TransferType and From selects
         $('.transferType-select, .from-select').select2();
-        $('.transferType-select').on('change', (event: any) => {
-          // const $select = $(event.target);
-          // const index = $select.data('index');
-          // const selectedOption = $select.find('option:selected');
+        //$('.transferType-select').on('change', (event: any) => {
+        // const $select = $(event.target);
+        // const index = $select.data('index');
+        // const selectedOption = $select.find('option:selected');
 
-          // if (this.supplyDetailsList[index]) {
-          //   this.supplyDetailsList[index].supplyType = selectedOption.val();
-          // }
-        });
+        // if (this.supplyDetailsList[index]) {
+        //   this.supplyDetailsList[index].supplyType = selectedOption.val();
+        // }
+        // });
 
       }, 0);
 
@@ -431,7 +431,6 @@ export class SupplyComponent implements OnInit, AfterViewInit {
             this.supplyDetailsList[index].stockQty = 0;
           } else {
             const remainingQty = stockQty - inputQty;
-
             this.supplyDetailsList[index].stockQty = this.truncateDecimal(stockQty);
             this.supplyDetailsList[index].remainingQty = remainingQty <= 0 ? 0 : this.truncateDecimal(remainingQty);
           }
@@ -444,8 +443,6 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   }
 
   initRowWiseFocus() {
-
-
     // TransferType → Batch
     $(document).off('select2:close.transfer')
       .on('select2:close.transfer', '.from-select', (e: any) => {
@@ -707,9 +704,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     }, 50);
   }
 
-  postingSupply() {
-    console.log(this.supplyDetailsList);
-  }
+
 
   deleteSupply() {
     const payload = {
@@ -741,10 +736,49 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     });
   }
 
+
+  postingSupply() {
+    const payload = {
+      tableName: 'Supply',
+      parameter: {
+        Flag: 'supplyFinalPosting',
+        UserId: String(this.userId ?? ''),
+        FiscalId: String(this.fiscalId ?? ''),
+        fromLocationId: String(this.fromLocationId),
+        toLocationId: String(this.toLocationId),
+        demandId: String(this.demandMasterId),
+        branchId: String(this.branchId),
+        masterId: String(this.masterId),
+        toUserId: String(this.requestedToList[0].userId),
+        remarks: String($("#narration").val())
+      }
+    };
+
+    this.service.getGenericServices(payload).subscribe((res: any) => {
+      const data = res?.data;
+      console.log('posting response:', res);
+
+      if (data?.length > 0) {
+        if (data[0].status == 200) {
+          this.toastr.success(data[0].message);
+          if (data[0].isDelete == 0) {
+            this.resetSupply();
+            return;
+          }
+          this.getSupplyDraftList();
+        }
+        else {
+          this.toastr.error(data[0].message);
+        }
+      }
+    });
+  }
+
   resetSupply() {
     this.isDisabled = false;
     this.isQtyDisabled = true;
     this.isBtnDisabled = true;
+    this.isDisabledToUser = false;
     this.demandMasterId = 0;
     this.supplyId = 0;
     this.masterId = 0;
@@ -758,6 +792,8 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     this.toLocationList = [];
     this.assignedToList = [];
     this.supplyDetailsList = [];
+    this.requestedToList = [];
+
 
     setTimeout(() => {
       $("#demandId").focus();
