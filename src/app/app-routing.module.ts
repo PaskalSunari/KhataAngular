@@ -31,6 +31,7 @@ const routes: Routes = [
         component: LayoutComponent,
         canActivate: [AuthGuardService],
         children: [
+             { path: '', component: DashboardComponent },
           { path: 'dashboard', component: DashboardComponent },
           {
             path: 'sales',

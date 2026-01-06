@@ -13,23 +13,25 @@ import { LoginserviceService } from '../../Auth/login/loginservice.service';
 })
 export class TokenInterceptorService implements HttpInterceptor {
 
-  constructor(private loginService: LoginserviceService) {}
+  constructor(private loginService: LoginserviceService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.loginService.Gettoken();
+    
 
-    if (token) {
-      // make clones the request and adds the Authorization header
-      const cloned = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      return next.handle(cloned);  // send request with token
-    }
+      const token = this.loginService.Gettoken();
 
+      if (token) {
+        // make clones the request and adds the Authorization header
+        const cloned = req.clone({
+          setHeaders: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        return next.handle(cloned);  // send request with token
+      }
+    
     return next.handle(req); // send request without token
-  }
+    }
 }
 
 //Interceptor ले Angular बाट जाने सबै HTTP requests capture गर्छ र तिनीहरूलाई modify गर्न सक्छ।
