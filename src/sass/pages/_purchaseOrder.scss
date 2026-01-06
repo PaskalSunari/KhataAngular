@@ -1,0 +1,91 @@
+.party-details-container{
+        background:#F5F5F5;
+    padding: 1px 4px;
+    border: 1px solid #ddd;
+}
+.party-details-heading{
+        font-size: 10px;
+    margin: 0;
+    font-weight: 600;
+    padding-bottom: 2px;
+}
+
+
+.party-details-container ul li{
+
+ list-style: none;
+    font-size: 12px;
+    font-weight: 400;
+     
+}
+
+.party-details-container ul{
+  margin:0;
+    padding:0;
+}
+
+.purchase-summary-top{
+     background: #fff;
+    border: 1px solid #ddd;
+}
+
+.purchase-summary-top h6{
+     font-size: 11px;
+    color: #000;
+    text-align: start;
+    font-weight: 700;
+}
+
+.purchase-summary-bottom{
+        background: #fff;
+    border: 1px solid #ddd;
+}
+
+.purchase-summary-bottom h6{
+
+        font-size: 11px;
+    color: #000;
+    text-align: start;
+    font-weight: 700;
+}
+.purchase-summary-bottom label{
+        font-size: 11px;
+}
+
+.summary-display-box{
+        background: #eee;
+    border: 1px solid rgba(221, 221, 221, 0.8);
+    padding: 2px 3px 0px;
+    color: #424242;
+    font-size: 13px;
+}
+
+.suggestions{
+        position: absolute;
+    border: 1px solid #999;
+    border-top: none;
+    z-index: 999999999 !important;;
+    top: 100%;
+    width: 100%;
+    max-height: 150px;
+    display: none;
+    overflow: scroll;
+}
+.suggestions div{
+    padding: 5px;
+    cursor: pointer;
+    background-color: #fff;
+    font-size: 12px;
+    border-bottom: 1px solid #cfcbcb;
+}
+
+
+.suggestion-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.suggestion-item.active {
+  background-color: #007bff;
+  color: white;
+}

@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ProductCreationComponent } from './Product/product-creation/product-creation.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { PurchaseOrderComponent } from './Purchase/purchase-order/purchase-order.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     ProductBrandComponent,
     ProductModelComponent,
     ProductSizeComponent,
-    ProductCreationComponent
+    ProductCreationComponent,
+    PurchaseOrderComponent
   ],
   imports: [
     CommonModule,
