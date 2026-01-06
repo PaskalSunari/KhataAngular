@@ -120,12 +120,12 @@
                                                     <div
                                                         class="d-flex align-items-center justify-content-center text-center">
                                                         <label class="me-2 mb-0">Type</label>
-                                                        <select class="custom__select2" id="supplyType"
+                                                        <!-- <select class="custom__select2" id="supplyType"
                                                             data-placeholder="--Choose--">
                                                             <option value=""></option>
                                                             <option *ngFor="let item of transferTypeList"
                                                                 [value]="item.id">{{ item.name }}</option>
-                                                        </select>
+                                                        </select> -->
                                                     </div>
                                                 </th>
 
@@ -187,7 +187,7 @@
 
                                                 <td>
                                                     <button type="button" id="save{{i}}"
-                                                        [disabled]="item?.stockInfoList.length === 0"
+                                                        [disabled]="item?.stockInfoList.length === 0 || isSubmitDisabled"
                                                         [attr.data-supplydetailsid]="item?.supplyDetailsId"
                                                         class="button button--extra-small button--success button--rounded-sm me-2">
                                                         <i class="fa-solid fa-save"></i>

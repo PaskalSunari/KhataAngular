@@ -21,6 +21,8 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   isQtyDisabled: boolean = false;
   isBtnDisabled: boolean = true;
   isDisabledToUser: boolean = false;
+  isShowMsg: boolean = true;
+  isSubmitDisabled: boolean = true;
 
   userId: any;
   branchId: any;
@@ -241,7 +243,10 @@ export class SupplyComponent implements OnInit, AfterViewInit {
       } else {
         this.resetSupply();
         this.demandList = [];
-        this.toastr.error('Demand not available.');
+        if (this.isShowMsg) {
+          this.toastr.error('Demand not available.');
+        }
+
       }
     },
       (err) => {
@@ -497,7 +502,9 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         const index = $select.data('index');
         const selectedOption = $select.find('option:selected');
 
+        $(`#save${index}`).prop('disabled', false);
         $(`#inputQty${index}`).prop('readonly', false);
+
         const stockQty = Number(selectedOption.data('stock')) || 0;
         const inputQty = Number($("#inputQty" + index).val()) || 0;
 
@@ -542,19 +549,26 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         const index = Number($(e.target).data('index'));
         const inputQty = Number($(e.target).val());
         const stockQty = Number(this.supplyDetailsList[index]?.stockQty || 0);
-
+        // Validation
         if (inputQty <= 0) {
           this.toastr.error('Input quantity must be greater than 1.');
           $(e.target).focus();
           $(e.target).select();
           return;
         }
+        // Check against stockQty
         if (inputQty > stockQty) {
           this.toastr.error('Input Qty cannot exceed available Qty.');
           $(e.target).focus();
           return;
         }
-
+        // Check against transactionQty
+        const transactionQty = this.supplyDetailsList[index]?.transactionQty || 0;
+        if (transactionQty < inputQty) {
+          this.toastr.error('Input Qty cannot exceed Transaction Qty.');
+          $(e.target).focus();
+          return;
+        }
         // store qty
         this.supplyDetailsList[index].inputQty = inputQty;
         const stQty = this.supplyDetailsList[index].stockQty;
@@ -601,6 +615,29 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         return;
       }
 
+      const stockQty = Number(this.supplyDetailsList[index]?.stockQty || 0);
+
+      // Check against stockQty
+      if (qty > stockQty) {
+        this.toastr.error('Input Qty cannot exceed available Qty.');
+        $(e.target).focus();
+        return;
+      }
+
+      // Check against transactionQty
+      const transactionQty = this.supplyDetailsList[index]?.transactionQty || 0;
+      if (transactionQty < qty) {
+        this.toastr.error('Input Qty cannot exceed Transaction Qty.');
+        $(e.target).focus();
+        return;
+      }
+      // store qty
+      const stQty = this.supplyDetailsList[index].stockQty;
+      const remQty = this.truncateDecimal(stQty) - qty;
+
+      this.supplyDetailsList[index].inputQty = qty;
+      this.supplyDetailsList[index].remainingQty = remQty < 0 ? 0 : this.truncateDecimal(remQty);
+
       // ✅ Only executes if all values are valid
       this.supplyDetailsId = Number(btn.dataset?.['supplydetailsid']);
 
@@ -628,6 +665,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         if (data?.length > 0) {
           if (data[0].status == 200) {
             $(`#inputQty${index}`).prop('readonly', true);
+            $(`#save${index}`).prop('disabled', true);
             this.toastr.success(data[0].message);
             this.focusNextValidRow(index);
           }
@@ -768,6 +806,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         const data = res?.data;
         if (data?.[0]?.status === 200) {
           this.toastr.success(data[0]?.message);
+          this.isShowMsg = false;
           this.getDemandList();
           this.resetSupply();
         } else {

@@ -9,12 +9,9 @@ import { DemandComponent } from './demand/demand.component';
 import { ProductModelComponent } from './Product/product-model/product-model.component';
 import { ProductSizeComponent } from './Product/product-size/product-size.component';
 import { ProductCreationComponent } from './Product/product-creation/product-creation.component';
-<<<<<<< HEAD
 import { SupplyComponent } from './supply/supply/supply.component';
 import { DeptStockLocationMappingComponent } from './dept-stock-location-mapping/dept-stock-location-mapping.component';
-=======
 import { PurchaseOrderComponent } from './Purchase/purchase-order/purchase-order.component';
->>>>>>> 89a8d3305fabbbf2d15cc72249fc9be29fd19ff7
 
 const routes: Routes = [
  {
@@ -53,7 +50,6 @@ const routes: Routes = [
     path: 'productcreate',
     component: ProductCreationComponent,
   },
-<<<<<<< HEAD
   {
     path:'supply',
     component:SupplyComponent
@@ -61,13 +57,11 @@ const routes: Routes = [
   {
     path:'deptstocklocationmapping',
     component:DeptStockLocationMappingComponent
-  }
-=======
+  },
    {
     path: 'purchaseorder',
     component: PurchaseOrderComponent,
   },
->>>>>>> 89a8d3305fabbbf2d15cc72249fc9be29fd19ff7
 ];
 
 @NgModule({
