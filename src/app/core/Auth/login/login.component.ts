@@ -106,7 +106,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       // When dropdown closes →  Focus Remarks field
       selectEl.on('select2:close', () => {
         setTimeout(() => {
-            this.remarksInput.nativeElement.focus();
+          this.remarksInput.nativeElement.focus();
         }, 0);
       });
     }
@@ -233,7 +233,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       next: (data: any) => {
         this.loadingDR = false;
         const code = data?.authResult?.code;
-
+        
         if (code == 200) {
           this.departmentBranch = data.departmentBranches;
           this.companyName = data.ownerCompanyList.companyName;
@@ -280,11 +280,14 @@ export class LoginComponent implements OnInit, AfterViewInit {
           this.toastr.error('Invalid Credentials');
         }
       },
-      error: () => {
+      error: (error) => {
         this.loadingDR = false;
         this.isLoginFormShow = true;
         this.isFormShow = false;
+        console.log(error,"error");
         this.toastr.error('Failed to login');
+
+        
       },
     });
   }
@@ -315,30 +318,47 @@ export class LoginComponent implements OnInit, AfterViewInit {
     // Run validation first
     if (this.ValidationInquiry()) {
       this.loadingDR = false;
-      // 🔹 Gather values from inputs
-      const objData = {
-        inquiryId: 0,
-        organizationName: this.orgInput.nativeElement.value,
-        address: this.addrInput.nativeElement.value,
-        contact: this.contactInput.nativeElement.value,
-        email: this.emailInput.nativeElement.value,
-        nature: $('#Nature').val(),
-        remarks: this.remarksInput.nativeElement.value,
-        inquiryDateTime: new Date().toISOString(),
-      };
-
-      this.loginservice.Inquiry(objData).subscribe({
-        next: (data: any) => {
-          this.loadingDR = false;
-          this.toastr.success('Inquiry submitted successfully');
-          this.closeInquiryPopup();
-        },
-        error: () => {
-          this.loadingDR = false;
-          this.toastr.error('Inquiry submission failed');
-        },
-      });
+      this.insertInquery();
     }
+  }
+
+  insertInquery() {
+
+    const objData = {
+      inquiryId: 0,
+      organizationName: this.orgInput.nativeElement.value,
+      address: this.addrInput.nativeElement.value,
+      contact: this.contactInput.nativeElement.value,
+      email: this.emailInput.nativeElement.value,
+      nature: $('#Nature').val(),
+      remarks: this.remarksInput.nativeElement.value,
+      inquiryDateTime: new Date().toISOString(),
+    };
+
+    this.loginservice.Inquiry(objData).subscribe({
+      next: (data: any) => {
+        this.loadingDR = false;
+        this.toastr.success('Inquiry submitted successfully');
+        this.closeInquiryPopup();
+        this.InquiryReset();
+      },
+      error: () => {
+        this.loadingDR = false;
+        this.toastr.error('Inquiry submission failed');
+        //  this.InquiryReset();
+      },
+    });
+  }
+
+  InquiryReset() {
+    this.orgInput.nativeElement.value = '';
+    this.addrInput.nativeElement.value = '';
+    this.contactInput.nativeElement.value = '';
+    this.emailInput.nativeElement.value = '';
+
+    // Reset Select2 properly
+    $('#Nature').val('').trigger('change');
+    this.remarksInput.nativeElement.value = '';
   }
 
   // 🔹 Basic validation

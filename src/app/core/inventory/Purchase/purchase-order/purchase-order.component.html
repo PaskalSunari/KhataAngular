@@ -1,0 +1,900 @@
+<div class="page-head-bar">
+    <div class="container-fluid">
+        <div class="row align-items-center flex-wrap">
+            <div class="col-9">Purchase Order</div>
+            <div class="col-3">
+                <div class="buttons-wrapper d-flex justify-content-end Gap-5">
+                    <button class="p-2"
+                        style="background-color: #28a3c3!important; border: none;color: white; border-radius: 3px;"
+                        id="draftList" name="Draft List">Draft List</button>
+                    <div class="plus-btn p-2" style="height: fit-content; width: fit-content;" (click)="toggleForm()">
+
+                        <i class="fa-solid "
+                            [ngClass]="showPurchaseOrderForm ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<div class="page-body">
+    <div class="container-fluid px-0">
+        <div class="row">
+            <div class="col-10">
+                <form class="Product Form">
+                    <div class="sales__form-box m-2 pb-2 " *ngIf="showPurchaseOrderForm">
+                        <div class="row">
+                            <div class="col-9">
+
+                                <div class="row">
+
+                                    <div class="col-sm-4 col-md-4 col-lg-3">
+                                        <div class="d-flex gap-1">
+                                            <div class="col-10">
+                                                <div class="custom__input-container">
+                                                    <select class="input-field custom__input  w-100 req"
+                                                        id="purchaseLedger" name="Purchase Ledger"
+                                                        data-placeholder="--Choose--" required>
+                                                        <option value=""></option>
+                                                        <option *ngFor="let data of purchaseLedgerDropdownList"
+                                                            value="{{data?.value}}">
+                                                            {{data?.text}} </option>
+                                                    </select>
+                                                    <label>Purchase Ledger</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-1"
+                                                style="display:flex; justify-content: center; align-items: center;margin: 12px;">
+
+                                                <div class="plus-btn d-flex justify-content-center align-items-center p-2"
+                                                    style="color: white;">
+
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-4 col-lg-3">
+                                        <div class="custom__input-container">
+                                            <select class="input-field custom__input  w-100 req" id="purchaseAgainst"
+                                                name="Purchase Against" data-placeholder="--Choose--" required>
+                                                <option value=""></option>
+                                                <option *ngFor="let data of purchaseAgainstDropdownList"
+                                                    value="{{data?.value}}">
+                                                    {{data?.text}} </option>
+                                            </select>
+                                            <label>Purchase Against</label>
+                                        </div>
+                                    </div>
+
+                                    <div class=" col-sm-4 col-md-3 col-lg-3">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <input id="deliveryDate" type="date" class="form-control custom__input req"
+                                                autocomplete="off" name="Delivery Date" required
+                                                [(ngModel)]="this.service.purchaseOrderModel.estimatedDeliveryDate">
+                                            <label>Estimated Delivery Date</label>
+                                        </div>
+                                    </div>
+
+                                    <div class=" col-sm-4 col-md-3 col-lg-3">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <input id="refNumber" type="text" class="form-control custom__input"
+                                                autocomplete="off" name="Ref Number"
+                                                [(ngModel)]="this.service.purchaseOrderModel.refNumber">
+                                            <label>Ref No.</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-4 col-lg-3">
+                                        <div class="d-flex gap-1">
+                                            <div class="col-10">
+                                                <div class="custom__input-container">
+                                                    <select class="input-field custom__input  w-100" id="party"
+                                                        name="Party" data-placeholder="--Choose--" required>
+                                                        <option value=""></option>
+                                                        <option *ngFor="let data of partyDropdownList"
+                                                            value="{{data?.value}}">
+                                                            {{data?.text}} </option>
+                                                    </select>
+                                                    <label>Party</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-1"
+                                                style="justify-content: center; align-items: center;margin: 12px;">
+
+                                                <div class="plus-btn d-flex justify-content-center align-items-center p-2"
+                                                    style="color: white;">
+
+                                                    <i class="fa-solid fa-plus"></i>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-3 mt-3">
+                                <div class="party-details-container">
+                                    <h5 class="party-details-heading">Party Details</h5>
+
+                                    <ul>
+                                        <li>
+                                            <span>Name:</span>
+                                            <span id="partyName"></span>
+                                        </li>
+                                        <li>
+                                            <span>Address:</span>
+                                            <span id="partyAddress"></span>
+                                        </li>
+                                        <li>
+                                            <span>PAN:</span>
+                                            <span id="pan"></span>
+                                        </li>
+                                    </ul>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="row"> -->
+                    <div class="sales__form-box m-2 pb-2 " *ngIf="showPurchaseOrderForm">
+
+                        <div class="row">
+                            <div class=" col-sm-4 col-md-3 col-lg-2">
+                                <div class="custom__input-container d-flex align-items-center">
+                                    <input id="productCode" type="text" class="form-control custom__input"
+                                        autocomplete="off" name="Product Code"
+                                        [(ngModel)]="this.service.purchaseOrderModel.productCode">
+                                    <label>Product Code</label>
+                                </div>
+                            </div>
+
+
+                            <!-- <div class=" col-sm-4 col-md-3 col-lg-3">
+                                <div class="d-flex gap-1">
+                                    <div class="col-10">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <input id="productName" type="text" class="form-control custom__input"
+                                                autocomplete="off" name="Product Name"
+                                                [(ngModel)]="this.service.purchaseOrderModel.productName">
+                                            <label>Product Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-1"
+                                        style="display: flex; justify-content: center; align-items: center;margin: 12px;">
+
+                                        <div class="plus-btn d-flex justify-content-center align-items-center p-2"
+                                            style="color: white;">
+
+                                            <i class="fa-solid fa-plus"></i>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div> -->
+<!-- 
+                               <div class="col-sm-4 col-md-4 col-lg-2">
+                                <div class="custom__input-container">
+                                    <select class="input-field custom__input  w-100 req" id="productName" name="Product Name"
+                                        data-placeholder="--Choose--" required>
+                                        <option value=""></option>
+                                        <option *ngFor="let data of productDropdownList" value="{{data?.value}}">
+                                            {{data?.text}} </option>
+                                    </select>
+                                    <label>Product Name</label>
+                                </div>
+                            </div> -->
+
+                             <!-- <div class="col-sm-4 col-md-4 col-lg-2">
+                                <div class="custom__input-container">
+                                    <select class="input-field custom__input  w-100 req" id="productName" name="Product Name"
+                                        required>
+                                       
+                                      
+                                    </select>
+                                    <label>Product Name</label>
+                                </div>
+                            </div> -->
+
+
+
+                               <div class=" col-sm-4 col-md-3 col-lg-3">
+                                <div class="d-flex gap-1">
+                                    <div class="col-10"  (click)="purchaseNameInputFieldClick()">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <input id="productName" type="text" class="form-control custom__input"
+                                                autocomplete="off" name="Product Name" (focus)="purchaseNameInputFieldClick()" (keydown)="onKeyDown($event)"
+                                                [(ngModel)]="this.service.purchaseOrderModel.productName"  (ngModelChange)="onProductNameChange($event)">
+                                            <label>Product Name</label>
+
+                                            <div id="suggestions" class="suggestions"  [style.display]="isOpenProductList ? 'block' : 'none'">
+
+                                                <div class="suggestion-item" *ngFor="let item of productDropdownList; let i = index"  [class.active]="i === activeIndex" (click)="selectItem(item)">{{item?.text}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-1"
+                                        style="display: flex; justify-content: center; align-items: center;margin: 12px;">
+
+                                        <div class="plus-btn d-flex justify-content-center align-items-center p-2"
+                                            style="color: white;">
+
+                                            <i class="fa-solid fa-plus"></i>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-4 col-md-4 col-lg-2">
+                                <div class="custom__input-container">
+                                    <select class="input-field custom__input  w-100 req" id="unit" name="Unit"
+                                        data-placeholder="--Choose--" required>
+                                        <option value=""></option>
+                                        <option *ngFor="let data of unitListByProductID" value="{{data?.unitId}}">
+                                            {{data?.symbol}} </option>
+                                    </select>
+                                    <label>Unit</label>
+                                </div>
+                            </div>
+
+
+
+                            <div class=" col-sm-4 col-md-3 col-lg-1">
+                                <div class="custom__input-container d-flex align-items-center">
+                                    <input id="quantity" type="number" class="form-control custom__input"
+                                        autocomplete="off" name="Quantity" required
+                                        [(ngModel)]="this.service.purchaseOrderModel.quantity"
+                                        (keydown)="wholeNumberValidation($event)"
+                                        (blur)="openPurchaseOrderCalculationPopup()"
+                                        (keydown.enter)="openPurchaseOrderCalculationPopup()">
+                                    <label>Qty</label>
+                                </div>
+                            </div>
+
+                            <div class=" col-sm-4 col-md-3 col-lg-1">
+                                <div class="custom__input-container d-flex align-items-center">
+                                    <input id="rate" type="number" class="form-control custom__input" autocomplete="off"
+                                        name="Rate" [(ngModel)]="this.service.purchaseOrderModel.rate"
+                                        (keydown)="decimalNumberValidation($event)">
+                                    <label>Rate</label>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4 col-lg-2">
+                                <div class="custom__input-container">
+                                    <select class="input-field custom__input  w-100" id="vat" name="Vat"
+                                        data-placeholder="--Choose--" required>
+                                        <option value="Excluded">Excluded</option>
+                                        <option value="Included">Included</option>
+                                        <option value="NonVat">NonVat</option>
+
+                                    </select>
+                                    <label>Vat</label>
+                                </div>
+                            </div>
+
+                            <div class=" col-sm-4 col-md-3 col-lg-1">
+                                <div class="custom__input-container d-flex align-items-center">
+                                    <input id="actualRate" type="number" class="form-control custom__input"
+                                        autocomplete="off" name="Actual Rate" disabled
+                                        [(ngModel)]="this.service.purchaseOrderModel.actualRate" required>
+                                    <label>Actual Rate</label>
+                                </div>
+                            </div>
+
+                            <div class=" col-sm-4 col-md-3 col-lg-1">
+                                <div class="custom__input-container d-flex align-items-center">
+                                    <input id="discountPercent" type="number" class="form-control custom__input"
+                                        autocomplete="off" name="Discount Percent"
+                                        [(ngModel)]="this.service.purchaseOrderModel.discountPercent"
+                                        (keydown)="decimalNumberValidation($event)">
+                                    <label>Dis %</label>
+                                </div>
+                            </div>
+
+                            <div class=" col-sm-4 col-md-3 col-lg-1">
+                                <div class="custom__input-container d-flex align-items-center">
+                                    <input id="discountAmount" type="number" class="form-control custom__input"
+                                        autocomplete="off" name="Discount Amount"
+                                        [(ngModel)]="this.service.purchaseOrderModel.discountAmount"
+                                        (keydown)="decimalNumberValidation($event)">
+                                    <label>Dis Amt</label>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4 col-lg-2" style="z-index: 99;">
+                                <div class="custom__input-container">
+                                    <select class="input-field custom__input  w-100" id="otherCharges"
+                                        name="Other Charges" data-placeholder="--Choose--" required>
+                                        <option value="no">NO</option>
+                                        <option value="yes">YES</option>
+
+                                    </select>
+                                    <label>Other Charges/Tax?</label>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-3 col-lg-1">
+                                <div class="custom__input-container d-flex align-items-center">
+                                    <button type="button" id="button12" class="button12 button-sm btn btn-success ms-1"
+                                        [title]="submitButton">
+
+                                        <i [ngClass]="{ 'fa-solid fa-save': submitButton === 'Save' }"></i>
+                                        <i [ngClass]="{
+                                        'fa-solid fa-rotate-right': submitButton === 'Update'
+                                        }"></i>
+                                    </button>
+
+
+                                    <button class="button-sm btn btn-danger ms-1" title="Reset" id="salesBtn_refresh"
+                                        (click)="resetAddProduct()">
+                                        <i class="fa-solid fa-rotate-left"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- </div> -->
+                </form>
+                <div class="table__wrapper  table__wrapper-40 table_xxl-50 mt-3">
+                    <table class="table">
+                        <thead class="table__head">
+                            <tr>
+                                <th>S.N.</th>
+                                <th>Item</th>
+                                <th>Qty</th>
+                                <th>Unit</th>
+                                <th>Rate</th>
+                                <th>Gross Amt</th>
+                                <th>Dis Amt</th>
+                                <th>Taxable</th>
+                                <th>Tax</th>
+                                <th>Non-Taxable</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table__body">
+                            <!-- <tr *ngFor="let data of productCreationGridList; let i = index">
+                                    <td>{{productCreationGridDetails.pageStartIndex+i}}</td>
+                                    <td>{{data?.productCode}}</td>
+                                    <td>{{data?.productName}}</td>
+                                    <td>{{data?.groupName}}</td>
+                                    <td>{{data?.categoryName}}</td>
+                                    <td>{{data?.manufacturerName}}</td>
+                                    <td>{{data?.unitName}}</td>
+                                    <td>{{data?.reorderLevel}}</td>
+                                    <td>{{data?.isPublic==false?'No':'Yes'}}</td>
+                                    <td>{{data?.status==1?'Active':'InActive'}}</td>
+                                    <td>
+
+                                        <button
+                                            class="button button--extra-small button--success button--rounded-sm me-2"
+                                            >
+                                            <i class="fa-regular fa-pen-to-square"></i>
+                                        </button>
+                                        <button
+                                            class="button button--extra-small button--danger button--rounded-sm me-2"
+                                        >
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                          <button
+                                            class="button button--extra-small button--add button--rounded-sm me-2"
+                                             >
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </td>
+
+
+                                </tr> -->
+                        </tbody>
+
+
+                    </table>
+                </div>
+
+                <div class="purchase-footer-container">
+                    <div class="row d-flex justify-content-end">
+                        <div class="col-7"></div>
+                        <div class="col-5 d-flex">
+                            <!-- <div class="custom__input d-flex justify-content-end">
+<textarea name="Narration" id="narration"  rows="9"></textarea>
+<label>Narration</label>
+        </div> -->
+
+                            <div class="col-10 mt-3">
+                                <div class="hms-input">
+                                    <textarea autocomplete="off" class="input-field w-100" id="profile" rows="3"
+                                        name="Profile"></textarea>
+                                    <label class="input-label">Narration</label>
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-4 col-md-3 col-lg-2">
+                                <div class="custom__input-container d-flex align-items-center justify-content-end me-4">
+
+                                    <button type="button" id="button12"
+                                        class="button12 button-sm btn btn-success ms-1 me-2" [title]="submitButton">
+                                        <i class="fa-solid fa-save"></i>
+                                    </button>
+
+
+                                    <button class="button-sm btn btn-danger ms-1" title="Reset" id="salesBtn_refresh"
+                                        (click)="resetPurchaseOrder()">
+                                        <i class="fa-solid fa-rotate-left"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="purchase-summary-container">
+                    <div class="purchase-summary-top px-1 py-1 mt-2">
+                        <div class="d-flex align-items-center">
+                            <h6 class="p-1 w-50">Bill Amount:</h6>
+                            <input id="billAmount" type="text" class="p-1 w-50 summary-display-box" autocomplete="off"
+                                name="Bill Amount" disabled>
+                        </div>
+                    </div>
+
+                    <div class="purchase-summary-bottom px-1 py-1">
+                        <h6>Bill Summary</h6>
+                        <div>
+                            <div class="d-flex align-items-center">
+                                <label class="p-1 w-50">Gross Amount:</label>
+                                <input id="grossAmount" name="Gross Amount" class="p-1 w-50 summary-display-box"
+                                    type="text" disabled>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <label class="p-1 w-50">Item Dis:</label>
+                                <input id="itemDiscount" name="Item Discount" class="p-1 w-50 summary-display-box"
+                                    type="text" disabled>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <label class="p-1 w-50">Bill Dis:</label>
+                                <input id="billDiscount" name="Bill Discount" class="p-1 w-50 summary-display-box"
+                                    type="text" disabled>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <label class="p-1 w-50">Other charges/Tax:</label>
+                                <input id="otherCharges" name="Other Charges" class="p-1 w-50 summary-display-box"
+                                    type="text" disabled>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <label class="p-1 w-50">Total Addition Exp:</label>
+                                <input id="totalAdditionExp" name="Total Additional Exp"
+                                    class="p-1 w-50 summary-display-box" type="text" disabled>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <label class="p-1 w-50">Non Taxable Amt:</label>
+                                <input id="nonTaxableAmount" name="Non Taxable Amount"
+                                    class="p-1 w-50 summary-display-box" type="text" disabled>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <label class="p-1 w-50">Taxable Amt:</label>
+                                <input id="taxableAmount" name="Taxable Amount" class="p-1 w-50 summary-display-box"
+                                    type="text" disabled>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <label class="p-1 w-50">Tax/Vat Amt:</label>
+                                <input id="taxVatAmount" name="Tax/Vat Amount" class="p-1 w-50 summary-display-box"
+                                    type="text" disabled>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <label class="p-1 w-50">Net Payable:</label>
+                                <input id="netPayable" name="Net Payable" class="p-1 w-50 summary-display-box"
+                                    type="text" disabled>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Purchase Order Details  popup -->
+<div [hidden]="!purchaseOrderDetailsPopup">
+    <div class="customPopupContainer">
+        <div class="customPopup customPopup-md-hgt-40 customPopup-md-40" [ngClass]="modelAnimationPurchaseOrderDetails">
+            <div class="customPopupHeader"><span>Party Details</span>
+                <span class="closeIcon" (click)="closePurchaseOrderDetailsPopup()">
+                    <i class="fa-solid fa-xmark"></i>
+                </span>
+            </div>
+            <div class="modal-body p-2">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-0">
+                        <div class="" id="sales-form-container">
+                            <form class="popupForm">
+                                <div class="container-fluid pt-0 px-1 pb-1">
+                                    <div class="sales__form-box m-2 pb-2 ">
+
+                                        <div class="row">
+
+
+
+                                             <div class=" col-sm-4 col-md-3 col-lg-4">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="supplier" type="text"
+                                                        class="form-control custom__input req" autocomplete="off"
+                                                        name="Supplier" [(ngModel)]="this.service.purchaseOrderModel.supplierName" disabled>
+                                                    <label>Supplier</label>
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-sm-4 col-md-3 col-lg-4">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="mailingName" type="text"
+                                                        class="form-control custom__input req" autocomplete="off"
+                                                        name="Mailing Name" [(ngModel)]="this.service.purchaseOrderModel.mailingName">
+                                                    <label>Mailing Name</label>
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-sm-4 col-md-3 col-lg-4">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="address" type="text" class="form-control custom__input"
+                                                        autocomplete="off" name="Address" [(ngModel)]="this.service.purchaseOrderModel.address" disabled >
+                                                    <label>Address</label>
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-sm-4 col-md-3 col-lg-4">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="email" type="text" class="form-control custom__input"
+                                                        autocomplete="off" name="Email" [(ngModel)]="this.service.purchaseOrderModel.email" disabled>
+                                                    <label>Email</label>
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-sm-4 col-md-3 col-lg-4">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="pan" type="text" class="form-control custom__input"
+                                                        autocomplete="off" name="Pan" [(ngModel)]="this.service.purchaseOrderModel.pan" disabled>
+                                                    <label>Pan</label>
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-sm-4 col-md-3 col-lg-4">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="creditPeriod" type="number"
+                                                        class="form-control custom__input" autocomplete="off"
+                                                        name="Credit Period" [(ngModel)]="this.service.purchaseOrderModel.creditPeriod" disabled>
+                                                    <label>Credit Period (Days)</label>
+                                                </div>
+                                            </div>
+
+
+
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="customPopupHeader"><span>Receipt Details</span>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-0">
+                        <div class="" id="sales-form-container">
+                            <form class="popupForm">
+                                <div class="container-fluid pt-0 px-1 pb-1">
+                                    <div class="sales__form-box m-2 pb-2 ">
+
+                                        <div class="row">
+                                            <div class=" col-sm-4 col-md-3 col-lg-4">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="modeOfPayment" type="text"
+                                                        class="form-control custom__input req" autocomplete="off"
+                                                        name="Mode of Payment" [(ngModel)]="this.service.purchaseOrderModel.modeOfPayment">
+                                                    <label>Mode Of Payment</label>
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-sm-4 col-md-3 col-lg-4">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="dispatchedDate" type="date"
+                                                        class="form-control custom__input req" autocomplete="off"
+                                                        name="Dispatched Date" [(ngModel)]="this.service.purchaseOrderModel.dispatchedDate">
+                                                    <label>Dispatched Date</label>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class=" col-sm-4 col-md-3 col-lg-4">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="dispatchedThrough" type="text"
+                                                        class="form-control custom__input req" autocomplete="off"
+                                                        name="Dispatched Through" [(ngModel)]="this.service.purchaseOrderModel.dispatchedThrough">
+                                                    <label>Dispatched Through</label>
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-sm-4 col-md-3 col-lg-4">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="carrierName" type="text"
+                                                        class="form-control custom__input" autocomplete="off"
+                                                        name="Carrier Name" [(ngModel)]="this.service.purchaseOrderModel.carrierName">
+                                                    <label>Carrier Name/Agent</label>
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-sm-4 col-md-3 col-lg-4">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="vehicleNumber" type="text"
+                                                        class="form-control custom__input" autocomplete="off"
+                                                        name="Vehicle Number" [(ngModel)]="this.service.purchaseOrderModel.vehicleNumber">
+                                                    <label>Vehicle No.</label>
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-sm-4 col-md-3 col-lg-4">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="billLanding" type="text"
+                                                        class="form-control custom__input" autocomplete="off"
+                                                        name="billLanding" [(ngModel)]="this.service.purchaseOrderModel.billOfLanding">
+                                                    <label>LR - RRNo. / Bill of Landing</label>
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-sm-4 col-md-3 col-lg-4">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="creditPeriod" type="text"
+                                                        class="form-control custom__input" autocomplete="off"
+                                                        name="Credit Period" [(ngModel)]="this.service.purchaseOrderModel.challanNumber">
+                                                    <label>Order/Challan No</label>
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-sm-4 col-md-3 col-lg-6">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="remaks" type="text" class="form-control custom__input"
+                                                        autocomplete="off" name="Remarks" [(ngModel)]="this.service.purchaseOrderModel.remarks">
+                                                    <label>Remarks</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="d-flex justify-content-end">
+                                            <div class="col-sm-4 col-md-3 col-lg-1">
+                                                <div
+                                                    class="custom__input-container d-flex justify-content-end align-items-center">
+                                                    <button type="button" id="button5"
+                                                        class="button2 button-sm btn btn-success ms-1"
+                                                        title="submitPurchaseOrder" (click)="onSubmitPurchaseDetails()">
+                                                        <i class="fa-solid fa-save"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<!-- Purchase order quantity calculation -->
+<div [hidden]="!purchaseOrderCalculationPopup">
+    <div class="customPopupContainer">
+        <div class="customPopup customPopup-md-hgt-40 customPopup-md-50"
+            [ngClass]="modelAnimationPurchaseOrderCalculationPopup">
+            <div class="customPopupHeader"><span>Item Allocation Details of-{{this.service.purchaseOrderModel.productName}}</span>
+                <span class="closeIcon" (click)="closePurchaseOrderCalculationPopup()">
+                    <i class="fa-solid fa-xmark"></i>
+                </span>
+            </div>
+            <div class="modal-body p-2">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-0">
+                        <div class="" id="sales-form-container">
+                            <form class="popupForm">
+                                <div class="container-fluid pt-0 px-1 pb-1">
+                                    <div class="sales__form-box m-2 pb-2 ">
+
+                                        <div class="row">
+
+                                            <div class=" col-sm-4 col-md-3 col-lg-4">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="batch" type="text" class="form-control custom__input req"
+                                                        autocomplete="off" name="Batch"   [(ngModel)]="this.service.purchaseOrderModel.batch" [disabled]="batchDisabled">
+                                                    <label>Batch</label>
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-sm-4 col-md-3 col-lg-4">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="expiryDate" type="date"
+                                                        class="form-control custom__input" autocomplete="off"
+                                                        name="Expiry Date"   [(ngModel)]="this.service.purchaseOrderModel.expiryDate" [disabled]="expiryDateDisabled">
+                                                    <label>Expiry Date</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                                <div class="custom__input-container">
+                                                    <select class="input-field custom__input  w-100" id="locationPopup"
+                                                        name="Location" data-placeholder="--Choose--">
+                                                        <option value=""></option>
+                                                        <option *ngFor="let data of stockLocationDropdownList"
+                                                            value="{{data.value}}">
+                                                            {{data.text}} </option>
+                                                    </select>
+                                                    <label>Location</label>
+                                                </div>
+                                            </div>
+
+                                            <div class=" col-sm-4 col-md-3 col-lg-4">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="quantityPopup" type="text" class="form-control custom__input"
+                                                        autocomplete="off" name="Quantity"   [(ngModel)]="this.service.purchaseOrderModel.quantityPopup">
+                                                    <label>Qty</label>
+                                                </div>
+                                            </div>
+                                            <div class=" col-sm-4 col-md-3 col-lg-4">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <input id="unitPopup" type="text" class="form-control custom__input"
+                                                        autocomplete="off" name="Unit" disabled   [(ngModel)]="this.service.purchaseOrderModel.unitPopup">
+                                                    <label>Unit</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4 col-md-3 col-lg-1">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <button type="button" id="button3"
+                                                        class="button3 button-sm btn btn-success ms-1"
+                                                        title="Add">
+                                                        <i class='fa-solid fa-save'></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="table__wrapper  table__wrapper-40 table_xxl-40 mt-3">
+                                    <table class="table">
+                                        <thead class="table__head">
+                                            <tr>
+                                                <th class="sales-main-table__sn">S.N.</th>
+                                                <th class="sales-main-table__item">Batch</th>
+                                                <th class="sales-main-table__qty">Exp Date</th>
+                                                <th class="sales-main-table__qty">Location</th>
+                                                <th class="sales-main-table__qty">Qty</th>
+                                                <th class="sales-main-table__qty">Unit</th>
+                                                <th class="sales-main-table__action">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="table__body" id="sales-main-table__body">
+                                            <!-- <tr *ngFor="let data of addVariableGridList; let i = index">
+                                                            <td>{{addVariableGridDetails.pageStartIndex+i}}</td>
+                                                            <td>{{data?.variable}}</td>
+                                                            <td>{{data?.nature}}</td>
+
+                                                           
+                                                            <td>
+                                                                <button
+                                                                    class="button button--extra-small button--success button--rounded-sm me-2"
+                                                                    (click)="getAddVariableById(data?.variableID)">
+                                                                    <i class="fa-regular fa-pen-to-square"></i>
+                                                                </button>
+                                                                <button
+                                                                    class="button button--extra-small button--danger button--rounded-sm me-2"
+                                                                    (click)="confirmBoxAddVariableDelete(data?.variableID)">
+                                                                    <i class="fa-solid fa-trash"></i>
+                                                                </button>
+
+                                                            </td>
+
+
+                                                        </tr> -->
+                                        </tbody>
+
+                                    </table>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                        <div class="row p-1" style="background-color:  #1493b3; color: white;">
+                            <div class="col-6">
+                                <div class="d-flex justify-content-center">
+                                    <span>Total</span>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex justify-content-center">
+                                    <span>5</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="row" style="background-color: rgb(190, 190, 189);">
+                    <div class="custom__input-container d-flex justify-content-end align-items-center m-0 p-1">
+                        <button type="button" id="button5" class="button2 button-sm btn btn-success me-3"
+                            title="submitPurchaseOrder">
+                            <i class="fa-solid fa-save"></i>
+                        </button>
+                    </div>
+                  
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
