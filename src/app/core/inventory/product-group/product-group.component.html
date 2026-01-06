@@ -1,0 +1,193 @@
+<div class="page-head-bar">
+    <div class="container-fluid">
+        <div class="row align-items-center flex-wrap">
+            <div class="col-9">Product Group</div>
+            <div class="col-3 pe-3" >
+                <div class="buttons-wrapper d-flex justify-content-end Gap-5">
+                    <!-- <button class="btn btn-success button-sm"><i class="fa-solid fa-file-pdf"></i></button>
+                    <button class="btn button-info button-sm"><i class="fa-solid fa-file-csv"></i></button>
+
+                    <button class="btn btn-danger button-sm"><i class="fa-solid fa-print"></i></button> -->
+                    <div class="plus-btn" (click)="toggleForm()">
+
+                        <i class="fa-solid " [ngClass]="showForm ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="page-body">
+    <div class="container-fluid px-0">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-0">
+                <div class="" id="sales-form-container">
+                    <form class="">
+                        <div class="container-fluid pt-0 px-1 pb-1">
+                            <div class="sales__form-box m-2 pb-2 " *ngIf="showForm">
+
+                                <div class="row">
+                                    <div class=" col-sm-4 col-md-3 col-lg-2">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <input name="Group Name" id="groupName" type="text"
+                                                class="form-control custom__input req" autocomplete="off"
+                                                [(ngModel)]="this.service.productGroupModel.groupName" required="">
+                                            <label>Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+
+                                        <div class="custom__input-container">
+                                            <select class="input-field custom__input  w-100" id="groupUnder"
+                                                name="Group Under" data-placeholder="--Choose--" required>
+                                                <option value=""></option>
+                                                <option *ngFor="let data of productGroupUnderList"
+                                                    value="{{data.value}}">
+                                                    {{data.text}}
+                                                </option>
+                                            </select>
+                                            <label>Under</label>
+                                        </div>
+                                    </div>
+
+
+                                    <div class=" col-sm-4 col-md-3 col-lg-3">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <input id="groupRemarks" name="Remarks" type="text"
+                                                class="form-control custom__input" autocomplete="off"
+                                                [(ngModel)]="this.service.productGroupModel.remarks">
+                                            <label>Remarks</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+
+                                        <div class="custom__input-container">
+                                            <select class="input-field custom__input  w-100 req" name="Group Status"
+                                                id="groupStatus" required>
+                                                <option value="1">Active</option>
+                                                <option value="0">InActive</option>
+                                            </select>
+                                            <label>Status</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-3 col-lg-1">
+                                        <div class="custom__input-container d-flex align-items-center">
+
+
+                                            <button type="button" id="button8"
+                                                class="button8 button-sm btn btn-success ms-1" [title]="submitButton"
+                                                (click)="onSubmitProductGroup()">
+
+                                                <i [ngClass]="{ 'fa-solid fa-save': submitButton === 'Save' }"></i>
+                                                <i [ngClass]="{
+                                        'fa-solid fa-rotate-right': submitButton === 'Update'
+                                        }"></i>
+                                            </button>
+
+
+                                            <button class="button-sm btn btn-danger ms-1" title="Reset"
+                                                id="salesBtn_refresh" href="" (click)="resetProductGroup()">
+                                                <i class="fa-solid fa-rotate-left"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="filter sales__form-box m-2 pb-2">
+                                <div class="row d-flex justify-content-between">
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+
+                                        <div class="custom__input-container">
+                                            <select class="input-field custom__input  w-100 req" id="filterByGroupName"
+                                                data-placeholder="--Choose--">
+                                                <option value="0">All</option>
+                                                <option *ngFor="let data of productGroupFilterList"
+                                                    value="{{data.value}}">
+                                                    {{data.text}}
+                                                </option>
+                                            </select>
+                                            <label>Group</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+
+                                        <div class="custom__input-container">
+                                            <select class="input-field custom__input  w-100 req" id="filterByGroupUnder"
+                                                data-placeholder="--Choose--">
+                                                <option value="0">All</option>
+                                                <option *ngFor="let data of productGroupUnderFilterList"
+                                                    value="{{data.value}}">
+                                                    {{data.text}}
+                                                </option>
+                                            </select>
+                                            <label>Under Group</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table__wrapper  table__wrapper-40 table_xxl-65 mt-3">
+                                        <table class="table">
+                                            <thead class="table__head">
+                                                <tr>
+                                                    <th class="sales-main-table__sn">S.N.</th>
+                                                    <th class="sales-main-table__item">Group</th>
+                                                    <th class="sales-main-table__qty">Under Group</th>
+                                                    <th class="sales-main-batch">Remarks</th>
+                                                    <th class="sales-main-expirydate">Status</th>
+                                                    <th class="sales-main-table__action">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table__body" id="sales-main-table__body">
+                                                <tr *ngFor="let data of productGroupGridList; let i = index">
+                                                    <td>{{productGroupGridDetails.pageStartIndex+i}}</td>
+                                                    <td>{{data?.groupName}}</td>
+                                                    <td>{{data?.underGroupName}}</td>
+                                                    <td>{{data?.remarks}}</td>
+                                                    <td>{{data?.gStatus=='True'?'Active':'InActive'}}</td>
+
+                                                    <td>
+                                                        <button
+                                                            class="button button--extra-small button--success button--rounded-sm me-2"
+                                                            (click)="getProductGroupById(data?.groupID)">
+                                                            <i class="fa-regular fa-pen-to-square"></i>
+                                                        </button>
+                                                        <button
+                                                            class="button button--extra-small button--danger button--rounded-sm me-2"
+                                                            (click)="confirmBoxProductGroupDelete(data?.groupID)">
+                                                            <i class="fa-solid fa-trash"></i>
+                                                        </button>
+                                                    </td>
+
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                              <mat-paginator #paginatorPopup (page)="handlePageEvent($event)" class="demo-paginator" [length]="length"
+            [pageSize]="pageSize" [disabled]="disabled" [showFirstLastButtons]="showFirstLastButtons"
+            [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []" [hidePageSize]="hidePageSize"
+            [pageIndex]="pageIndex" aria-label="Select page">
+        </mat-paginator>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

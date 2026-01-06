@@ -68,7 +68,7 @@
   overflow-y: scroll;
   top: 0;
   left: 0;
-  z-index: 9999999;
+  z-index: 9999999999;
   width: 100%;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
@@ -302,9 +302,9 @@ span .select2-conatiner {
 }
 
 
-.select2-container--open {
-  z-index: 99999999999 !important;
-}
+// .select2-container--open {
+//   z-index: 99999999999 !important;
+// }
 
 .pRPatientDetails {
   animation: fadeInAnimation ease 1s;
@@ -535,3 +535,105 @@ span .select2-conatiner {
 
 
 }
+
+/* ===== ENTER ANIMATION ===== */
+.modal-enter {
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  animation: modalIn 0.35s ease-out forwards;
+}
+
+@keyframes modalIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -65%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* ===== EXIT ANIMATION ===== */
+.modal-exit {
+  animation: modalOut 0.25s ease-in forwards;
+}
+
+@keyframes modalOut {
+  to {
+    opacity: 0;
+  }
+}
+
+.confirmationPopupContainer{
+    // animation: fadeInAnimation ease 1s;
+  position: fixed;
+  overflow-y: scroll;
+  top: 0;
+  left: 0;
+  z-index: 9999999999;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  // flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  tr:nth-child(odd) td {
+    background-color: $color-white-100 !important;
+  }
+
+  tr:nth-child(even) td {
+    background-color: $color-gray-99 !important;
+  }
+
+  .revtable tr:nth-child(even) td {
+    background: none !important;
+  }
+
+  .revtable th,
+  .revtable td {
+    border: none !important;
+  }
+ 
+}
+ .confirmationPopup{
+     width: 100%;
+  background-color: #ffffff;
+  max-width: 500px;
+  border-radius: 5px;
+  overflow-y: hidden;
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  }
+
+  .confirmationHeader{
+     background: linear-gradient(150deg, #137b95 40%, #2b88a0 0, #4295aa 80%, #5aa3b5 0);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // padding: .5rem 1rem;
+  padding: 0.5rem 1.5rem;
+  color: #ffffff;
+  width: 100%;
+  user-select: none;
+
+  .closeIcon {
+    background-color: #cc2333;
+    padding: .2rem 1rem 0;
+    margin: -.5rem 0;
+    border-radius: 0.4rem;
+    cursor: pointer;
+
+    &:hover {
+
+      background-color: #d64f5c;
+      transition: all .2s ease;
+    }
+  }
+  }
