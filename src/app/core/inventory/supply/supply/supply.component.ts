@@ -19,10 +19,10 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   isPrefixSuffix: boolean = false;
   isDisabled: boolean = false;
   isQtyDisabled: boolean = false;
-  isBtnDisabled: boolean = true;
+  isSubmitDisabled: boolean = true;
   isDisabledToUser: boolean = false;
   isShowMsg: boolean = true;
-  isSubmitDisabled: boolean = true;
+  isBtnDisabled: boolean = true;
 
   userId: any;
   branchId: any;
@@ -235,9 +235,6 @@ export class SupplyComponent implements OnInit, AfterViewInit {
       if (data && data?.length > 0) {
         this.demandMasterId = data[0]?.demandMasterId;
         this.demandList = res?.data;
-        console.log('demand List:', this.demandList);
-        console.log('length: ', data?.length);
-
 
         $("#departmentId").focus();
       } else {
@@ -390,7 +387,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         this.toastr.error('No supply details found.');
         return;
       }
-      this.isBtnDisabled = false;
+      this.isSubmitDisabled = false;
       const supplyMaster = JSON.parse(res?.supplyMaster);
 
       this.supplyDetailsList = res?.supplyDetails || [];
@@ -596,7 +593,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
       const batch = $(`#batch${index}`).val();
       const qty = Number($(`#inputQty${index}`).val());
 
-      // 🔒 VALIDATION
+      //  VALIDATION
       if (!transferType || transferType === 0) {
         this.toastr.error('Please choose Transfer Type');
         $(`#transferType${index}`).focus();
@@ -638,7 +635,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
       this.supplyDetailsList[index].inputQty = qty;
       this.supplyDetailsList[index].remainingQty = remQty < 0 ? 0 : this.truncateDecimal(remQty);
 
-      // ✅ Only executes if all values are valid
+      // Only executes if all values are valid
       this.supplyDetailsId = Number(btn.dataset?.['supplydetailsid']);
 
       const result = this.supplyDetailsList.filter((d: { supplyDetailsId: number; }) =>
@@ -666,6 +663,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
           if (data[0].status == 200) {
             $(`#inputQty${index}`).prop('readonly', true);
             $(`#save${index}`).prop('disabled', true);
+            this.isBtnDisabled = true;
             this.toastr.success(data[0].message);
             this.focusNextValidRow(index);
           }
@@ -690,7 +688,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
       const btn = e.currentTarget as HTMLElement;
       const index = Number(btn.id.match(/\d+$/)?.[0]);
 
-      // ✅ Only executes if all values are valid
+      // Only executes if all values are valid
       this.supplyDetailsId = Number(btn.dataset?.['supplydetailsid']);
 
       const result = this.supplyDetailsList.filter((d: { supplyDetailsId: number; }) =>
@@ -781,9 +779,9 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   }
 
   postingSupply() {
-    if (this.isBtnDisabled) return;
+    if (this.isSubmitDisabled) return;
 
-    this.isBtnDisabled = true;
+    this.isSubmitDisabled = true;
 
     const payload = {
       tableName: 'Supply',
@@ -812,10 +810,10 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         } else {
           this.toastr.error(data?.[0]?.message || 'Error');
         }
-        this.isBtnDisabled = false;
+        this.isSubmitDisabled = false;
       },
       error: () => {
-        this.isBtnDisabled = false;
+        this.isSubmitDisabled = false;
       }
     });
   }
@@ -824,7 +822,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   resetSupply() {
     this.isDisabled = false;
     this.isQtyDisabled = true;
-    this.isBtnDisabled = true;
+    this.isSubmitDisabled = true;
     this.isDisabledToUser = false;
     this.demandMasterId = 0;
     this.supplyId = 0;
