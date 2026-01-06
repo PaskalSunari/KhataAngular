@@ -14,7 +14,6 @@ export class AuthGuardService  {
     private loginservice: LoginserviceService,
     private toastr: ToastrService
   ) {}
-
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
