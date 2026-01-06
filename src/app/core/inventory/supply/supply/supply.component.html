@@ -30,7 +30,6 @@
                                             required>
                                             <option *ngFor="let item of demandList" value="{{item?.demandMasterId}}">
                                                 {{item?.VoucherNo}}</option>
-
                                         </select>
                                         <label>Demand List</label>
                                     </div>
@@ -69,8 +68,7 @@
                                         </select>
                                         <label>Requested To</label>
                                     </div>
-                                </div>
-                                
+                                </div>                                
                                 <div class="col-sm-4 col-md-4 col-lg-2">
                                     <div class="custom__input-container">
                                         <select class="input-field custom__input  w-100 req" id="assignedToUserId"
@@ -128,7 +126,6 @@
                                                         </select> -->
                                                     </div>
                                                 </th>
-
                                                 <th class="sales-main-table__qty">Product Name</th>
                                                 <th class="sales-main-table__qty" style="width: 150px !important;">Batch
                                                 </th>
@@ -143,7 +140,6 @@
                                         <tbody class="table__body" id="sales-main-table__body">
                                             <tr *ngFor="let item of supplyDetailsList; let i = index">
                                                 <td>{{ i + 1 }}</td>
-
                                                 <td>
                                                     <select class="transferType-select from-select"
                                                         id="transferType{{i}}" [attr.data-index]="i"
@@ -153,9 +149,7 @@
                                                             [attr.data-transferType]="item?.id">{{ item.name }}</option>
                                                     </select>
                                                 </td>
-
                                                 <td>{{ item?.productName }}</td>
-
                                                 <!-- Batch dropdown -->
                                                 <td>
                                                     <select class="batch-select form-select"
@@ -168,12 +162,9 @@
                                                             {{ stock.batch }} (Qty: {{truncateDecimal(stock?.stockQty)}} )
                                                         </option>
                                                     </select>
-
                                                 </td>
-
                                                 <td>{{ item?.units }}</td>
                                                 <td>{{ item?.transactionQty }}</td>
-
                                                 <!-- Qty input -->
                                                 <td [attr.data-index]="i">
                                                     <input type="number" class="form-control qty-input"
@@ -181,10 +172,7 @@
                                                         id="inputQty{{i}}" style="width: 100px !important;"
                                                         [attr.data-index]="i">
                                                 </td>
-
                                                 <td>{{ truncateDecimal(item?.remainingQty) }}</td>
-
-
                                                 <td>
                                                     <button type="button" id="save{{i}}"
                                                         [disabled]="item?.stockInfoList.length === 0 || isBtnDisabled"
@@ -192,18 +180,14 @@
                                                         class="button button--extra-small button--success button--rounded-sm me-2">
                                                         <i class="fa-solid fa-save"></i>
                                                     </button>
-
                                                     <button type="button" id="delete{{i}}"
                                                         [attr.data-supplydetailsid]="item?.supplyDetailsId"
                                                         class="button button--extra-small button--danger button--rounded-sm me-2">
                                                         <i class="fa-solid fa-trash"></i>
                                                     </button>
-
                                                 </td>
                                             </tr>
                                         </tbody>
-
-
                                     </table>
                                 </div>
                             </div>
@@ -214,7 +198,6 @@
                                     <div class="custom__input-container">
                                         <textarea class="input-field custom__input  w-100" id="narration"
                                             style="height: 50px !important;">
-
                                         </textarea>
                                         <label>Narration</label>
                                     </div>
@@ -232,7 +215,6 @@
                                             (click)="deleteSupply()" class="button btn-lg btn btn-danger ms-1">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>
-
                                     </div>
                                 </div>
                             </div>

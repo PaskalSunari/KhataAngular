@@ -54,7 +54,6 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   supplyDetailsList: any;
   requestedToList: any;
 
-
   constructor(
     private el: ElementRef,
     private titleService: Title,
@@ -127,8 +126,6 @@ export class SupplyComponent implements OnInit, AfterViewInit {
       const id = e.target.value;
       self.assignToUserId = id || 0;
     });
-
-
   }
 
   // Enter focus next function
@@ -243,7 +240,6 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         if (this.isShowMsg) {
           this.toastr.error('Demand not available.');
         }
-
       }
     },
       (err) => {
@@ -511,7 +507,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
           this.supplyDetailsList[index].remainingQty = stockQty - inputQty;
         }
         this.isQtyDisabled = false;
-        // ✅ Move focus only when valid batch selected
+        // Move focus only when valid batch selected
         setTimeout(() => {
           const $qty = $(`#inputQty${rowId}`);
           $qty.focus();
@@ -746,8 +742,6 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     }, 50);
   }
 
-
-
   deleteSupply() {
     const payload = {
       tableName: 'Supply',
@@ -760,7 +754,6 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         demandId: String(this.demandMasterId),
         fromLocationId: String(this.fromLocationId),
         toLocationId: String(this.toLocationId),
-
       }
     };
 
@@ -818,7 +811,6 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     });
   }
 
-
   resetSupply() {
     this.isDisabled = false;
     this.isQtyDisabled = true;
@@ -832,7 +824,6 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     this.toLocationId = 0;
     this.assignToUserId = 0;
 
-
     // this.demandList = [];
     this.fromLocationList = [];
     this.toLocationList = [];
@@ -841,12 +832,10 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     this.requestedToList = [];
 
     $("#narration").val('');
-
     setTimeout(() => {
       $("#demandId").focus();
     }, 100);
   }
-
 
   truncateDecimal(
     value: number | string,
@@ -864,7 +853,4 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     const factor = Math.pow(10, digits);
     return Math.trunc(num * factor) / factor;
   }
-
-
-
 }
