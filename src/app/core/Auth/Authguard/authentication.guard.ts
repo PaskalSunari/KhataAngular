@@ -25,7 +25,7 @@ export class AuthGuardService implements CanActivate {
 
     // ✅ Define routes that are allowed only for logged-in users    
 
-    const allowedRoutes = ['/dashboard', '/sales/pos', 'organization','/inventory/productgroup','/inventory/productcategory','/inventory/productunit','/inventory/productmanufacturer','/inventory/productbrand','/inventory/productmodel','/inventory/productsize','/inventory/productcreate','/inventory/supply','/inventory/deptstocklocationmapping','/inventory/purchaseorder'];
+    const allowedRoutes = ['/dashboard', '/sales/pos', 'organization','/inventory/productgroup','/inventory/productcategory','/inventory/productunit','/inventory/productmanufacturer','/inventory/productbrand','/inventory/productmodel','/inventory/productsize','/inventory/productcreate','/inventory/supply','/inventory/deptstocklocationmapping','/inventory/purchaseorder','/inventory/supply-report'];
 
     if (!this.loginservice.isLoggedIn()) {
       this.toastr.info('Please login to access this page.');

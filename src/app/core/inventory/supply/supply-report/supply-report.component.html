@@ -1,12 +1,11 @@
 <div class="page-head-bar">
     <div class="container-fluid">
         <div class="row align-items-center flex-wrap">
-            <div class="col-9">Department Stock Location Mapping</div>
-            <div class="col-3">
+            <div class="col-4">Supply Report</div>
+            <div class="col-4" ></div>
+            <div class="col-4">
                 <div class="buttons-wrapper d-flex justify-content-end Gap-5">
-                    <!-- <button class="btn btn-success button-sm"><i class="fa-solid fa-file-pdf"></i></button>
-                    <button class="btn button-info button-sm"><i class="fa-solid fa-file-csv"></i></button>
-                    <button class="btn btn-danger button-sm"><i class="fa-solid fa-print"></i></button> -->
+                    <!-- <div><button type="button" class="button button-sm btn btn-light ms-1">Demand</button></div>                 -->
                     <div class="plus-btn" (click)="toggleForm()">
                         <i class="fa-solid " [ngClass]="isFormVisible ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
                     </div>
@@ -29,8 +28,7 @@
                                             <select class="input-field custom__input  w-100 req" id="departmentId"
                                                 name="Department" data-placeholder="--Choose--" required>
                                                 <option value=""></option>
-                                                <option *ngFor="let item of DepartmentList"
-                                                    value="{{item.departmentID}}">{{item.departmentName}}</option>
+                                                
                                             </select>
                                             <label>Department</label>
                                         </div>
@@ -40,32 +38,28 @@
                                             <select class="input-field custom__input  w-100 req" id="userId" name="User"
                                                 data-placeholder="--Choose--" required>
                                                 <option value=""></option>
-                                                <option *ngFor="let item of UserList" value="{{item.userId}}">
-                                                    {{item.userName}}</option>
+                                                
                                             </select>
                                             <label>User</label>
                                         </div>
                                     </div>
-                                    <div class="col-sm-4 col-md-4 col-lg-2" *ngIf="!isSelect2Show">
+                                    <div class="col-sm-4 col-md-4 col-lg-2" >
                                         <div class="custom__input-container">
                                             <ng-multiselect-dropdown id="multiLocationId" name="Variable Multi Option"
-                                                [placeholder]="'Choose'" class="w-100" [data]="this.StockLocationList"
-                                                [settings]="multidropdownSettings"
-                                                [(ngModel)]="service.storeLocationModel.multiSelectValue">
+                                                [placeholder]="'Choose'" class="w-100" >
                                             </ng-multiselect-dropdown>
 
 
                                             <label>Location</label>
                                         </div>
                                     </div>
-                                    <div class="col-sm-4 col-md-4 col-lg-2" *ngIf="isSelect2Show">
+                                    <div class="col-sm-4 col-md-4 col-lg-2" >
                                         <div class="custom__input-container">
                                             <select multiple class="input-field custom__input  w-100 req"
                                                 id="storeLocationId" name="Location" data-placeholder="--Choose--"
                                                 required>
                                                 <option value=""></option>
-                                                <option *ngFor="let item of StockLocationList"
-                                                    value="{{item.locationId}}">{{item.locationName}}</option>
+                                               
                                             </select>
                                             <label>Location</label>
                                         </div>
@@ -74,7 +68,7 @@
                                     <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
                                             <select class="input-field custom__input  w-100 req" id="status"
-                                                (change)="service.storeLocationModel.status = $any($event.target).value">
+                                            >
                                                 <option value="1">Active</option>
                                                 <option value="0">InActive</option>
                                             </select>
@@ -83,7 +77,7 @@
                                     </div>
                                     <div class="col-sm-4 col-md-3 col-lg-1">
                                         <div class="custom__input-container d-flex align-items-center">
-                                            <button type="button" id="button" (click)="onSubmitData()"
+                                            <!-- <button type="button" id="button" (click)="onSubmitData()"
                                                 class="button button-sm btn btn-success ms-1">
                                                 <i *ngIf="!isEditMode" class="fa-solid fa-save"></i>
                                                 <i *ngIf="isEditMode" class="fa-solid fa-rotate-right"></i>
@@ -91,7 +85,7 @@
                                             <button type="button" class="button-sm btn btn-danger ms-1" title="Reset"
                                                 (click)="resetForm()" id="salesBtn_refresh">
                                                 <i class="fa-solid fa-rotate-left"></i>
-                                            </button>
+                                            </button> -->
                                         </div>
                                     </div>
                                 </div>
@@ -100,7 +94,8 @@
                                 <div class="row d-flex justify-content-end">
                                     <div class=" col-sm-4 col-md-3 col-lg-2 mb-1">
                                         <div class="custom__input-container d-flex align-items-center mt-0">
-                                            <input id="mappingSearchString" type="text" (input)="onSearchData($event)"
+                                            <input id="mappingSearchString" type="text"
+                                             
                                                 class="form-control custom__input search-icon-padding"
                                                 placeholder="Search" autocomplete="off">
                                             <button class="search-icon"><i class="fa fa-search"></i></button>
@@ -122,7 +117,7 @@
                                                     <th class="sales-main-table__action">Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody class="table__body" id="sales-main-table__body">
+                                            <!-- <tbody class="table__body" id="sales-main-table__body">
                                                 <tr *ngFor="let item of DepartmentStockLocationMappingList let i=index">
                                                     <td>{{item.sn}}</td>
                                                     <td>{{item.locationName}}</td>
@@ -141,18 +136,18 @@
                                                             <i class="fa-solid fa-trash"></i>
                                                         </button>
                                                     </td>
-                                                </tr>
-                                            </tbody>
+                                                </tr> 
+                                            </tbody> -->
                                         </table>
                                     </div>
                                 </div>
                             </div>
-                            <mat-paginator #paginatorPopup (page)="handlePageEvent($event)" class="demo-paginator"
+                            <!-- <mat-paginator #paginatorPopup (page)="handlePageEvent($event)" class="demo-paginator"
                                 [length]="length" [pageSize]="pageSize" [disabled]="disabled"
                                 [showFirstLastButtons]="showFirstLastButtons"
                                 [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
                                 [hidePageSize]="hidePageSize" [pageIndex]="pageIndex" aria-label="Select page">
-                            </mat-paginator>
+                            </mat-paginator> -->
                         </div>
                     </form>
                 </div>
@@ -160,4 +155,3 @@
         </div>
     </div>
 </div>
-

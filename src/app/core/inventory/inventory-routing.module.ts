@@ -12,6 +12,7 @@ import { ProductCreationComponent } from './Product/product-creation/product-cre
 import { SupplyComponent } from './supply/supply/supply.component';
 import { DeptStockLocationMappingComponent } from './dept-stock-location-mapping/dept-stock-location-mapping.component';
 import { PurchaseOrderComponent } from './Purchase/purchase-order/purchase-order.component';
+import { SupplyReportComponent } from './supply/supply-report/supply-report.component';
 
 const routes: Routes = [
  {
@@ -62,6 +63,10 @@ const routes: Routes = [
     path: 'purchaseorder',
     component: PurchaseOrderComponent,
   },
+  {
+    path: 'supply-report',
+    component:SupplyReportComponent
+  }
 ];
 
 @NgModule({
