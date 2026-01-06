@@ -37,6 +37,10 @@ export class ProductCreationService {
         return this.http.post(`${this.baseurl}${this.endPoint.productCreateFilteredData}`,data);
     }
 
+    getProductDetails(data:any){
+       return this.http.post(`${this.baseurl}${this.endPoint.getProductDetails}`,data);
+    }
+
 
     //Add Variable api
      getNatureDropdownList(model:any) {

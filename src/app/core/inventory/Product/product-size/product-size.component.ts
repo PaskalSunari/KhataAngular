@@ -11,6 +11,9 @@ import { ProductSizeService } from './service/product-size.service';
   templateUrl: './product-size.component.html'
 })
 export class ProductSizeComponent implements AfterViewInit {
+
+  isSubmitSize:boolean=true
+
  showSizeForm = true;
 
   toggleForm() {
@@ -53,6 +56,7 @@ constructor(private el: ElementRef, public service: ProductSizeService, private 
 
   }
   ngAfterViewInit(): void {
+      $('#sizeName').focus();
  this.globalVariablePS = JSON.parse(localStorage.getItem("globalVariable") || '');
     this.baseUrlPS = localStorage.getItem("baseUrl")
     this.userIdPS = localStorage.getItem("userId");
@@ -218,8 +222,16 @@ this.getProductSizeFilteredList()
       }
     
       // console.log(this.productSizeModel, "size model")
-        this.InsertProductSize()
+      
      
+
+         if(this.isSubmitSize==true){
+           this.InsertProductSize()
+this.isSubmitSize=false
+        }
+        setTimeout(() => {
+this.isSubmitSize=true
+        },1000)
     }
 
         InsertProductSize() {

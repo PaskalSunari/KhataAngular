@@ -5,13 +5,13 @@
             <div class="col-9">Product Creation</div>
             <div class="col-3">
                 <div class="buttons-wrapper d-flex justify-content-end Gap-5">
-                    <button class="btn btn-success button-sm"><i class="fa-solid fa-file-pdf"></i></button>
+                    <!-- <button class="btn btn-success button-sm"><i class="fa-solid fa-file-pdf"></i></button>
                     <button class="btn button-info button-sm"><i class="fa-solid fa-file-csv"></i></button>
 
-                    <button class="btn btn-danger button-sm"><i class="fa-solid fa-print"></i></button>
+                    <button class="btn btn-danger button-sm"><i class="fa-solid fa-print"></i></button> -->
                     <div class="plus-btn" (click)="toggleForm()">
 
-                        <i class="fa-solid "
+                        <i class="fa-solid"
                             [ngClass]="showProductCreationForm ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
                     </div>
                 </div>
@@ -82,10 +82,9 @@
 
                                                                 <label>Group </label>
                                                             </div>
-                                                            <button class=" button__plus ms-1"
-                                                                (click)="openGroupPopup()">
+                                                            <div class=" button__plus ms-1" (click)="openGroupPopup()">
                                                                 <i class="fa-solid fa-plus"></i>
-                                                            </button>
+                                                            </div>
                                                         </div>
 
                                                         <div
@@ -104,10 +103,10 @@
                                                                 <label>Category</label>
                                                             </div>
 
-                                                            <button class=" button__plus ms-1"
+                                                            <div class=" button__plus ms-1"
                                                                 (click)="openCategoryPopup()">
                                                                 <i class="fa-solid fa-plus"></i>
-                                                            </button>
+                                                            </div>
                                                         </div>
 
                                                     </div>
@@ -127,14 +126,11 @@
                                                                         {{data.text}} </option>
 
                                                                 </select>
-
-
                                                                 <label>SKU</label>
                                                             </div>
-                                                            <button class=" button__plus ms-1"
-                                                                (click)="openUnitPopup()">
+                                                            <div class=" button__plus ms-1" (click)="openUnitPopup()">
                                                                 <i class="fa-solid fa-plus"></i>
-                                                            </button>
+                                                            </div>
                                                         </div>
                                                         <div class="custom__input-container ">
 
@@ -285,7 +281,7 @@
                                                                 [(ngModel)]="this.service.productCreationModel.UUID">
                                                             <label>UUID</label>
                                                         </div>
-                                                        
+
                                                         <div
                                                             class="custom__input-container d-flex align-items-center input-gap">
                                                             <div class="select-wrap">
@@ -300,10 +296,10 @@
                                                                 </select>
                                                                 <label>Manufacturer</label>
                                                             </div>
-                                                            <button class=" button__plus ms-1"
+                                                            <div class=" button__plus ms-1"
                                                                 (click)="openManufacturerPopup()">
                                                                 <i class="fa-solid fa-plus"></i>
-                                                            </button>
+                                                            </div>
                                                         </div>
 
                                                         <div
@@ -314,16 +310,15 @@
                                                                     data-placeholder="--Choose--"
                                                                     [disabled]="disableBrand">
                                                                     <option value=""></option>
-                                                                    <option *ngFor="let data of brandDropdownList"
+                                                                    <option *ngFor="let data of brandedDropdownList"
                                                                         value="{{data?.value}}">
                                                                         {{data?.text}} </option>
                                                                 </select>
                                                                 <label>Brand</label>
                                                             </div>
-                                                            <button class=" button__plus ms-1"
-                                                                (click)="openBrandPopup()">
+                                                            <div class=" button__plus ms-1" (click)="openBrandPopup()">
                                                                 <i class="fa-solid fa-plus"></i>
-                                                            </button>
+                                                            </div>
                                                         </div>
 
 
@@ -341,10 +336,9 @@
                                                                 </select>
                                                                 <label>Model</label>
                                                             </div>
-                                                            <button class=" button__plus ms-1"
-                                                                (click)="openModelPopup()">
+                                                            <div class=" button__plus ms-1" (click)="openModelPopup()">
                                                                 <i class="fa-solid fa-plus"></i>
-                                                            </button>
+                                                            </div>
                                                         </div>
                                                     </div>
 
@@ -367,26 +361,28 @@
 
                                                                 <label>Size</label>
                                                             </div>
-                                                            <button class=" button__plus ms-1"
-                                                                (click)="openSizePopup()">
+                                                            <div class=" button__plus ms-1" (click)="openSizePopup()">
                                                                 <i class="fa-solid fa-plus"></i>
-                                                            </button>
+                                                            </div>
                                                         </div>
                                                         <div class="custom__input-container">
                                                             <input id="minStock" type="number" name="Min Stock"
-                                                                autocomplete="off" class="form-control custom__input" (keydown)="wholeNumberValidation($event)"
+                                                                autocomplete="off" class="form-control custom__input"
+                                                                (keydown)="wholeNumberValidation($event)"
                                                                 [(ngModel)]="this.service.productCreationModel.minStock">
                                                             <label>Min Stock</label>
                                                         </div>
                                                         <div class="custom__input-container">
                                                             <input id="maxStock" type="number" name="Max Stock"
-                                                                autocomplete="off" class="form-control custom__input"  (keydown)="wholeNumberValidation($event)"
+                                                                autocomplete="off" class="form-control custom__input"
+                                                                (keydown)="wholeNumberValidation($event)"
                                                                 [(ngModel)]="this.service.productCreationModel.maxStock">
                                                             <label>Max Stock</label>
                                                         </div>
                                                         <div class="custom__input-container">
                                                             <input id="reorderLevel" type="number" name="Reorder Level"
-                                                                autocomplete="off" class="form-control custom__input"  (keydown)="wholeNumberValidation($event)"
+                                                                autocomplete="off" class="form-control custom__input"
+                                                                (keydown)="wholeNumberValidation($event)"
                                                                 [(ngModel)]="this.service.productCreationModel.reorderLevel">
                                                             <label>Reorder Level</label>
                                                         </div>
@@ -452,12 +448,12 @@
                                             <div class="row">
                                                 <div class="col-lg-5 col-md-4 col-sm-6">
 
-
                                                     <div class="custom__input-container d-flex align-items-center">
                                                         <button id="addVariable" type="button"
                                                             class="btn  button--primary "
                                                             (click)="openAddVariablePopup()">Add Variable</button>
                                                     </div>
+
                                                     <div class="row">
                                                         <div class="col-lg-6 col-md-4 col-sm-6">
                                                             <div class="custom__input-container">
@@ -470,8 +466,7 @@
                                                                         *ngFor="let data of variableTypeDropdownList"
                                                                         value="{{data.value}}">
                                                                         {{data.text}} </option>
-                                                                    <!-- <option value="textField">Text</option>
-                                                                    <option value="dropdownField">Dropdown</option> -->
+
 
                                                                 </select>
 
@@ -479,9 +474,9 @@
 
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-5 col-md-4 col-sm-6"
-                                                            *ngIf="selectedNatureID ==1">
 
+                                                        <div class="col-lg-5 col-md-4 col-sm-6"
+                                                            [hidden]="this.selectedNatureID!=1">
                                                             <div class="custom__input-container">
                                                                 <input id="value" type="text" name="Value"
                                                                     autocomplete="off"
@@ -489,41 +484,35 @@
                                                                     [(ngModel)]="this.service.productCreationModel.value">
                                                                 <label>Value</label>
                                                             </div>
-
-
                                                         </div>
-                                                        <div class="col-lg-5 col-md-4 col-sm-6"
-                                                            *ngIf="selectedNatureID ==2">
 
+                                                        <div class="col-lg-5 col-md-4 col-sm-6"
+                                                            [hidden]="this.selectedNatureID!=2">
                                                             <div class="custom__input-container">
                                                                 <input id="wholeNumberValue" type="number"
                                                                     name="Whole Number Value" autocomplete="off"
-                                                                    class="form-control custom__input"  (keydown)="wholeNumberValidation($event)"
+                                                                    class="form-control custom__input"
+                                                                    (keydown)="wholeNumberValidation($event)"
                                                                     [(ngModel)]="this.service.productCreationModel.wholeNumber">
                                                                 <label>Value</label>
                                                             </div>
-
-
                                                         </div>
 
                                                         <div class="col-lg-5 col-md-4 col-sm-6"
-                                                            *ngIf="selectedNatureID ==3">
-
+                                                            [hidden]="this.selectedNatureID!=3">
                                                             <div class="custom__input-container">
                                                                 <input id="decimalValue" type="number"
                                                                     name="Decimal Value" autocomplete="off"
-                                                                    class="form-control custom__input" (keydown)="decimalNumberValidation($event)"
+                                                                    class="form-control custom__input"
+                                                                    (keydown)="decimalNumberValidation($event)"
                                                                     [(ngModel)]="this.service.productCreationModel.decimalNumber">
                                                                 <label>Value</label>
                                                             </div>
-
-
                                                         </div>
 
                                                         <div class="col-lg-5 col-md-4 col-sm-6"
-                                                            *ngIf="selectedNatureID ==4">
+                                                            [hidden]="this.selectedNatureID!=4">
                                                             <div class="custom__input-container">
-
                                                                 <select id="variableOption" name="Variable Option"
                                                                     class="input-field custom__input w-100 req"
                                                                     data-placeholder="--Choose--">
@@ -532,19 +521,14 @@
                                                                         *ngFor="let data of variableOptionDropdownList"
                                                                         value="{{data?.optionID}}">
                                                                         {{data?.optionName}} </option>
-
-
                                                                 </select>
-
                                                                 <label>Value</label>
-
                                                             </div>
                                                         </div>
 
                                                         <div class="col-lg-5 col-md-4 col-sm-6"
-                                                            *ngIf="selectedNatureID ==5">
+                                                            [hidden]="this.selectedNatureID!=5">
                                                             <div class="custom__input-container">
-
                                                                 <ng-multiselect-dropdown id="variableMultiSelectOption"
                                                                     name="Variable Multi Option"
                                                                     [placeholder]="'Choose'" class="w-100"
@@ -553,9 +537,6 @@
                                                                     [(ngModel)]="service.productCreationModel.multiSelectValue">
                                                                 </ng-multiselect-dropdown>
                                                                 <label class="multi-label">Value</label>
-
-                                                                <!-- <label>Value</label> -->
-
                                                             </div>
                                                         </div>
                                                         <!-- 
@@ -571,17 +552,14 @@
 
 
                                                         <div class="col-lg-1 col-md-4 col-sm-6">
-                                                            <button type="button" class="btn btn-success"
+                                                            <button type="button" id="button5"
+                                                                class="button5 btn btn-success"
                                                                 style="margin-top: 10px;"
                                                                 (click)="submitVariableForm()">
                                                                 <i class="fa-solid fa-plus"></i>
                                                             </button>
                                                         </div>
                                                     </div>
-
-
-
-
                                                 </div>
 
                                                 <div class="col-lg-6 col-md-4 col-sm-6">
@@ -601,17 +579,13 @@
                                                                     *ngFor="let data of tempVariableFormList; let i = index">
                                                                     <td>{{i+1}}</td>
                                                                     <td>{{data?.variableText}}</td>
-
                                                                     <td>{{data?.variableValue}}</td>
-
                                                                     <td>
-
                                                                         <button
                                                                             class="button button--extra-small button--danger button--rounded-sm me-2"
                                                                             (click)="DeleteVariableFormData(i)">
                                                                             <i class="fa-solid fa-trash"></i>
                                                                         </button>
-
                                                                     </td>
                                                             </tbody>
                                                         </table>
@@ -625,11 +599,11 @@
                                 <div class="col-12">
                                     <div class="custom__input-container d-flex justify-content-end align-items-center p-2"
                                         style="background-color: #d4dfe5;">
-                                        <button id="" title="Insert Item" class="button-sm btn btn-success ms-1"
+                                        <button id="button4" title="Insert Item" class="button4 button-sm btn btn-success ms-1"
                                             (click)="onSubmitProductCreation()">
                                             <i class="fa-solid fa-floppy-disk"></i>
                                         </button>
-                                        <button title="Reset" id="" href="" class="button-sm btn btn-danger ms-1"
+                                        <button title="Reset" id="buttonReset" class="button-sm btn btn-danger ms-1"
                                             (click)="resetProductCreation()">
                                             <i class="fa-solid fa-rotate-left"></i>
                                         </button>
@@ -705,13 +679,19 @@
                                     <td>
 
                                         <button
-                                            class="button button--extra-small button--success button--rounded-sm me-2" (click)="getProductCreationById(data?.productID)">
+                                            class="button button--extra-small button--success button--rounded-sm me-2"
+                                            (click)="getProductCreationById(data?.productID)">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </button>
                                         <button
                                             class="button button--extra-small button--danger button--rounded-sm me-2"
                                             (click)="confirmBoxProductCreationDelete(data?.productID)">
                                             <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                          <button
+                                            class="button button--extra-small button--add button--rounded-sm me-2"
+                                            (click)="openProductDetailsPopup(data?.productID)" >
+                                            <i class="fa-solid fa-eye"></i>
                                         </button>
                                     </td>
 
@@ -739,7 +719,25 @@
 <!--  Popup -->
 
 <!-- Group popup -->
-<div [hidden]="!productGroupPopup">
+<!-- <div [hidden]="!productGroupPopup">
+    <div class="customPopupContainer" (click)="closeGroupPopup()">
+        <div (click)="$event.stopPropagation()"
+            class="customPopup customPopup-product-group customPopup-md-hgt-90 customPopup-md-80"
+            [ngClass]="modalAnimationClass">
+
+            <span class="closeIcon closeIcon-product-group" (click)="closeGroupPopup()">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
+
+            <div class="modal-body p-2">
+
+                <app-product-group></app-product-group>
+            </div>
+        </div>
+
+    </div>
+</div> -->
+<div *ngIf="productGroupPopup">
     <div class="customPopupContainer" (click)="closeGroupPopup()">
         <div (click)="$event.stopPropagation()"
             class="customPopup customPopup-product-group customPopup-md-hgt-90 customPopup-md-80"
@@ -760,20 +758,14 @@
 
 
 <!-- Category popup -->
-<div [hidden]="!productCategoryPopup">
+<div *ngIf="productCategoryPopup">
     <div class="customPopupContainer" (click)="closeCategoryPopup()">
-        <div (click)="$event.stopPropagation()" class="customPopup customPopup-md-hgt-90 customPopup-md-80"
+        <div (click)="$event.stopPropagation()"
+            class="customPopup customPopup-product-group customPopup-md-hgt-90 customPopup-md-80"
             [ngClass]="modalAnimationClass">
-            <!-- <div class="customPopupHeader"><span>Product Group</span>
-                <span class="closeIcon" (click)="closeGroupPopup()">
-                    <i class="fa-solid fa-xmark"></i>
-                </span>
-            </div> -->
-            <!-- <div style="position: relative;">
-                <span style="position: absolute; right: -5px; top: -10px; z-index: 9999999;" class="closeIcon" (click)="closeCategoryPopup()">
-                    <i class="fa-solid fa-xmark"></i>
-                </span>
-            </div> -->
+            <span class="closeIcon closeIcon-product-group" (click)="closeCategoryPopup()">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
             <div class="modal-body p-2">
 
                 <app-product-category></app-product-category>
@@ -782,12 +774,16 @@
 
     </div>
 </div>
-<!-- SKU popup -->
-<div [hidden]="!productUnitPopup">
-    <div class="customPopupContainer" (click)="closeUnitPopup()">
-        <div (click)="$event.stopPropagation()" class="customPopup customPopup-md-hgt-90 customPopup-md-80"
-            [ngClass]="modalAnimationClass">
 
+<!-- SKU popup -->
+<div *ngIf="productUnitPopup">
+    <div class="customPopupContainer" (click)="closeUnitPopup()">
+        <div (click)="$event.stopPropagation()"
+            class="customPopup customPopup-product-group customPopup-md-hgt-90 customPopup-md-80"
+            [ngClass]="modalAnimationClass">
+            <span class="closeIcon closeIcon-product-group" (click)="closeUnitPopup()">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
             <div class="modal-body p-2">
 
                 <app-product-unit></app-product-unit>
@@ -796,12 +792,16 @@
 
     </div>
 </div>
-<!-- Manufacturer popup -->
-<div [hidden]="!productManufacturerPopup">
-    <div class="customPopupContainer" (click)="closeManufacturerPopup()">
-        <div (click)="$event.stopPropagation()" class="customPopup customPopup-md-hgt-90 customPopup-md-80"
-            [ngClass]="modalAnimationClass">
 
+<!-- Manufacturer popup -->
+<div *ngIf="productManufacturerPopup">
+    <div class="customPopupContainer" (click)="closeManufacturerPopup()">
+        <div (click)="$event.stopPropagation()"
+            class="customPopup customPopup-product-group customPopup-md-hgt-90 customPopup-md-80"
+            [ngClass]="modalAnimationClass">
+            <span class="closeIcon closeIcon-product-group" (click)="closeManufacturerPopup()">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
             <div class="modal-body p-2">
 
                 <app-product-manufacturer></app-product-manufacturer>
@@ -811,11 +811,14 @@
     </div>
 </div>
 <!-- Brand Popup -->
-<div [hidden]="!productBrandPopup">
+<div *ngIf="productBrandPopup">
     <div class="customPopupContainer" (click)="closeBrandPopup()">
-        <div (click)="$event.stopPropagation()" class="customPopup customPopup-md-hgt-90 customPopup-md-80"
+        <div (click)="$event.stopPropagation()"
+            class="customPopup customPopup-product-group customPopup-md-hgt-90 customPopup-md-80"
             [ngClass]="modalAnimationClass">
-
+            <span class="closeIcon closeIcon-product-group" (click)="closeBrandPopup()">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
             <div class="modal-body p-2">
 
                 <app-product-brand></app-product-brand>
@@ -825,11 +828,14 @@
     </div>
 </div>
 <!-- Model popup -->
-<div [hidden]="!productModelPopup">
+<div *ngIf="productModelPopup">
     <div class="customPopupContainer" (click)="closeModelPopup()">
-        <div (click)="$event.stopPropagation()" class="customPopup customPopup-md-hgt-90 customPopup-md-80"
+        <div (click)="$event.stopPropagation()"
+            class="customPopup customPopup-product-group customPopup-md-hgt-90 customPopup-md-80"
             [ngClass]="modalAnimationClass">
-
+            <span class="closeIcon closeIcon-product-group" (click)="closeModelPopup()">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
             <div class="modal-body p-2">
 
                 <app-product-model></app-product-model>
@@ -840,11 +846,14 @@
 </div>
 
 <!-- size popup -->
-<div [hidden]="!productSizePopup">
+<div *ngIf="productSizePopup">
     <div class="customPopupContainer" (click)="closeSizePopup()">
-        <div (click)="$event.stopPropagation()" class="customPopup customPopup-md-hgt-90 customPopup-md-80"
+        <div (click)="$event.stopPropagation()"
+            class="customPopup customPopup-product-group customPopup-md-hgt-90 customPopup-md-80"
             [ngClass]="modalAnimationClass">
-
+            <span class="closeIcon closeIcon-product-group" (click)="closeSizePopup()">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
             <div class="modal-body p-2">
 
                 <app-product-size></app-product-size>
@@ -856,7 +865,7 @@
 
 
 <!-- Altenative unit popup -->
-<div [hidden]="!alternativeUnitPopup">
+<div *ngIf="alternativeUnitPopup">
     <div class="customPopupContainer" (click)="closeAlternativePopup()">
         <div (click)="$event.stopPropagation()" class="customPopup customPopup-md-hgt-30 customPopup-md-30"
             [ngClass]="modalAnimationClass">
@@ -895,11 +904,11 @@
                     <div class="col-12">
                         <div class="custom__input-container d-flex justify-content-end align-items-center"
                             style="background-color: #d4dfe5; padding: 5px;">
-                            <button id="" title="Insert Item" class="button-sm btn btn-success ms-1"
+                            <button id="button7" title="Insert Item" class="button-sm btn btn-success ms-1"
                                 (click)="onSubmitProductionUnitRelation()">
                                 <i class="fa-solid fa-floppy-disk"></i>
                             </button>
-                            <button title="Reset" id="" href="" class="button-sm btn btn-danger ms-1"
+                            <button title="Reset" class="button-sm btn btn-danger ms-1"
                                 (click)="this.tempProductUnitRelationReset()">
                                 <i class="fa-solid fa-rotate-left"></i>
                             </button>
@@ -921,7 +930,7 @@
 <div [hidden]="!addVariablePopup">
     <div class="customPopupContainer" (click)="closeAddVariablePopup()">
         <div (click)="$event.stopPropagation()" class="customPopup customPopup-md-hgt-40 customPopup-md-50"
-            [ngClass]="modalAnimationClass">
+            [ngClass]="modelAnimationAddVariable">
             <div class="customPopupHeader"><span>Add Variable</span>
                 <span class="closeIcon" (click)="closeAddVariablePopup()">
                     <i class="fa-solid fa-xmark"></i>
@@ -1086,7 +1095,7 @@
 <div [hidden]="!variableOptionPopup">
     <div class="customPopupContainer" (click)="closeVariableOptionPopup()">
         <div (click)="$event.stopPropagation()" class="customPopup customPopup-md-hgt-40 customPopup-md-50"
-            [ngClass]="modalAnimationClass">
+            [ngClass]="modelAnimationVariableOption">
             <div class="customPopupHeader"><span>Add Variable Option</span>
                 <span class="closeIcon" (click)="closeVariableOptionPopup()">
                     <i class="fa-solid fa-xmark"></i>
@@ -1131,11 +1140,6 @@
                                                         <i class="fa-solid fa-save"></i>
                                                     </button>
 
-
-                                                    <!-- <button class="button-sm btn btn-danger ms-1" title="Reset"
-                                                id="variableOptionReset">
-                                                <i class="fa-solid fa-rotate-left"></i>
-                                            </button> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -1191,6 +1195,84 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Product Details Popup -->
+<div *ngIf="productDetailsPopup">
+    <div class="customPopupContainer" (click)="closeProductDetailsPopup()">
+        <div (click)="$event.stopPropagation()" class="customPopup customPopup-md-hgt-40 customPopup-md-40"
+            [ngClass]="modalAnimationClass">
+            <div class="customPopupHeader"><span>Product Detail of {{selectedProductReportData?.productName}}</span>
+                <span class="closeIcon" (click)="closeProductDetailsPopup()">
+                    <i class="fa-solid fa-xmark"></i>
+                </span>
+            </div>
+
+            <div class="modal-body p-2">
+                <div class="row">
+                  <div class="details-card">
+  <div class="details-grid">
+
+    <div class="rowData"><span class="labelData">ID:</span><span class="valueData">{{selectedProductReportData?.productID}}</span></div>
+    <div class="rowData"><span class="labelData">Code:</span><span class="valueData">{{selectedProductReportData?.productCode}}</span></div>
+    <div class="rowData"><span class="labelData">Group:</span><span class="valueData">{{selectedProductReportData?.groupName}}</span></div>
+    <div class="rowData"><span class="labelData">Category:</span><span class="valueData">{{selectedProductReportData?.categoryName}}</span></div>
+    <div class="rowData"><span class="labelData">Unit:</span><span class="valueData">{{selectedProductReportData?.unitName}}</span></div>
+    <div class="rowData"><span class="labelData">Vatable:</span><span class="valueData">{{selectedProductReportData?.isVatable==1?'Yes':'No'}}</span></div>
+    <div class="rowData"><span class="labelData">Assets Type:</span><span class="valueData">{{selectedProductReportData?.assetName}}</span></div>
+    <div class="rowData"><span class="labelData">Consumable:</span><span class="valueData">{{selectedProductReportData?.isConsumable==1?'Yes':'No'}}</span></div>
+    <div class="rowData"><span class="labelData">Expirable:</span><span class="valueData">{{selectedProductReportData?.expirable==1?'Yes':'No'}}</span></div>
+    <div class="rowData"><span class="labelData">Public:</span><span class="valueData">{{selectedProductReportData?.isPublic==1?'Yes':'No'}}</span></div>
+    <div class="rowData"><span class="labelData">Status:</span><span class="valueData">{{selectedProductReportData?.status==1?'Active':'InActive'}}</span></div>
+    <div class="rowData"><span class="labelData">Created User:</span><span class="valueData">{{selectedProductReportData?.createdUser}}</span></div>
+    <div class="rowData"><span class="labelData">Created Date:</span><span class="valueData">{{selectedProductReportData?.createdDate}}</span></div>
+
+    <div class="rowData"><span class="labelData">Brand:</span><span class="valueData">{{selectedProductReportData?.brandName}}</span></div>
+    <div class="rowData"><span class="labelData">Model:</span><span class="valueData">{{selectedProductReportData?.modelName}}</span></div>
+    <div class="rowData"><span class="labelData">Manufacturer:</span><span class="valueData">{{selectedProductReportData?.manufaturerName}}</span></div>
+    <div class="rowData"><span class="labelData">Min/Max Stock:</span><span class="valueData">{{selectedProductReportData?.minMaxStock}}</span></div>
+    <div class="rowData"><span class="labelData">Reorder Level:</span><span class="valueData">{{selectedProductReportData?.reorderLevel}}</span></div>
+
+  </div>
+</div>
+                </div>
+               
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!--opening stock Confirmation Popup -->
+<div *ngIf="openingStockConfPopup">
+    <div class="confirmationPopupContainer">
+        <div class="confirmationPopup"
+            [ngClass]="modalAnimationClass">
+            <div class="confirmationHeader"><span>Opening Stock Confirmation</span>
+                <span class="closeIcon" (click)="closeOpeningStockConfirmation()">
+                    <i class="fa-solid fa-xmark"></i>
+                </span>
+            </div>
+
+            <div class="page-body-conf">
+<h4 class="px-3 py-2">Do you want to add opening stock?</h4>
+            </div>
+
+            <div class="page-footer-conf">
+<!-- <a id="btnConfirmAddOpeningStock" class="btn btnProduct btn-success"  [routerLink]="['/inventory/productbrand']"
+  [queryParams]="{id: productInfo?.productCode }"
+  target="_blank"
+  rel="noopener" (click)="redirectToOpeningStock()">YES</a> -->
+  <a id="btnConfirmAddOpeningStock" class="btn btnProduct btn-success"
+  target="_blank"
+   (click)="closeOpeningStockConfirmation()">YES</a>
+<button id="btnCancelOpeningStock" class="btn btnProduct btn-danger ms-4" type="button" (click)="closeOpeningStockConfirmation()">NO</button>
             </div>
         </div>
 

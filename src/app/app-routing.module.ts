@@ -13,17 +13,19 @@ const routes: Routes = [
     path: '',
     children: [
       { path: 'login', component: LoginComponent },
-      { path: '', component: LoginComponent },
+      // { path: '', component: LoginComponent },
       {
         path: 'unauthorization',
         component: UnauthorizedPageComponent,
       },
       {
         path: 'policy/index',
+         title: 'Privacy Policy',
         component: PolicyComponent,
       },
       {
         path: 'TermsConditions/Index',
+          title: 'Terms & Conditions-hospIT-all',
         component: TermsAndconditionComponent,
       },
       {
@@ -31,6 +33,7 @@ const routes: Routes = [
         component: LayoutComponent,
         canActivate: [AuthGuardService],
         children: [
+           { path: '', component: DashboardComponent },
           { path: 'dashboard', component: DashboardComponent },
           {
             path: 'sales',
