@@ -14,12 +14,10 @@ export class AuthGuardService implements CanActivate {
     private loginservice: LoginserviceService,
     private toastr: ToastrService
   ) {}
-
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-
     // ✅ Extract only the clean route path (remove query params and hash)
     const requestedRoute = state.url.split(/[?#]/)[0];
 
