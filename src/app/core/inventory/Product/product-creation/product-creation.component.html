@@ -1265,13 +1265,19 @@
             </div>
 
             <div class="page-footer-conf">
-<!-- <a id="btnConfirmAddOpeningStock" class="btn btnProduct btn-success"  [routerLink]="['/inventory/productbrand']"
-  [queryParams]="{id: productInfo?.productCode }"
+
+
+  <a id="btnConfirmAddOpeningStock" class="btn btnProduct btn-success" [routerLink]="['/Inventory/OpeningStockDraft/Index']"  [queryParams]="{
+    procId:
+      productInfo?.productID + '--' +
+      productInfo?.productCode + '--' +
+      productInfo?.productName
+  }"
+  
   target="_blank"
-  rel="noopener" (click)="redirectToOpeningStock()">YES</a> -->
-  <a id="btnConfirmAddOpeningStock" class="btn btnProduct btn-success"
-  target="_blank"
-   (click)="closeOpeningStockConfirmation()">YES</a>
+  rel="noopener" (click)="redirectToOpeningStock()">YES</a>
+
+
 <button id="btnCancelOpeningStock" class="btn btnProduct btn-danger ms-4" type="button" (click)="closeOpeningStockConfirmation()">NO</button>
             </div>
         </div>
