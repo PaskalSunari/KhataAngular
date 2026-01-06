@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { SupplyService } from './service/supply.service';
 import { ToastrService } from 'ngx-toastr';
 import { timeout } from 'rxjs';
+import { LoginComponent } from 'src/app/core/Auth/login/login.component';
 declare var $: any;
 declare const setFocusOnNextElement: any;
 @Component({
@@ -222,7 +223,8 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         Flag: "GetDemandList",
         UserId: this.userId?.toString() ?? '',
         FiscalId: this.fiscalId?.toString() ?? '',
-        LocationId: data?.locationId?.toString() ?? ''
+        LocationId: data?.locationId?.toString() ?? '',
+        BranchId: this.branchId?.toString() ?? ''
       }
     };
 
@@ -231,6 +233,10 @@ export class SupplyComponent implements OnInit, AfterViewInit {
       if (data && data?.length > 0) {
         this.demandMasterId = data[0]?.demandMasterId;
         this.demandList = res?.data;
+        console.log('demand List:', this.demandList);
+        console.log('length: ', data?.length);
+
+
         $("#departmentId").focus();
       } else {
         this.resetSupply();
@@ -736,8 +742,11 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     });
   }
 
-
   postingSupply() {
+    if (this.isBtnDisabled) return;
+
+    this.isBtnDisabled = true;
+
     const payload = {
       tableName: 'Supply',
       parameter: {
@@ -750,29 +759,28 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         branchId: String(this.branchId),
         masterId: String(this.masterId),
         toUserId: String(this.requestedToList[0].userId),
-        remarks: String($("#narration").val())
+        remarks: String($('#narration').val())
       }
     };
 
-    this.service.getGenericServices(payload).subscribe((res: any) => {
-      const data = res?.data;
-      console.log('posting response:', res);
-
-      if (data?.length > 0) {
-        if (data[0].status == 200) {
-          this.toastr.success(data[0].message);
-          if (data[0].isDelete == 0) {
-            this.resetSupply();
-            return;
-          }
-          this.getSupplyDraftList();
+    this.service.getGenericServices(payload).subscribe({
+      next: (res: any) => {
+        const data = res?.data;
+        if (data?.[0]?.status === 200) {
+          this.toastr.success(data[0]?.message);
+          this.getDemandList();
+          this.resetSupply();
+        } else {
+          this.toastr.error(data?.[0]?.message || 'Error');
         }
-        else {
-          this.toastr.error(data[0].message);
-        }
+        this.isBtnDisabled = false;
+      },
+      error: () => {
+        this.isBtnDisabled = false;
       }
     });
   }
+
 
   resetSupply() {
     this.isDisabled = false;
@@ -787,6 +795,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     this.toLocationId = 0;
     this.assignToUserId = 0;
 
+
     // this.demandList = [];
     this.fromLocationList = [];
     this.toLocationList = [];
@@ -794,6 +803,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
     this.supplyDetailsList = [];
     this.requestedToList = [];
 
+    $("#narration").val('');
 
     setTimeout(() => {
       $("#demandId").focus();

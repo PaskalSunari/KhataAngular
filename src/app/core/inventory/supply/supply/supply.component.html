@@ -224,6 +224,7 @@
                                     <div class="custom__input-container d-flex align-items-center">
                                         <button type="button" id="btnPosting" class="button btn-lg btn btn-success ms-1"
                                         [disabled]="isBtnDisabled"    
+                                          (keydown.enter)="postingSupply()"
                                         (click)="postingSupply()">
                                             <i class="fa-solid fa-save"></i>
                                         </button>
