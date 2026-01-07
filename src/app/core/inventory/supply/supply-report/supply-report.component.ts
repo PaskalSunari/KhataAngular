@@ -35,7 +35,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
   }
 
    ngAfterViewInit(): void {
-    
+    //NepaliFunctions.ConvertToDateObject("2000-01-01", "YYYY-MM-DD");
   //     var startDate = document.getElementById("startDate");
   // startDate?.nepaliDatePicker({
   //   readOnlyInput: true,
