@@ -15,7 +15,7 @@ import { PurchaseOrderComponent } from './Purchase/purchase-order/purchase-order
 import { SupplyReportComponent } from './supply/supply-report/supply-report.component';
 
 const routes: Routes = [
- {
+  {
     path: 'productgroup',
     component: ProductGroupComponent,
   },
@@ -23,49 +23,49 @@ const routes: Routes = [
     path: 'productcategory',
     component: ProductCategoryComponent,
   },
-   {
+  {
     path: 'productunit',
     component: ProductUnitComponent,
   },
-   {
+  {
     path: 'productmanufacture',
     component: ProductManufacturerComponent,
   },
-   {
+  {
     path: 'productbrand',
     component: ProductBrandComponent,
   },
-   {
+  {
     path: 'productmodel',
     component: ProductModelComponent,
   },
-   {
+  {
     path: 'productsize',
     component: ProductSizeComponent,
   },
-   {
+  {
     path: 'demand',
     component: DemandComponent,
   },
-    {
+  {
     path: 'productcreate',
     component: ProductCreationComponent,
   },
   {
-    path:'supply',
-    component:SupplyComponent
+    path: 'supply',
+    component: SupplyComponent
   },
   {
-    path:'deptstocklocationmapping',
-    component:DeptStockLocationMappingComponent
+    path: 'deptstocklocationmapping',
+    component: DeptStockLocationMappingComponent
   },
-   {
+  {
     path: 'purchaseorder',
     component: PurchaseOrderComponent,
   },
   {
     path: 'supply-report',
-    component:SupplyReportComponent
+    component: SupplyReportComponent
   }
 ];
 
@@ -75,4 +75,4 @@ const routes: Routes = [
 })
 export class InventoryRoutingModule {
 
- }
+}

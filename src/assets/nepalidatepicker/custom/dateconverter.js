@@ -188,6 +188,7 @@ function oninitial() {
     ndpYear: true,
     ndpMonth: true,
     ndpYearCount: 10,
+    miniEnglishDates: true
   });
   //    var mainInput = document.getElementById("nepali-datepicker");
   // mainInput.nepaliDatePicker();
@@ -552,4 +553,74 @@ function oninitial() {
   //   closeOnDateSelect: true,
   //   maxDate: formatedNepaliDate
   // });
+}
+
+function getMaxFiscalDate() {
+    try {
+        const fiscalYear = JSON.parse(localStorage.getItem('fiscalYear'));
+        const isDateFormat = parseInt(JSON.parse(localStorage.getItem("globalVariable"))[1].value); //0:Nepali, 1: English
+
+        const fromDate = new Date(fiscalYear.fromDate);
+        const toDate = new Date(fiscalYear.toDate);
+        const currentDate = new Date();
+        const isCurrentFiscalYear = currentDate >= fromDate && currentDate <= toDate;
+
+        let maxDate;
+        if (isDateFormat == 0) {
+            maxDate = isCurrentFiscalYear ? NepaliFunctions.BS.GetCurrentDate('YYYY-MM-DD') : NepaliFunctions.AD2BS(fiscalYear.toDate.split("T")[0], "YYYY-MM-DD");
+            //console.log("max date:", maxDate);
+            return maxDate;
+        } else {
+            maxDate = isCurrentFiscalYear ? NepaliFunctions.AD.GetCurrentDate('YYYY/MM/DD') : fiscalYear.toDate.split("T")[0];
+           // console.log("max date:", maxDate);
+            return maxDate;
+        }
+    } catch (e) {
+        console.log("e:", e)
+    }
+}
+
+function getFiscalFromDate() {
+    try {
+        const fiscalYear = JSON.parse(localStorage.getItem('fiscalYear'));
+        const isDateFormat = parseInt(JSON.parse(localStorage.getItem("globalVariable"))[1].value); //0:Nepali, 1: English
+
+        if (!fiscalYear || !fiscalYear.fromDate) {
+            console.warn("Invalid fiscal year data.");
+            return null;
+        }
+
+        if (isDateFormat == 0) {
+            const fromDate = NepaliFunctions.AD2BS(fiscalYear.fromDate.split("T")[0], "YYYY-MM-DD");
+            return fromDate;
+
+        } else {
+            const fromDate = fiscalYear.fromDate.split("T")[0];
+            return fromDate;
+        }
+    } catch (e) {
+        console.log("e:", e);
+    }
+
+}
+function getFiscalToDate() {
+    try {
+        var fiscalYear = JSON.parse(localStorage.getItem('fiscalYear'));
+        let isDateFormat = JSON.parse(localStorage.getItem("globalVariable"))[1].value; //0:Nepali, 1: English
+        if (!fiscalYear || !fiscalYear.toDate) {
+           console.warn("Invalid fiscal year data.");
+            return null;
+        }
+
+        if (isDateFormat == 0) {
+            const toDate = NepaliFunctions.AD2BS(fiscalYear.toDate.split("T")[0], "YYYY-MM-DD");
+            return toDate;
+
+        } else {
+            const toDate = fiscalYear.toDate.split("T")[0];
+            return toDate;
+        }
+    } catch (e) {
+        console.log("e:", e);
+    }
 }

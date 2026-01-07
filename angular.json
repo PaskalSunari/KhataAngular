@@ -37,7 +37,7 @@
               "node_modules/@costlydeveloper/ngx-awesome-popup/styles/theme.css",
               "node_modules/select2/dist/css/select2.min.css",
              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-             "src/assets/nepalidatepicker/nepali.datepicker.v4.0.1.min.css",
+             "src/assets/nepalidatepicker/nepali.datepicker.v5.0.6.min.css",
               "src/sass/main.scss"
 
             ],
@@ -51,7 +51,7 @@
               "src/assets/validation/validation.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-              "src/assets/nepalidatepicker/nepali.datepicker.v4.0.1.min.js",
+              "src/assets/nepalidatepicker/nepali.datepicker.v5.0.6.min.js",
               "src/assets/printer/JSPrintManager.js",
               "src/assets/printer/printer.js",
               "src/assets/newsticker/acmeticker.js",
