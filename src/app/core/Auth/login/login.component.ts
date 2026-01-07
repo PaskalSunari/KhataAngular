@@ -9,7 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { LoginserviceService } from './loginservice.service';
 import { Router } from '@angular/router';
-
+import { environment } from 'src/environments/environment';
 import { EncryptionService } from '../../encryptionservice/encryption.service';
 import { CookieService } from 'ngx-cookie-service';
 declare var $: any;
@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   isLoginFormShow = true;
   isFormShow = false;
   departmentBranch: any[] = [];
-
+  baseurl = environment.appURL;
   companyName: any;
   logo: any = localStorage.getItem('companyLogoMain');
 
@@ -266,7 +266,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
             'companyLogoMain',
             'data:image/jpeg;base64,' + data.logo
           );
-
+          localStorage.setItem('baseUrl', this.baseurl);
           if (rememberMe) {
             this.cookieService.set('rememberMe', 'true');
             this.cookieService.set('username', username1);

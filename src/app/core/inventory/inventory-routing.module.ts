@@ -11,6 +11,7 @@ import { ProductSizeComponent } from './Product/product-size/product-size.compon
 import { ProductCreationComponent } from './Product/product-creation/product-creation.component';
 import { SupplyComponent } from './supply/supply/supply.component';
 import { DeptStockLocationMappingComponent } from './dept-stock-location-mapping/dept-stock-location-mapping.component';
+import { PurchaseOrderComponent } from './Purchase/purchase-order/purchase-order.component';
 
 const routes: Routes = [
  {
@@ -56,7 +57,11 @@ const routes: Routes = [
   {
     path:'deptstocklocationmapping',
     component:DeptStockLocationMappingComponent
-  }
+  },
+   {
+    path: 'purchaseorder',
+    component: PurchaseOrderComponent,
+  },
 ];
 
 @NgModule({

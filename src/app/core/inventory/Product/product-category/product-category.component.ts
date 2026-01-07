@@ -10,6 +10,8 @@ import { ProductCategoryService } from './service/product-category.service';
   templateUrl: './product-category.component.html'
 })
 export class ProductCategoryComponent implements AfterViewInit {
+   isSubmitCategory:boolean=true
+
   showCategoryForm = true;
   productCategoryUnderDropdownList: any;
   productCategorySearchDropdownList: any;
@@ -48,11 +50,12 @@ export class ProductCategoryComponent implements AfterViewInit {
   showFirstLastButtons = true;
   disabled = false;
 
+
   constructor(private el: ElementRef, public service: ProductCategoryService, private toastr: ToastrService) {
 
   }
   ngAfterViewInit(): void {
-
+ $('#productCategoryName').focus();
     this.globalVariablePG = JSON.parse(localStorage.getItem("globalVariable") || '');
     this.baseUrlPG = localStorage.getItem("baseUrl")
     this.userIdPG = localStorage.getItem("userId");
@@ -299,7 +302,15 @@ let self=this
       }
     
       // console.log(this.productCategoryModel, "model")
-        this.InsertProductCategory()
+      
+
+         if(this.isSubmitCategory==true){
+            this.InsertProductCategory()
+this.isSubmitCategory=false
+        }
+        setTimeout(() => {
+this.isSubmitCategory=true
+        },1000)
      
     }
 
