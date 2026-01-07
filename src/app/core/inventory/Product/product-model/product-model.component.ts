@@ -10,6 +10,7 @@ import { ProductModelService } from './service/product-model.service';
   templateUrl: './product-model.component.html'
 })
 export class ProductModelComponent implements AfterViewInit {
+isSubmitModel:boolean=true
 
   showModelForm = true;
 
@@ -50,10 +51,14 @@ brandDropdownList: any;
   showFirstLastButtons = true;
   disabled = false;
 
+  modalAnimationClassB = '';
+  productBrandPopupB:boolean=false
+
 constructor(private el: ElementRef, public service: ProductModelService, private toastr: ToastrService) {
 
   }
   ngAfterViewInit(): void {
+      $('#modelName').focus();
 this.globalVariablePML = JSON.parse(localStorage.getItem("globalVariable") || '');
     this.baseUrlPML = localStorage.getItem("baseUrl")
     this.userIdPML = localStorage.getItem("userId");
@@ -288,7 +293,13 @@ this.enterFun();
       }
     
       // console.log(this.productModel, "model model")
-        this.InsertProductModel()
+      if(this.isSubmitModel==true){
+          this.InsertProductModel()
+this.isSubmitModel=false
+        }
+        setTimeout(() => {
+this.isSubmitModel=true
+        },500)
      
     }
 
@@ -366,7 +377,7 @@ this.enterFun();
        
         //  console.log("get product model by id",this.productModelDataByID);
   
-         this.EditProductBrand(this.productModelDataByID);
+         this.EditProductModel(this.productModelDataByID);
           
       }
       else if(d?.returnMsg.success==false){
@@ -377,7 +388,7 @@ this.toastr.info(d?.returnMsg.errors)
     }
 
 
-     EditProductBrand(value: any) {
+     EditProductModel(value: any) {
        this.deleteData = false 
 this.submitButton='Update'
        this.service.productModel.modelID = value?.modelID
@@ -563,4 +574,22 @@ this.submitButton='Save'
      this.getProductModelFilteredList()
   }
 
+
+  //Brand Popup
+  openBrandPopupB() {
+    this.modalAnimationClassB = 'modal-enter';
+    this.productBrandPopupB = true;
+     setTimeout(() =>{
+        $('#brandName').focus()
+  },100) 
+  }
+
+  closeBrandPopupB() {
+    this.modalAnimationClassB = 'modal-exit';
+    this.productBrandPopupB = false;
+     this.getProductModelDropdownList()
+     setTimeout(() =>{
+        $('#brand').focus()
+  },100) 
+  }
 }

@@ -6,7 +6,7 @@ import * as CryptoJS from 'crypto-js';
 })
 export class EncryptionService {
 
-  private secretKey = 'searchtechnology @1234';
+  private secretKey = 'searchtechnology@1234';
 
   constructor() {}
 
@@ -22,6 +22,8 @@ export class EncryptionService {
     const plaintext = bytes.toString(CryptoJS.enc.Utf8);
     return plaintext;
   }
+
+  
 
 
 }

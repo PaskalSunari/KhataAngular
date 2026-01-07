@@ -40,16 +40,16 @@
 
                                                         <ng-container
                                                             *ngIf="subsubMenu.strShorCut === 'Khata'; else noTarget">
-                                                            <a [routerLink]="subsubsubMenu.webUrl"
-                                                                [queryParams]="{menuName: subsubsubMenu.strName}"
+                                                            <a [routerLink]="subsubsubMenu.webUrl?.toLowerCase()"
+                                                                [queryParams]="{menuName: subsubsubMenu.strName?.toLowerCase()}"
                                                                 target="_blank">
                                                                 <i
                                                                     class="{{subsubsubMenu.menuicon}}"></i><span>{{subsubsubMenu.strName}}</span>
                                                             </a>
                                                         </ng-container>
                                                         <ng-template #noTarget>
-                                                            <a [routerLink]="subsubsubMenu.webUrl"
-                                                                [queryParams]="{menuName: subsubsubMenu.strName}"
+                                                            <a [routerLink]="subsubsubMenu.webUrl?.tolowerCase()"
+                                                                [queryParams]="{menuName: subsubsubMenu.strName?.tolowerCase()}"
                                                                 disableRipple>
                                                                 <i
                                                                     class="{{subsubsubMenu.menuicon}}"></i><span>{{subsubsubMenu.strName}}</span>

@@ -2,12 +2,12 @@
     <div class="container-fluid">
         <div class="row align-items-center flex-wrap">
             <div class="col-9">Product Manufacturer</div>
-            <div class="col-3">
+            <div class="col-3 pe-3">
                 <div class="buttons-wrapper d-flex justify-content-end Gap-5">
-                    <button class="btn btn-success button-sm"><i class="fa-solid fa-file-pdf"></i></button>
+                    <!-- <button class="btn btn-success button-sm"><i class="fa-solid fa-file-pdf"></i></button>
                     <button class="btn button-info button-sm"><i class="fa-solid fa-file-csv"></i></button>
 
-                    <button class="btn btn-danger button-sm"><i class="fa-solid fa-print"></i></button>
+                    <button class="btn btn-danger button-sm"><i class="fa-solid fa-print"></i></button> -->
                     <div class="plus-btn" (click)="toggleForm()">
 
                         <i class="fa-solid " [ngClass]="showManufacturerForm ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
@@ -32,7 +32,7 @@
                                 <div class="row">
                                     <div class=" col-sm-4 col-md-3 col-lg-2">
                                         <div class="custom__input-container d-flex align-items-center">
-                                            <input id="manufacturerName" type="text" class="form-control custom__input"
+                                            <input id="manufacturerName" type="text" class="form-control custom__input req"
                                                 name="Manufacturer Name" autocomplete="off"
                                                 [(ngModel)]="this.service.productManufacturerModel.manufacturerName" required>
                                             <label>Name</label>
@@ -43,7 +43,7 @@
                                         <div class="custom__input-container d-flex align-items-center">
                                             <input id="manufacturerAddress" type="text"
                                                 class="form-control custom__input" autocomplete="off" name="Address"
-                                                [(ngModel)]="this.service.productManufacturerModel.manufacturerAddress" required>
+                                                [(ngModel)]="this.service.productManufacturerModel.manufacturerAddress">
                                             <label>Address</label>
                                         </div>
                                     </div>
@@ -52,7 +52,7 @@
                                         <div class="custom__input-container d-flex align-items-center">
                                             <input id="manufacturerContact" type="text"
                                                 class="form-control custom__input" autocomplete="off" name="Contact"
-                                                [(ngModel)]="this.service.productManufacturerModel.manufacturerContactNumber" required>
+                                                [(ngModel)]="this.service.productManufacturerModel.manufacturerContactNumber">
                                             <label>Contact No</label>
                                         </div>
                                     </div>
@@ -61,7 +61,7 @@
                                         <div class="custom__input-container d-flex align-items-center">
                                             <input id="manufacturerEmail" type="text" class="form-control custom__input"
                                                 autocomplete="off" name="Email"
-                                                [(ngModel)]="this.service.productManufacturerModel.manufacturerEmail" required>
+                                                [(ngModel)]="this.service.productManufacturerModel.manufacturerEmail">
                                             <label>Email Address</label>
                                         </div>
                                     </div>
@@ -92,8 +92,8 @@
 
                                     <div class="col-sm-4 col-md-3 col-lg-1">
                                         <div class="custom__input-container d-flex align-items-center">
-                                            <button type="button" id="button"
-                                                class="button button-sm btn btn-success ms-1" [title]="submitButton" (click)="onSubmitProductManufacturer()">
+                                            <button type="button" id="button11"
+                                                class="button11 button-sm btn btn-success ms-1" [title]="submitButton" (click)="onSubmitProductManufacturer()">
 
                                                 <i [ngClass]="{ 'fa-solid fa-save': submitButton === 'Save' }"></i>
                                                 <i [ngClass]="{

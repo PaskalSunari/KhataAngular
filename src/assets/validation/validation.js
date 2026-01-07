@@ -581,7 +581,42 @@ function setFocusOnNextElement() {
    main.focus();
    $("#button9").trigger("click");
    return false;
- }else if (main.hasClass("note-btn")) {
+ }
+ else if (main.hasClass("button10")) {
+    main.css("border-color", " ");
+   main.focus();
+   $("#button10").trigger("click");
+   return false;
+ }
+  else if (main.hasClass("button11")) {
+    main.css("border-color", " ");
+   main.focus();
+   $("#button11").trigger("click");
+   return false;
+ }
+
+  else if (main.hasClass("button12")) {
+    main.css("border-color", " ");
+   main.focus();
+   $("#button12").trigger("click");
+   return false;
+ }
+
+  else if (main.hasClass("button13")) {
+    main.css("border-color", " ");
+   main.focus();
+   $("#button13").trigger("click");
+   return false;
+ }
+
+  else if (main.hasClass("button14")) {
+    main.css("border-color", " ");
+   main.focus();
+   $("#button14").trigger("click");
+   return false;
+ }
+ 
+ else if (main.hasClass("note-btn")) {
     $("#buttons").focus();
     $("#button").focus();
     return true;

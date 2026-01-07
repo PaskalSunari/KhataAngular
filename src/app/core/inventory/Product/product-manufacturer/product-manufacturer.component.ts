@@ -10,7 +10,7 @@ import { ProductManufacturerService } from './service/product-manufacturer.servi
   templateUrl: './product-manufacturer.component.html'
 })
 export class ProductManufacturerComponent implements AfterViewInit {
-
+ isSubmitManufacturer:boolean=true
  
  showManufacturerForm = true;
 
@@ -50,6 +50,7 @@ constructor(private el: ElementRef, public service: ProductManufacturerService, 
 
   }
   ngAfterViewInit(): void {
+     $('#manufacturerName').focus();
  this.globalVariablePM = JSON.parse(localStorage.getItem("globalVariable") || '');
     this.baseUrlPM = localStorage.getItem("baseUrl")
     this.userIdPM = localStorage.getItem("userId");
@@ -170,22 +171,22 @@ this.enterFun();
     return false
   }
 
-else if (this.productManufacturerModel.manufactureData.address == null ||  this.productManufacturerModel.manufactureData.address == "") {
-    $('#manufacturerAddress').focus();
-    this.toastr.error("Address is required");
-    return false
-  }
+// else if (this.productManufacturerModel.manufactureData.address == null ||  this.productManufacturerModel.manufactureData.address == "") {
+//     $('#manufacturerAddress').focus();
+//     this.toastr.error("Address is required");
+//     return false
+//   }
 
-  else if (this.productManufacturerModel.manufactureData.contactNo == null ||  this.productManufacturerModel.manufactureData.contactNo == "") {
-    $('#manufacturerContact').focus();
-    this.toastr.error("Contact is required");
-    return false
-  }
-  else if (this.productManufacturerModel.manufactureData.email == null ||  this.productManufacturerModel.manufactureData.email == "") {
-    $('#manufacturerEmail').focus();
-    this.toastr.error("Email is required");
-    return false
-  }
+//   else if (this.productManufacturerModel.manufactureData.contactNo == null ||  this.productManufacturerModel.manufactureData.contactNo == "") {
+//     $('#manufacturerContact').focus();
+//     this.toastr.error("Contact is required");
+//     return false
+//   }
+//   else if (this.productManufacturerModel.manufactureData.email == null ||  this.productManufacturerModel.manufactureData.email == "") {
+//     $('#manufacturerEmail').focus();
+//     this.toastr.error("Email is required");
+//     return false
+//   }
   return true
 }
 
@@ -235,8 +236,14 @@ else if (this.productManufacturerModel.manufactureData.address == null ||  this.
       }
     
       // console.log(this.productManufacturerModel, "model")
-        this.InsertProductManufacturer()
-     
+        // this.InsertProductManufacturer()
+      if(this.isSubmitManufacturer==true){
+          this.InsertProductManufacturer()
+this.isSubmitManufacturer=false
+        }
+        setTimeout(() => {
+this.isSubmitManufacturer=true
+        },1000)
     }
 
 
