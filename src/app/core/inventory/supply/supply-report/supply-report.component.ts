@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-declare const oninitial: any;
+declare const nepaliDatePicker: any;
+declare const englishDatePicker: any;
+
 @Component({
   selector: 'app-supply-report',
   templateUrl: './supply-report.component.html'
@@ -8,45 +10,46 @@ declare const oninitial: any;
 export class SupplyReportComponent implements OnInit, AfterViewInit {
   isFormVisible: boolean = true;
   isDatePickerVisible: boolean = true;
+  isDateFormat: boolean = false;
+  fromDate: any;
+  toDate: any;
 
 
   constructor(private titleService: Title) { }
- 
+
   ngOnInit(): void {
-    const fiscalYear = localStorage.getItem('fiscalYearName');
+    const fiscalYear = localStorage.getItem('fiscalYear') || '';
+    const fy = JSON.parse(fiscalYear);
+    this.fromDate = fy?.fromDate.split('T')[0];
+    this.toDate = fy?.toDate.split('T')[0];
 
     const globalVariableStr = localStorage.getItem('globalVariable') || ''
 
     if (globalVariableStr) {
       const globalVariable = JSON.parse(globalVariableStr);
-
-      console.log('global Variable:', globalVariable);
-      console.log('DateFormat object:', globalVariable[1]);
-      console.log('DateFormat value:', globalVariable[1]?.value);
-
-      // Example usage
       this.isDatePickerVisible = globalVariable[1]?.value === "1";
-      console.log('isDatePickerVisible', this.isDatePickerVisible);
-
     }
 
     this.titleService.setTitle("Supply Report");
-    setTimeout(() => oninitial(), 100);
+
   }
 
-   ngAfterViewInit(): void {
-    //NepaliFunctions.ConvertToDateObject("2000-01-01", "YYYY-MM-DD");
-  //     var startDate = document.getElementById("startDate");
-  // startDate?.nepaliDatePicker({
-  //   readOnlyInput: true,
-  //   disableAfter: formatedNepaliDate,
-  //   ndpYear: true,
-  //   ndpMonth: true,
-  //   ndpYearCount: 10,
-  // });
+  ngAfterViewInit(): void {
+   this.initilizedDate();
   }
 
-  toggleForm() { this.isFormVisible = !this.isFormVisible; }
+  toggleForm() {
+    this.isFormVisible = !this.isFormVisible;
+    this.initilizedDate();
+  }
 
-
+  initilizedDate() {
+    if (this.isDatePickerVisible) {
+      setTimeout(() => englishDatePicker('engFromDate', 'hiddenFromDate', "engToDate", 1), 0);
+      setTimeout(() => englishDatePicker('engToDate', 'hiddenToDate', "locationId", 0), 0);
+    } else {
+      setTimeout(() => nepaliDatePicker('nepFromtDate', 'hiddenFromDate', "nepaliToDate", 1), 0);
+      setTimeout(() => nepaliDatePicker('nepaliToDate', 'hiddenToDate', "locationId", 0), 0);
+    }
+  }
 }

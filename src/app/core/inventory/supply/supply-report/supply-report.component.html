@@ -24,27 +24,29 @@
                             <div class="sales__form-box m-1 pb-4 " *ngIf="isFormVisible">
                                 <div class="row">
                                     <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <input type="hidden" id="hiddenFromDate" />
                                         <div class="custom__input-container" id="englishFromDatepicker" *ngIf="isDatePickerVisible">
-                                            <input type="date" class="input-field custom__input w-100 req"
-                                                id="startDate" />
-                                            <label>From Date EN</label>
+                                            <input type="date"  class="input-field custom__input w-100 req"
+                                                id="engFromDate" />
+                                            <label>From Date</label>
                                         </div>
                                         <div class="custom__input-container" id="nepaliFromDatepicker" *ngIf="!isDatePickerVisible">
                                             <input type="text" class="input-field custom__input w-100 req"
-                                                id="startDate" />
-                                            <label>From Date Np</label>
+                                                id="nepFromtDate" />
+                                            <label>From Date</label>
                                         </div>
                                     </div>
                                      <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <input type="hidden" id="hiddenToDate" />
                                         <div class="custom__input-container" id="englishToDatepicker" *ngIf="isDatePickerVisible">
                                             <input type="date" class="input-field custom__input w-100 req"
-                                                id="englishToDate" />
-                                            <label>To Date EN</label>
+                                                id="engToDate" />
+                                            <label>To Date</label>
                                         </div>
                                            <div class="custom__input-container" id="nepaliToDatepicker" *ngIf="!isDatePickerVisible">
                                             <input type="text" class="input-field custom__input w-100 req"
-                                                id="endDate" />
-                                            <label>To Date Np</label>
+                                                id="nepaliToDate" />
+                                            <label>To Date</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-4 col-md-4 col-lg-2">
