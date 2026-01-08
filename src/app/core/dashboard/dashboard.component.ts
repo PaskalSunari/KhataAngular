@@ -135,6 +135,7 @@ export class DashboardComponent implements  OnInit {
       (res: any) => {
         const transactionData = res.data;
         if (res.succeeded == true) {
+          debugger
           const newPurchaseArry = transactionData.filter((item: any) => {
             return item.TransactionType == 'Purchase';
           });
@@ -145,6 +146,7 @@ export class DashboardComponent implements  OnInit {
           const newPaymentArry = transactionData.filter((item: any) => {
             return item.TransactionType == 'Payments';
           });
+
 
           this.purchaseList = newPurchaseArry;
           this.salesList = newSalesArry;

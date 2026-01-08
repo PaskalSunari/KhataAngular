@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.selectCompanyBranch();
+    
     this.bannerSlider();
 
     // Initialize all select2 dropdowns
@@ -239,6 +239,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
           this.companyName = data.ownerCompanyList.companyName;
 
           this.isLoginFormShow = false;
+          
           this.isFormShow = true;
 
           const encryptedtoken = this.encrypt.encryptionAES(data?.ptoken);
@@ -276,6 +277,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
             this.cookieService.delete('username');
             this.cookieService.delete('companyCode');
           }
+          this.selectCompanyBranch();
         } else {
           this.toastr.error('Invalid Credentials');
         }

@@ -4,6 +4,7 @@ import { SalesRoutingModule } from './sales-routing.module';
 import { SalesComponent } from './sales/sales.component';
 import { PosComponent } from './pos/pos.component';
 import { FormsModule } from "@angular/forms";
+import { A11yModule } from "@angular/cdk/a11y";
 
 
 
@@ -15,7 +16,8 @@ import { FormsModule } from "@angular/forms";
   imports: [
     CommonModule,
     SalesRoutingModule,
-    FormsModule
+    FormsModule,
+    A11yModule
 ]
 })
 export class SalesModule { }
