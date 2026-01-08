@@ -42,6 +42,10 @@ export class LoginserviceService {
     localStorage.removeItem('allMenu');
     localStorage.removeItem('userId');
     localStorage.removeItem('sessionId');
+    localStorage.removeItem('stockLocation');
+    localStorage.removeItem('companyLogoMain');
+    localStorage.removeItem('baseUrl');
+    
     // localStorage.removeItem('companyLogoMain');
     localStorage.removeItem('branch');
     localStorage.removeItem('branchDepartment');
