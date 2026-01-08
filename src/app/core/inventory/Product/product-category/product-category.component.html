@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row align-items-center flex-wrap">
             <div class="col-9">Product Category</div>
-            <div class="col-3">
+            <div class="col-3  pe-3">
                 <div class="buttons-wrapper d-flex justify-content-end Gap-5">
                     <button class="btn btn-success button-sm"><i class="fa-solid fa-file-pdf"></i></button>
                     <button class="btn button-info button-sm"><i class="fa-solid fa-file-csv"></i></button>
@@ -33,8 +33,8 @@
                                     <div class=" col-sm-4 col-md-3 col-lg-2">
                                         <div class="custom__input-container d-flex align-items-center">
                                             <input id="productCategoryName" name="Category Name" type="text"
-                                                class="form-control custom__input" autocomplete="off"
-                                                [(ngModel)]="this.service.productCategoryModel.productCategoryName">
+                                                class="form-control custom__input req" autocomplete="off"
+                                                [(ngModel)]="this.service.productCategoryModel.productCategoryName" required="">
                                             <label>Name</label>
                                         </div>
                                     </div>
@@ -66,7 +66,7 @@
 
                                         <div class="custom__input-container">
                                             <select class="input-field custom__input  w-100 req"
-                                                name="Product Category Status" id="productCategoryStatus" data-placeholder="--Choose--">
+                                                name="Product Category Status" id="productCategoryStatus" data-placeholder="--Choose--" required>
                                                 <option value="1">Active</option>
                                                 <option value="0">InActive</option>
                                             </select>
@@ -76,12 +76,9 @@
 
                                     <div class="col-sm-4 col-md-3 col-lg-1">
                                         <div class="custom__input-container d-flex align-items-center">
-                                            <!-- <button id="button" class="button-sm btn btn-success ms-1"
-                                                        title="Insert Item">
-                                                        <i class="fa-solid fa-plus"></i>
-                                                    </button> -->
-                                            <button type="button" id="button"
-                                                class="button button-sm btn btn-success ms-1" [title]="submitButton" (click)="onSubmitProductCategory()">
+                                          
+                                            <button type="button" id="button9"
+                                                class="button9 button-sm btn btn-success ms-1" [title]="submitButton" (click)="onSubmitProductCategory()">
 
                                                 <i [ngClass]="{ 'fa-solid fa-save': submitButton === 'Save' }"></i>
                                                 <i [ngClass]="{

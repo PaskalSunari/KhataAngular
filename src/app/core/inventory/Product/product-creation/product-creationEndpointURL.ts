@@ -12,6 +12,8 @@ export class productCreateUrl {
   deleteProductCreate:string='inventory/Product/DeleteProduct'
   productCreateFilteredData:string='inventory/CommonInventoryPagi/GetFilterAnyDataPaginationInventory'
 
+  getProductDetails:string= 'inventory/Product/GetProductDetails'
+
 //Add Variable Api
   natureDropdownList:string='inventory/ProductInfoVariable/GetProductVariableNatureList'
   addVariableFilteredData:string='inventory/CommonInventoryPagi/GetFilterAnyDataPaginationInventory'

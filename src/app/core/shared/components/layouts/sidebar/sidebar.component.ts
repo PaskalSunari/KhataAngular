@@ -25,13 +25,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     const storedMenu = localStorage.getItem('allMenu');
     const parsedMenu = storedMenu ? JSON.parse(storedMenu) : [];
-    
+
 
     // ✅ Convert flat menu array into hierarchical tree structure
     this.Menulist = this.buildMenuTree(parsedMenu);
-    
 
-   // console.log('✅ Nested MenuList:', this.Menulist);
+
+    // console.log('✅ Nested MenuList:', this.Menulist);
   }
 
   /** ✅ Converts flat list (with parentID) to a nested structure */
@@ -39,16 +39,32 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     const menuMap: Record<number, MenuItem> = {};
     const roots: MenuItem[] = [];
 
-    // Step 1: Create a map of all menu items
-    menuItems.forEach((item) => {
-      menuMap[item.intMenuid] = { ...item, children: [] };
+    // Step 1: Create a map of all menu items (lowercase strings)
+    menuItems.forEach(item => {
+      const lowerItem: any = {};
+
+      Object.keys(item).forEach(key => {
+        const value = item[key];
+        if (key === 'webUrl') {
+          lowerItem[key] = typeof value === 'string' ? value.toLowerCase() : value;
+        }
+        else {
+          lowerItem[key] =
+            typeof value === 'string' ? value : value;
+        }
+
+      });
+
+
+
+      menuMap[item.intMenuid] = { ...lowerItem, children: [] };
     });
 
     // Step 2: Link children to their parent
-    menuItems.forEach((item) => {
+    menuItems.forEach(item => {
       const parentId = item.parentID;
       if (parentId && menuMap[parentId]) {
-        (menuMap[parentId].children as MenuItem[]).push(menuMap[item.intMenuid]);
+        menuMap[parentId].children!.push(menuMap[item.intMenuid]);
       } else {
         roots.push(menuMap[item.intMenuid]);
       }
@@ -56,7 +72,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     return roots;
   }
-
 
   ngAfterViewInit(): void {
     let a = 0;

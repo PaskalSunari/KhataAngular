@@ -14,6 +14,8 @@ import { DatePipe } from '@angular/common';
    providers: [DatePipe] 
 })
 export class ProductUnitComponent implements AfterViewInit {
+isSubmitUnit:boolean=true
+
  showUnitForm = true;
  unitTypeStatus:boolean=true
 unitTypeDropdownList:any;
@@ -68,7 +70,7 @@ constructor(private el: ElementRef, public service: ProductUnitService, private 
 this.enterFun();
     $(this.el.nativeElement).find('select').select2();
 
-
+ $('#unitType').focus();
      if ($('#unitType').length) {
           const dropdown = document.getElementById("unitType") as HTMLInputElement | null;
           if (dropdown) {
@@ -406,7 +408,15 @@ this.getProductUnitDropdownList()
       }
     
       // console.log(this.productUnitModel, "model")
-        this.InsertProductUnit()
+      
+
+         if(this.isSubmitUnit==true){
+          this.InsertProductUnit()
+this.isSubmitUnit=false
+        }
+        setTimeout(() => {
+this.isSubmitUnit=true
+        },1000)
      
     }
 

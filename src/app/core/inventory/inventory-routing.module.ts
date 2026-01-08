@@ -8,6 +8,7 @@ import { ProductBrandComponent } from './Product/product-brand/product-brand.com
 import { ProductModelComponent } from './Product/product-model/product-model.component';
 import { ProductSizeComponent } from './Product/product-size/product-size.component';
 import { ProductCreationComponent } from './Product/product-creation/product-creation.component';
+import { PurchaseOrderComponent } from './Purchase/purchase-order/purchase-order.component';
 
 const routes: Routes = [
  {
@@ -41,6 +42,10 @@ const routes: Routes = [
     {
     path: 'productcreate',
     component: ProductCreationComponent,
+  },
+   {
+    path: 'purchaseorder',
+    component: PurchaseOrderComponent,
   },
 ];
 
