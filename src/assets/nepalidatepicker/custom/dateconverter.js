@@ -92,40 +92,54 @@ function nepaliDatePicker(elementId, setElementValueId, focusElementId, setDate)
     document.getElementById(setElementValueId).value = NepaliFunctions.BS2AD(getFiscalMaxDate());
   }
 
-  var dateInput = document.getElementById(elementId);
+  const dateInput = document.getElementById(elementId);
+  if (!dateInput) return;
+
+  if (setDate == 1) {
+    dateInput.value = getFiscalFromDate();
+    document.getElementById(setElementValueId).value = NepaliFunctions.BS2AD(getFiscalFromDate());
+  } else {
+    dateInput.value = getFiscalMaxDate();
+    document.getElementById(setElementValueId).value = NepaliFunctions.BS2AD(getFiscalMaxDate());
+  }
 
   dateInput.nepaliDatePicker({
-    readOnlyInput: false,   // 🔑 important
+    readOnlyInput: false,
     minDate: getFiscalFromDate(),
     maxDate: getFiscalMaxDate(),
     dateFormat: "YYYY-MM-DD",
     animation: "fade",
     miniEnglishDates: true,
-    onClose: function (selectedDate) {
-      document.getElementById(setElementValueId).value = getFormattedDate(NepaliFunctions.BS2AD(selectedDate[0]));
-      document.getElementById(focusElementId).focus();
+    onSelect: function (selectedDate) {
+      document.getElementById(setElementValueId).value = NepaliFunctions.BS2AD(selectedDate.value);
+
+      // Let plugin finish hideDatePicker()
+      setTimeout(() => {
+        requestAnimationFrame(() => {
+          document.getElementById(focusElementId)?.focus();
+        });
+      }, 10);
     }
   });
 
   dateInput.addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
-      e.preventDefault(); // stop picker interference
-      document.getElementById(focusElementId)?.focus();
-      //   const bsDate = this.value;
-      //   if (!bsDate) return;
+      e.preventDefault();
+      e.stopPropagation();
 
-      //   // wait until picker updates value
-      //   setTimeout(() => {
-      //     const adDate = NepaliFunctions.BS2AD(bsDate);
-      //     console.log("adDate:", adDate);
-      //     document.getElementById(setElementValueId).value = adDate;
-      //     document.getElementById(focusElementId)?.focus();
-      //   }, 0);
+      if (this.value) {
+        document.getElementById(setElementValueId).value = NepaliFunctions.BS2AD(this.value);
+      }
+
+      setTimeout(() => {
+        document.getElementById(focusElementId)?.focus();
+      }, 10);
     }
   });
-
-
 }
+
+
+
 // For nepali date picker in popup
 function nepaliDatePickerPopup(elementId, setElementValueId, focusElementId, popupId, setDate) {
   if (setDate == 1) {
