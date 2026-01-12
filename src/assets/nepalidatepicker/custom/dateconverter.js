@@ -163,23 +163,51 @@ function nepaliDatePickerPopup(elementId, setElementValueId, focusElementId, pop
     }
   });
 }
-// For english date picker in main page
+
+
+
 function englishDatePicker(elementId, setElementValueId, focusElementId, setDate) {
-  if (setDate == 1) {
-    document.getElementById(elementId).value = getFiscalFromDate();
-  } else {
-    document.getElementById(elementId).value = getFiscalMaxDate();
+  const input = document.getElementById(elementId);
+  const hidden = document.getElementById(setElementValueId);
+  const next = document.getElementById(focusElementId);
+
+  let typed = false;
+
+  // defaults + limits
+  input.value = setDate == 1 ? getFiscalFromDate() : getFiscalMaxDate();
+  input.min = getFiscalFromDate();
+  input.max = getFiscalMaxDate();
+
+  function commit(moveFocus) {
+    if (!input.value) return;
+    hidden.value = input.value;
+    if (moveFocus) next?.focus();
   }
 
-  var dateInput = document.getElementById(elementId);
-  dateInput.min = getFiscalFromDate();
-  dateInput.max = getFiscalMaxDate();
+  // If user types anything → mark as typing
+  input.addEventListener("input", () => {
+    typed = true;
+  });
 
-  // Attach change event
-  dateInput.addEventListener('change', (e) => {
-    const selectedDate = e.target.value;
-    document.getElementById(setElementValueId).value = selectedDate;
-    document.getElementById(focusElementId).focus();
+  // Calendar select OR blur
+  input.addEventListener("change", () => {
+    if (typed) {
+      // user typed → do NOT move focus
+      typed = false;
+      commit(false);
+      return;
+    }
 
+    // calendar selection → move focus
+    commit(true);
+  });
+
+  // Enter key → always move focus
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      typed = false;
+      commit(true);
+    }
   });
 }
