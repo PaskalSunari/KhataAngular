@@ -5,13 +5,15 @@ import { SalesComponent } from './sales/sales.component';
 import { PosComponent } from './pos/pos.component';
 import { FormsModule } from "@angular/forms";
 import { A11yModule } from "@angular/cdk/a11y";
+import { SalesOrderComponent } from './sales-order/sales-order.component';
 
 
 
 @NgModule({
   declarations: [
     SalesComponent,
-    PosComponent
+    PosComponent,
+    SalesOrderComponent
   ],
   imports: [
     CommonModule,
