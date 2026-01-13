@@ -99,6 +99,8 @@ textarea:required~label::after {
   padding: $input-field-padding-y $input-field-padding-x;
   border: 1px solid $color-gray-200;
   width: 100%;
+  appearance: none;
+  
 
   &:focus {
     border: 1px solid $primary-500;
@@ -378,12 +380,15 @@ ng-multiselect-dropdown .multiselect-dropdown {
   padding: 0 5px;
 }
 
-.sales-main-table__type {
-    width: 140px;          /* fixed width */
-    min-width: 140px;
-    max-width: 140px;   
+
+/* Chrome, Edge, Safari */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-.sales-main-table__type select {
-    width: 100%;
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }

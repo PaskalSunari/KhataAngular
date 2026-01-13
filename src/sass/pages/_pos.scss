@@ -12,10 +12,11 @@
     background: $primary-500;
     color: #fff;
     height: 20px;
+    width: 20px;
     flex: 0 0 20px;
     font-size: 10px;
-    line-height: 20px;
-text-align:center;
+    line-height: 18px;
+    text-align: center;
 }
 
 .input-gap {
@@ -95,10 +96,10 @@ text-align:center;
     margin: 0;
 }
 
-#sales-main-table__body {
-    max-height: 218px;
-    overflow-y: auto;
-}
+// #sales-main-table__body {
+//     max-height: 218px;
+//     overflow-y: auto;
+// }
 
 .table__container thead th {
     background: $primary-500;
@@ -293,4 +294,8 @@ text-align:center;
 .customPopupContainer .transaction-content-tbl tr:nth-child(even) td {
     background-color: #fff !important;
 
+}
+
+.table--pos tr {
+    height: 30px;
 }
