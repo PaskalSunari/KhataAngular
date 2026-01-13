@@ -33,6 +33,8 @@ export class posUrl {
   InsertSalesTransactionDraft: string = 'Inventory/Sales/InsertSalesTransactionDraft';
 
   RecievedLedger: string = 'Inventory/Sales/RecievedLedger';
+  UpdateSalesBillAdjustmentMaster: string = 'Inventory/Sales/UpdateSalesBillAdjustmentMaster';
+  GetSalesTransactionList: string = 'Inventory/Sales/GetSalesTransactionList';
 
 
 
@@ -47,3 +49,8 @@ export class posUrl {
 
 //https://api.khatasystem.com/api/Inventory/Sales/InsertSalesTransactionDraft?RecievedLedgerID=50&RecievedLedgerAmount=97&MasterId=615&Extra1=1&userId=1
 //https://api.khatasystem.com/api/Inventory/Sales/RecievedLedger?branchId=1001
+
+
+//https://api.khatasystem.com/api/Inventory/Sales/UpdateSalesBillAdjustmentMaster?masterId=797&billAdjAmt=-0.37&extra1=SI-374-82/83
+
+// https://api.khatasystem.com/api/Inventory/Sales/GetSalesTransactionList?id=824

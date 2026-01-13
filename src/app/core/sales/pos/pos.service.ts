@@ -214,4 +214,27 @@ export class PosService {
       params,
     });
   }
+  //================================================================================
+  UpdateSalesBillAdjustmentMaster(data: any) {
+    const params = new HttpParams()
+      .set('MasterId', data.MasterId)
+      .set('billAdjAmt', data.billAdjAmt)
+      .set('extra1', data.Extra1)
+
+    return this.http.post(
+      `${this.baseurl}${this.endPoint.UpdateSalesBillAdjustmentMaster}`,
+      null, // no body
+      { params }
+    );
+  }
+
+  //================================================================================
+
+  GetSalesTransactionList(masterID: any) {
+    const params = new HttpParams().set('id', masterID);
+    return this.http.get(`${this.baseurl}${this.endPoint.GetSalesTransactionList}`, {
+      params,
+    });
+  }
+
 }

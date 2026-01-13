@@ -274,7 +274,7 @@ export class PosComponent implements AfterViewInit {
               setFocusOnNextElement.call(current);
             }
 
-            self.netBill();
+            // self.netBill();
           }
         }
       );
@@ -1261,7 +1261,6 @@ export class PosComponent implements AfterViewInit {
   // }
 
   async InsertTransactionSalesLedger(result: any) {
-    debugger;
     this.loading = true;
 
     const masterID = this.getMasterID();
@@ -2063,66 +2062,84 @@ export class PosComponent implements AfterViewInit {
   }
 
   originalNetBillAmt: number = 0; // API बाट आएको NetBill (86.52)
-  NetBillAmt: number | null = null; // input field मा देखिने value
+  NetBillAmt: number = 0; // input field मा देखिने value
 
-  netBill() {
-    // user ले input मा टाइप गरेको value
-    const receivedAmount = Number(this.NetBillAmt);
+  // netBill() {
+  //   // user ले input मा टाइप गरेको value
+  //   const receivedAmount = Number(this.NetBillAmt);
 
-    const remaining = this.originalNetBillAmt - receivedAmount;
+  //   const remaining = this.originalNetBillAmt - receivedAmount;
 
-    // remaining amount input field मै देखाउने
-    this.NetBillAmt = +remaining.toFixed(2);
-  }
+  //   // remaining amount input field मै देखाउने
+  //   this.NetBillAmt = +remaining.toFixed(2);
+
+  //   this.calculateAmount();
+  // }
 
   // Bill Adj Amt calculate
   ledgerTableList: any[] = [];
 
   InsertSalesTransaction() {
-    this.loading = true;
-    debugger;
-    const obj = {
-      RecievedLedgerID: $('#receivedLedger').val(),
-      RecievedLedgerAmount: this.NetBillAmt,
-      MasterId: this.salesMasterID,
-      Extra1: 1,
-      userId: 1,
-    };
+    if (this.receivedLedgerValidation() == true) {
+      this.loading = true;
+      const billAmount = this.calculateAmount();
+      const obj = {
+        RecievedLedgerID: +$('#receivedLedger').val(),
+        RecievedLedgerAmount: billAmount,
+        MasterId: this.salesMasterID,
+        Extra1: 1,
+        userId: 1,
+      };
 
-    const selectedOption = $('#receivedLedger option:selected');
-    const ledgerId = selectedOption.val();
-    const ledgerText = selectedOption.text();
+      const selectedOption = $('#receivedLedger option:selected');
+      const ledgerId = selectedOption.val();
+      const ledgerText = selectedOption.text();
 
-    this.service.InsertSalesTransactionDraft(obj).subscribe(
-      (res: any) => {
-        debugger;
-        if (res.code == 200) {
-          // this.ledgerTableList = res?.result;
-          const alreadyExists = this.ledgerTableList.some(
-            (item) => item.receivedLedgerId == ledgerId
-          );
+      this.service.InsertSalesTransactionDraft(obj).subscribe(
+        (res: any) => {
+          if (res.code == 200) {
+            debugger;
+            // this.ledgerTableList = res?.result;
+            const alreadyExists = this.ledgerTableList.some(
+              (item) => item.receivedLedgerId == ledgerId
+            );
 
-          if (!alreadyExists) {
-            this.ledgerTableList.push({
-              receivedLedgerId: ledgerId,
-              receivedLedger: ledgerText,
-              RecievedLedgerAmount: this.NetBillAmt,
-            });
-          } else {
-            this.toastr.error('This ledger is already added');
+            if (!alreadyExists) {
+              this.ledgerTableList.push({
+                receivedLedgerId: ledgerId,
+                receivedLedger: ledgerText,
+                RecievedLedgerAmount: billAmount,
+              });
+            } else {
+              this.toastr.error('This ledger is already added');
+            }
+
+            console.log(this.ledgerTableList, 'list');
+            this.BillAdjustmentMaster();
+            this.GetSalesTransaction();
+            this.fetchTableSales(this.suffixPrefix);
+
+            const masterID = this.getMasterID();
+            this.fetchSalesMasterDraftOnly(masterID);
+            this.FetchSalesTransactionCrDrList(masterID);
+            // if (masterID) {
+            //   this.fetchSalesMasterDraftOnly(masterID);
+            //   setTimeout(() => {
+            //     this.FetchSalesTransactionCrDrList(masterID);
+            //   }, 1200);
+            // }
+            //  this.FetchSalesTransactionCrDrList(this.getMasterID());
+            this.resetledgerTableList();
           }
-
-          console.log(this.ledgerTableList, 'list');
-          this.resetledgerTableList();
+          this.loading = false;
+        },
+        (err) => {
+          console.error('Error fetching salesTransactionDraft data:', err);
+          this.loading = false;
+          this.toastr.error('Failed to load salesTransactionDraft data');
         }
-        this.loading = false;
-      },
-      (err) => {
-        console.error('Error fetching salesTransactionDraft data:', err);
-        this.loading = false;
-        this.toastr.error('Failed to load salesTransactionDraft data');
-      }
-    );
+      );
+    }
   }
 
   resetledgerTableList() {
@@ -2140,14 +2157,151 @@ export class PosComponent implements AfterViewInit {
     }, 10);
 
     setTimeout(() => {
-       this.NetBillAmt = this.originalNetBillAmt;
+      this.NetBillAmt = this.calculateAmount();
     }, 10);
-   
   }
 
   removeTableItem(ID: number) {
     this.ledgerTableList = this.ledgerTableList.filter(
       (item) => item.receivedLedgerId != ID
     );
+    this.calculateAmount();
+    this.billDiscountPercent = 0;
+    this.billDiscountAmount = 0;
+    this.billAdjustAmount = 0;
+  }
+
+  // ------------------------
+  // When Bill Discount % changes
+  // ------------------------
+
+  billDiscountPercent: number = 0;
+  billDiscountAmount: number = 0;
+
+  billAmount: number = 0;
+  billAdjustAmount: number = 0;
+
+  billDiscountPercentChanged() {
+    if (this.billDiscountPercent > 100) {
+      this.toastr.error('percent should not be more than 100');
+      return;
+    }
+    this.billDiscountAmount = parseFloat(
+      ((this.NetBillAmt * this.billDiscountPercent) / 100).toFixed(2)
+    );
+    this.calculateAmount();
+  }
+
+  // ------------------------
+  // When Bill Discount Amount changes
+  // ------------------------
+  billDiscountAmountChanged() {
+    if (this.billDiscountAmount > this.NetBillAmt) {
+      this.toastr.error('Bill Dis Amt should not be more than Net Amount');
+      return;
+    }
+    this.billDiscountPercent = parseFloat(
+      ((this.billDiscountAmount / this.NetBillAmt) * 100).toFixed(2)
+    );
+    this.calculateAmount();
+  }
+
+  calculateAmount() {
+    this.billAmount = parseFloat(
+      (this.originalNetBillAmt - this.billDiscountAmount).toFixed(2)
+    );
+
+    this.NetBillAmt = this.billAmount;
+
+    return this.billAmount;
+  }
+
+  isUpdating = false;
+
+  onNetBillChange(value: number) {
+    // loop रोक्न
+    if (this.isUpdating) return;
+
+    this.isUpdating = true;
+
+    const amountAfterDiscount = this.calculateAmount();
+    console.log('Net Bill Changed:', value);
+
+    // calculation
+    this.NetBillAmt = amountAfterDiscount - value;
+
+    this.isUpdating = false;
+  }
+
+  receivedLedgerValidation() {
+    if ($('#receivedLedger').val() == '') {
+      $('#receivedLedger').select2('open');
+      this.toastr.error('Received Ledger is required');
+      return false;
+    } else if (this.NetBillAmt == 0) {
+      $('#netBillAmtInput').focus();
+      this.toastr.error('Amount is required');
+      return false;
+    }
+    return true;
+  }
+
+  // Bill Adjustment =====================================================================
+
+  calculateBillAdjustment() {
+    let amount = this.calculateAmount();
+
+    const decimalValue = Number('0.' + amount.toFixed(2).split('.')[1]);
+
+    const finalDecimalValue =
+      decimalValue >= 0.5 ? `+${decimalValue}` : `-${decimalValue}`;
+
+    this.billAdjustAmount = +finalDecimalValue;
+    return this.billAdjustAmount;
+  }
+
+  BillAdjustmentMaster() {
+    const billAdjustValue = this.calculateBillAdjustment();
+    this.loading = true;
+    const obj = {
+      MasterId: this.salesMasterID,
+      billAdjAmt: billAdjustValue, //0.34,
+      Extra1: this.suffixPrefix,
+    };
+
+    this.service.UpdateSalesBillAdjustmentMaster(obj).subscribe(
+      (res: any) => {
+        if (res.code == 200) {
+        }
+        this.loading = false;
+      },
+      (err) => {
+        console.error(
+          'Error fetching UpdateSalesBillAdjustmentMaster data:',
+          err
+        );
+        this.loading = false;
+        this.toastr.error(
+          'Failed to load UpdateSalesBillAdjustmentMaster data'
+        );
+      }
+    );
+  }
+
+  ledgerTransaction: any;
+
+  GetSalesTransaction() {
+    const masterID = this.salesMasterID;
+    this.service.GetSalesTransactionList(masterID).subscribe({
+      next: (data: any) => {
+        if (data.code == 200) {
+          this.ledgerTransaction = data?.result;
+          console.log(this.ledgerTransaction, ' ledgerTransaction here');
+        }
+      },
+      error: () => {
+        this.toastr.error('Failed to load GetSalesTransactionList');
+      },
+    });
   }
 }

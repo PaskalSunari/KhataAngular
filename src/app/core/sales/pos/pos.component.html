@@ -114,7 +114,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-3 col-md-5">
                                         <div class="customer-details__container">
                                             <ul>
                                                 <li>
@@ -140,7 +140,7 @@
                                         </div>
                                     </div>
 
-                                    <div class=" col-lg-3">
+                                    <div class=" col-lg-3  col-md-5">
                                         <div class="bill-total__container">
                                             <div class="row">
 
@@ -432,9 +432,11 @@
 
                                             <div class="col-sm-3 col-md-2 col-lg-1">
                                                 <div class="custom__input-container">
-                                                    <input (input)="quantityChanged()" id="billDis" type="number"
-                                                        (keydown)="disValidation($event)"
-                                                        class="input-field custom__input  w-100 req" id=""
+                                                    <input [(ngModel)]="this.billDiscountPercent"
+                                                        name="billDiscountPercent"
+                                                        (input)="billDiscountPercentChanged()" id="billDis"
+                                                        type="number" (keydown)="disValidation($event)"
+                                                        class="input-field custom__input  w-100 req" min="0" max="100%"
                                                         [disabled]="fieldDisabled">
 
                                                     <label>Bill Dis.%</label>
@@ -444,18 +446,20 @@
 
                                             <div class="col-sm-3 col-md-2 col-lg-2">
                                                 <div class="custom__input-container">
-                                                    <input (keydown)="disValidation($event)" id="billDisAmt"
-                                                        type="number" class="form-control custom__input req"
-                                                        autocomplete="off" value="" [disabled]="fieldDisabled">
+                                                    <input [(ngModel)]="this.billDiscountAmount"
+                                                        name="billDiscountAmount" (input)="billDiscountAmountChanged()"
+                                                        (keydown)="disValidation($event)" id="billDisAmt" type="number"
+                                                        class="form-control custom__input req" autocomplete="off"
+                                                        value="" [disabled]="fieldDisabled">
                                                     <label>Bill Dis Amt</label>
                                                 </div>
                                             </div>
 
                                             <div class="col-sm-3 col-md-2 col-lg-1">
                                                 <div class="custom__input-container">
-                                                    <input (keydown)="disValidation($event)" id="" type="number"
-                                                        class="form-control custom__input req" autocomplete="off"
-                                                        value="" [disabled]="fieldDisabled">
+                                                    <input [(ngModel)]="this.billAdjustAmount" name="billAdjustAmount"
+                                                        id="" type="number" class="form-control custom__input req"
+                                                        autocomplete="off" [disabled]="fieldDisabled">
                                                     <label>Bill Adj Amt</label>
                                                 </div>
                                             </div>
@@ -480,8 +484,6 @@
                                                                     class="input-field custom__input w-100 req received"
                                                                     data-placeholder="--Choose--"
                                                                     [disabled]="fieldDisabled">
-
-                                                                    <option value="">Choose</option>
 
                                                                     <option *ngFor="let item of recievedLedgerList"
                                                                         [value]="item.value">
@@ -512,13 +514,13 @@
                                                             <div
                                                                 class="custom__input-container d-flex align-items-center input-gap">
                                                                 <div class="select-wrap">
-                                                                    <input name="netBill" [(ngModel)]="this.NetBillAmt"
-                                                                        (click)="netBill()" id="netBillAmtInput"
-                                                                        type="number"
-                                                                        class="input-field custom__input  w-100 req">
-
+                                                                    <input name="netBill" [(ngModel)]="NetBillAmt"
+                                                                        (ngModelChange)="onNetBillChange($event)"
+                                                                        id="netBillAmtInput" type="number"
+                                                                        class="input-field custom__input w-100 req" />
                                                                     <label>Amount</label>
                                                                 </div>
+
                                                                 <button (click)="InsertSalesTransaction()"
                                                                     class="receivedLedgerbtn btn btn-success button-sm ms-1">
                                                                     <i class="fa-solid fa-plus"></i>
@@ -546,7 +548,9 @@
                                                                 <td>{{item.receivedLedger}}</td>
                                                                 <td>{{item.RecievedLedgerAmount}}</td>
                                                                 <td>
-                                                                    <button  (click)="removeTableItem(item.receivedLedgerId)" class="button-sm btn btn-danger ms-1">
+                                                                    <button
+                                                                        (click)="removeTableItem(item.receivedLedgerId)"
+                                                                        class="button-sm btn btn-danger ms-1">
                                                                         <i class="fa fa-trash"></i>
                                                                     </button>
                                                                 </td>
@@ -691,6 +695,7 @@
                                                     {{ item.drAmt | number:'1.2-2' }} Dr
                                                 </span>
                                             </td>
+                                            
                                         </tr>
                                     </tbody>
 
