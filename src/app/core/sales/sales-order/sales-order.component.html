@@ -1,0 +1,482 @@
+<div class="page-head-bar">
+    <div class="container-fluid">
+        <div class="row align-items-center flex-wrap">
+            <div class="col-3">
+                <h1>Sales Order</h1>
+            </div>
+            <div class="col-9 d-flex justify-content-end align-items-center gap-20">
+                <h1 style="font-size: 10px; text-align: right;">
+                    CTRL+S [Save Order]
+                </h1>
+                <button class="btn button-sm btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#salesOrderDraftListModal"
+                    style="background: #2aaecf!important; border: none;font-weight: 700;padding: 3px 5px;">
+                    Order List
+                </button>
+                <button class="page-head-bar__button">
+                    <i class="fa-solid fa-chevron-up"></i>
+                </button>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="page-body">
+    <div class="container-fluid px-0">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-10 p-0">
+                <div class="" id="sales-form-container">
+                    <form class="">
+                        <div class="container-fluid pt-0 px-1 pb-1">
+                            <div class="sales__form-box  py-1 mt-2">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <div class="row">
+                                            <div class="col-6 col-sm-4 col-md-4 col-lg-3">
+                                                <div
+                                                    class="custom__input-container d-flex align-items-center input-gap">
+                                                    <div class="select-wrap">
+                                                        <select id="salesLedger" data-placeholder="--Choose--"
+                                                            class="input-field custom__input w-100 req">
+                                                            <option value="">
+
+                                                            </option>
+                                                            <option value=""></option>
+                                                        </select>
+
+
+                                                        <label>Sales Ledger</label>
+                                                    </div>
+                                                    <button id="" class="button-sm button__plus ms-1"
+                                                        title="Insert Item">
+                                                        <i class="fa-solid fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-2 col-sm-2 col-md-2 col-lg-2">
+                                                <div class="custom__input-container">
+                                                    <input name="" id="" type="text" class="form-control custom__input "
+                                                        autocomplete="off">
+                                                    <label>Sales Against</label>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-2 col-sm-2 col-md-2 col-lg-2">
+                                                <div class="custom__input-container ">
+                                                    <div class="select-wrap">
+                                                        <select [id="modeSelect" data-placeholder="--Choose--"
+                                                            class="input-field custom__input  w-100 req">
+                                                            <option value=""></option>
+                                                            <option value="1">Cash</option>
+                                                            <option value="0">Credit</option>
+                                                        </select>
+
+                                                        <label>Mode</label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-2 col-sm-2 col-md-2 col-lg-2">
+                                                <div
+                                                    class="custom__input-container  d-flex align-items-center input-gap">
+                                                    <input id="" type="checkbox" class="form-control  ">
+                                                    <label class="ms-1">Is exported ?</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4 col-md-3 col-lg-3">
+                                                <div
+                                                    class="custom__input-container d-flex align-items-center input-gap">
+                                                    <div class="select-wrap">
+                                                        <select id="" class="input-field custom__input w-100 req"
+                                                            data-placeholder="--Choose--">
+                                                            <option value=""></option>
+                                                            <option value="">Select Customer</option>
+
+                                                        </select>
+
+
+                                                        <label>Customer</label>
+                                                    </div>
+                                                    <button id="" class="button-sm button__plus ms-1"
+                                                        title="Insert Item">
+                                                        <i class="fa-solid fa-plus"></i>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-3 col-lg-3">
+                                        <div class="customer-details__container">
+                                            <ul>
+                                                <li>
+                                                    <span>Name:</span>
+                                                    <span id="ledgerName">
+
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span>Address:</span>
+                                                    <span id="address">
+
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span>PAN:</span>
+                                                    <span id="pan">
+
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="sales__form-box pb-2">
+                                <div class="row">
+                                    <div class="col-4 col-sm-3 col-md-3 col-lg-2">
+                                        <div class="custom__input-container d-flex align-items-center input-gap">
+                                            <div class="select-wrap">
+                                                <input name="productCode" id="productCode" type="text"
+                                                    class="form-control custom__input " autocomplete="off">
+                                                <label>Product Code</label>
+
+                                            </div>
+                                            <button type="button" id=""
+                                                class="btn button-sm button-info-color px-2 py-0 ms-1"
+                                                data-bs-toggle="tooltip" data-bs-placement="bottom" title=""
+                                                data-bs-original-title="View Stock Details">
+                                                <i class="fa-solid fa-info"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-5 col-sm-4 col-md-4 col-lg-3">
+
+                                        <div class="custom__input-container">
+                                            <select id="productSelect" class="input-field custom__input w-100 req"
+                                                data-placeholder="--Choose--">
+                                                <option value=""></option>
+                                                <option>
+
+                                                </option>
+                                            </select>
+
+
+                                            <label>Product Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-5 col-sm-4 col-md-4 col-lg-2">
+                                        <div class="custom__input-container">
+                                            <select id="" class="input-field custom__input w-100 req"
+                                                data-placeholder="--Choose--">
+                                                <option value=""></option>
+                                                <option value=""></option>
+
+                                            </select>
+                                            <label>Batch</label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3 col-sm-1 col-md-1 col-lg-1">
+                                        <div class="custom__input-container">
+                                            <input type="text" id="" class="input-field custom__input w-100 req">
+
+                                            <label> Expiry Date</label>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-sm-3 col-md-2 col-lg-2">
+                                        <div class="custom__input-container">
+                                            <select id="selecUnit" class="input-field custom__input w-100 req"
+                                                data-placeholder="--Choose--">
+                                                <option value=""></option>
+
+                                            </select>
+
+                                            <label>Unit</label>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-3 col-sm-1 col-md-1 col-lg-1">
+                                        <div class="custom__input-container">
+                                            <input type="text" id="" class="input-field custom__input w-100 req">
+
+                                            <label> Mrp</label>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3 col-sm-1 col-md-1 col-lg-1">
+                                        <div class="custom__input-container">
+                                            <input type="text" id="" class="input-field custom__input w-100 req">
+
+                                            <label> Rate</label>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-3 col-sm-3 col-md-3 col-lg-1">
+                                        <div class="custom__input-container ">
+                                            <select name="" id="" class="input-field custom__input w-100 req"
+                                                data-placeholder="--Choose--">
+
+                                            </select>
+
+                                            <label>Vat</label>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-3 col-sm-1 col-md-1 col-lg-1">
+                                        <div class="custom__input-container">
+                                            <input id="" type="number" class="form-control custom__input"
+                                                autocomplete="off">
+                                            <label>Actual Rate</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3 col-sm-1 col-md-1 col-lg-1">
+                                        <div class="custom__input-container">
+                                            <input id="" type="number" class="form-control custom__input"
+                                                autocomplete="off">
+                                            <label>Qty()</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3 col-sm-3 col-md-2 col-lg-1">
+                                        <div class="custom__input-container">
+                                            <input id="" type="number" class="form-control custom__input"
+                                                autocomplete="off">
+                                            <label>Gross value</label>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Discount % -->
+                                    <div class="col-3 col-sm-3 col-md-2 col-lg-1">
+                                        <div class="custom__input-container">
+                                            <input type="number" class="form-control custom__input" autocomplete="off"
+                                                min="0" max="100%">
+                                            <label>Dis.%</label>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Discount Amount -->
+                                    <div class="col-3 col-sm-3 col-md-2 col-lg-1">
+                                        <div class="custom__input-container">
+                                            <input type="number" name="" class="form-control custom__input" min="0"
+                                                autocomplete="off">
+                                            <label>Dis Amt</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3 col-sm-3 col-md-3 col-lg-1">
+                                        <div class="custom__input-container ">
+                                            <select name="" id="" class="input-field custom__input w-100 req"
+                                                data-placeholder="--Choose--">
+                                                <option>No</option>
+                                                <option>Yes</option>
+
+                                            </select>
+
+                                            <label>Ot.Tax Charge?</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3 col-sm-3 col-md-2 col-lg-1">
+                                        <div class="custom__input-container">
+                                            <input type="number" name="" class="form-control custom__input"
+                                                autocomplete="off">
+                                            <label>Taxable value</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3 col-sm-3 col-md-2 col-lg-1">
+                                        <div class="custom__input-container">
+                                            <input type="number" name="" class="form-control custom__input"
+                                                autocomplete="off">
+                                            <label>Tax Amt</label>
+                                        </div>
+                                    </div>
+
+                                    <div class=" col-sm-4 col-md-3 col-lg-2">
+                                        <div class="row">
+                                            <div class="col-sm-6 col-md-6 col-lg-9">
+                                                <div class="custom__input-container">
+                                                    <input type="text" name="netTotal" id="" required=""
+                                                        class="form-control custom__input" autocomplete="off" readonly>
+                                                    <label>Net Total</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4 col-md-3 col-lg-3">
+                                                <div class="custom__input-container d-flex align-items-center">
+                                                    <button id="button" class="button-sm button btn btn-success ms-1"
+                                                        title="Insert Item">
+                                                        <i class="fa-solid fa-plus"></i>
+                                                    </button>
+
+
+                                                    <button class="button-sm btn btn-danger ms-1" title="Reset"
+                                                        id="salesBtn_refresh" href="">
+                                                        <i class="fa-solid fa-rotate-left"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table__wrapper  table__wrapper-34 table_xxl-65 mt-3" style="background: #fff;">
+                    <table class="table table--pos">
+                        <thead class="table__head">
+                            <tr>
+                                <th class="sales-main-table__sn">S.N.</th>
+
+                                <th class="sales-main-table__item">Product Name</th>
+                                <th class="sales-main-table__qty">Qty</th>
+                                <th class="sales-main-table__unit">Unit</th>
+                                <th class="sales-main-table__rate">Rate</th>
+                                <th class="sales-main-table__dis-amt">Dis Amt</th>
+
+
+                                <th class="sales-main-table__non-tax">Taxable</th>
+                                <th class="sales-main-table__non-tax">Non-Tax</th>
+                                <th class="sales-main-table__tax">Tax</th>
+                                <th class="sales-main-table__total">Net Amt</th>
+                                <th class="sales-main-table__action">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table__body" id="sales-main-table__body">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+
+                        <tfoot class="sales-main-table__foot ">
+                            <tr>
+                                <td></td>
+                                <td>Total</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+
+
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="row justify-content-end mt-2">
+                    <div class="col-5 col-lg-5">
+                        <div class="custom__input-container">
+                            <textarea id="" type="text" rows="2" class="form-control" autocomplete="off"></textarea>
+                            <label>Narration</label>
+                        </div>
+                    </div>
+                    <div class="col-1 col-lg-1">
+                        <div class="btn-container">
+                            <button id="" data-bs-toggle="modal" type="button" class="btn btn-success">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                            </button>
+                            <button class="btn btn-danger button-style-fix" title="reset" id="">
+                                <i class="fa-solid fa-rotate-left"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="sales-summary__container pt-2">
+                    <div class="sales-summary__top py-1 px-1" style="margin-bottom:3px;">
+                        <div class="d-flex align-items-center">
+                            <h6 class=" m-0 w-50">Bill Amount:</h6>
+                            <input type="text" id="" class="summary-display__box w-50">
+                        </div>
+                    </div>
+                    <div class="sales-summary__bottom py-1 px-1">
+                        <h6>Bill Summary</h6>
+                        <div class="d-flex align-items-center">
+                            <label class="p-1 w-50">GrossAmount:</label>
+                            <input name="" type="text" id="" class="summary-display__box w-50" disabled>
+
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <label class="p-1 w-50">Item Dis:</label>
+                            <input name="" type="text" id="" class="summary-display__box w-50" disabled>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <label class="p-1 w-50">Bill Dis:</label>
+                            <input name="" type="text" id="" class="summary-display__box w-50" disabled>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <label class="p-1 w-50">Other charges/Tax:</label>
+                            <input name="" type="text" id="" class="summary-display__box w-50" disabled>
+                        </div>
+
+
+
+                        <div class="d-flex align-items-center">
+                            <label class="p-1 w-50">Total addition Inc:</label>
+                            <input name="" type="text" id="" class="summary-display__box w-50" disabled>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <label class="p-1 w-50">Non Taxable Amt:</label>
+                            <input name="" type="text" id="" class="summary-display__box w-50" disabled>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <label class="p-1 w-50">Taxable Amt:</label>
+                            <input name="" type="text" id="" class="summary-display__box w-50" disabled>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <label class="p-1 w-50">Tax/Vat Amt:</label>
+                            <input name="" type="text" id="" class="summary-display__box w-50" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

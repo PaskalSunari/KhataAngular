@@ -23,6 +23,25 @@
                         <div class="container-fluid pt-0 px-1 pb-1">
                             <div class="sales__form-box m-2 pb-2 " *ngIf="showForm">
                                 <div class="row">
+                                    <!-- <div class="col-sm-4 col-md-4 col-lg-2">
+
+                                        <div class="custom__input-container">
+                                            <select #department class="input-field custom__input  w-100 req" id="requestByDepartment">
+                                                <option disabled selected>Choose</option>
+                                                <option *ngFor=" let data of getDepartmentList" [value] = "data.departmentID">{{data.departmentName}}</option>
+                                            </select>
+                                            <label>Request By Department</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <div class="custom__input-container">
+                                            <select #requestBy class="input-field custom__input  w-100 req" id="requestBY">
+                                                <option disabled selected>Choose</option>
+                                                <option *ngFor="let data of requestedByDropdownList" value="{{data.userID}}">{{data.userName}}</option>
+                                            </select>
+                                            <label>Requested By</label>
+                                        </div>
+                                    </div> -->
                                     <div class="col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
                                             <select #requestedToDepartment class="input-field custom__input  w-100 req" id="requestedToDepartment">
@@ -81,6 +100,10 @@
                                                 title="Insert Item" (click)="addRowToTable()">
                                                 <i class="fa-solid fa-plus"></i>
                                             </button>
+                                            <!-- <button type="button" class="button-sm btn btn-danger ms-1" title="Reset"
+                                                 (click)="resetForm()" id="salesBtn_refresh" href="">
+                                                <i class="fa-solid fa-rotate-left"></i>
+                                            </button> -->
                                         </div>
                                     </div>
                                 </div>
@@ -107,7 +130,9 @@
                                                 <tr *ngFor="let row of tableRows; let i = index" [ngClass]="{'row-removing' : row.removing}">
                                                     <td>{{row.sn}}</td>
                                                     <td>{{row.date}}</td>
+                                                    <!-- <td>{{row.requestByDepartment}}</td> -->
                                                     <td>{{row.requestedBy}} ({{row.requestByDepartment}})</td>
+                                                    <!-- <td>{{row.category}}</td> -->
                                                     <td>{{row.requestedTo}} ({{row.category}})</td>
                                                     <td>{{row.particulars}}</td>
                                                     <td>{{row.quantity}} {{row.unit}}</td>
@@ -159,6 +184,7 @@
 </div>
 
 
+<!-- Location popup -->
 <div *ngIf="isLocationVisible">
     <div class="customPopupContainer">
         <div class="customPopup customPopup--location customPopup-md-hgt-40 customPopup-md-30"
