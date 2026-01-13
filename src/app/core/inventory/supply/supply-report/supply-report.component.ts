@@ -17,7 +17,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
   supplyDetailsPopup: boolean = false;
   isVerified: boolean = false;
   isDeleted: boolean = false;
-  
+
 
   fromDate: any;
   toDate: any;
@@ -81,7 +81,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
     const self = this;
     $(this.el.nativeElement).find('select').select2();
     this.initilizedDate();
-    //this.getSupplyList();
+    this.getSupplyList();
 
     $('#locationId').on('select2:close', function (e: any) {
       const id = e.target.value;
@@ -416,5 +416,91 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
     }
   }
 
-  //Open Supply
+
+
+  //Open Supply Verify Confirm Box
+  verifySupplyConfirmBox(item: any) {
+    try {
+      if (!item) return;
+      console.log('Delete supply item:', item);
+      const confirmBox = new ConfirmBoxInitializer();
+      confirmBox.setTitle('Are you sure?');
+      confirmBox.setMessage('Confirm to Verify !');
+      confirmBox.setButtonLabels('YES', 'NO');
+      // Choose layout color type
+      confirmBox.setConfig({
+        layoutType: DialogLayoutDisplay.SUCCESS,
+        animationIn: AppearanceAnimation.BOUNCE_IN,
+        animationOut: DisappearanceAnimation.BOUNCE_OUT,
+      });
+
+      confirmBox.openConfirmBox$().subscribe(resp => {
+        // do some action after user click on a button
+        if (resp.success === true && resp.clickedButtonID === 'yes') {
+          this.verifySupplyDetails(item);
+        }
+      });
+      setTimeout(() => {
+
+        $('.ed-btn-success').focus()
+
+        $('.ed-btn-success').on('keydown', (e: any) => {
+          if (e.key === 'ArrowRight') {
+            $('.ed-btn-secondary').focus()
+          }
+        })
+
+        $('.ed-btn-secondary').on('keydown', (e: any) => {
+          if (e.key === 'ArrowLeft') {
+            $('.ed-btn-success').focus()
+          }
+        })
+      }, 0)
+
+    } catch (error) {
+      console.error('Error showing delete confirmation box:', error);
+    }
+  }
+
+  //Verify supply Details
+  verifySupplyDetails(data: any) {
+    console.log('Deleting supply details:', data);
+    try {
+      const payload = {
+        tableName: 'Supply',
+        parameter: {
+          Flag: 'verifySupplyDetails',
+          UserId: String(this.userId ?? ''),
+          FiscalId: String(this.fiscalId ?? ''),
+          branchId: String(this.branchId),
+          masterId: String(data.supplyMasterId ?? ''),
+          supplyDetailsId: String(data.supplyDetailsId ?? ''),
+          voucherNo: String(data.voucherNo ?? ''),
+          productId: String(data.productId ?? ''),
+        }
+      };
+
+      this.service.getGenericServices(payload).subscribe((res: any) => {
+        console.log('Verify Response: ', res);
+        if (res && res.data && res.data.length > 0) {
+          const responseMessage = res.data[0];
+          console.log('Response Message suppy details: ', responseMessage);
+
+          if (responseMessage.status == 200) {
+            this.getSupplyDetails();
+            this.toastr.success(responseMessage.message || 'Verified successfully.');
+
+          } else {
+            this.toastr.error(responseMessage.message || 'Failed to Verified supply details.');
+          }
+        } else {
+          this.toastr.error('Failed to Verified supply details.');
+        }
+      });
+    } catch (error) {
+      console.error('Error verifying supply details:', error);
+      this.toastr.error('An error occurred while verifying the supply details');
+    }
+  }
+
 }

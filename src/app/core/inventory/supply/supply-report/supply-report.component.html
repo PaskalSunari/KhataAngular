@@ -216,7 +216,7 @@
                                                             <tbody class="table__body" id="sales-main-table__body">
                                                                 <tr *ngFor="let item of supplyDetailsList; let i=index">
                                                                     <td>{{1+i}}</td>
-                                                                    <td>{{item.supplyTupe==1?'Supply':'Consume'}}</td>
+                                                                    <td>{{item.supplyTupe==1?'Consume':'Transfer'}}</td>
                                                                     <td>{{item.productName}}</td>
                                                                     <td>{{item.batch}}</td>
                                                                     <td>{{item.unitName}}</td>
@@ -226,11 +226,11 @@
                                                                         'Unverified') }}</td>
                                                                     <td>
                                                                         <button type="button"
-                                                                            (click)="openSupplyDetailsModel(item)"
-                                                                            (keydown.enter)="openSupplyDetailsModel(item)"
+                                                                            (click)="verifySupplyConfirmBox(item)"
+                                                                            (keydown.enter)="verifySupplyConfirmBox(item)"
                                                                             *ngIf="item?.isVerified"
                                                                             class="button button--extra-small button--success button--rounded-sm me-2"
-                                                                            title="Verified">
+                                                                            title="Verify">
                                                                             <i class="fa-solid fa-check"></i>
                                                                         </button>
 
