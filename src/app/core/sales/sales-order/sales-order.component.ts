@@ -16,8 +16,30 @@ export class SalesOrderComponent implements AfterViewInit {
     // keyboard listener
   }
   ngAfterViewInit(): void {
+    this.loadSalesLedger();
     setTimeout(() => {
       $(this.el.nativeElement).find('select').select2();
     }, 10);
+  }
+  private loadSalesLedger(): void {
+    const branchId = localStorage.getItem('branch') || '';
+    this.service.getSalesLedger(branchId).subscribe(
+      (res: any) => {
+        const $sel = $(this.el.nativeElement).find('#salesLedger');
+        $sel.empty().append('<option value=""></option>');
+        const list = res.result || []; // <-- use res.result
+        list.forEach((item: any) => {
+          const val = item.value ?? item.id ?? item.salesLedgerId ?? '';
+          const txt = item.text ?? item.name ?? item.ledgerName ?? '';
+          $sel.append(`<option value="${val}">${txt}</option>`);
+        });
+
+        $sel.select2({ placeholder: '--Choose--', allowClear: true, width: '100%' })
+      },
+      (err) => {
+        this.toastr.error('Failed to load sales ledger', 'Error');
+        console.error(err);
+      }
+    );
   }
 }
