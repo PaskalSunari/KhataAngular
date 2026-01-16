@@ -5,7 +5,7 @@ export const environment = {
   // appURL: 'https://api.khatasystem.com/api/',
   
 
-  appURL:'https://localhost:7291/api/',
+  appURL:'https://localhost:7044/api/',
 
   reportSyncURL: 'https://mainapi.hospitalsnepal.com/api/',
   imageURL: 'https://mainapi.hospitalsnepal.com/api/',

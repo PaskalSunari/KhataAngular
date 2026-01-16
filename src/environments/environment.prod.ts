@@ -1,7 +1,7 @@
 export const environment = {
     production: true,
-   appURL: 'https://api.khatasystem.com/api/',
-
+  //  appURL: 'https://api.khatasystem.com/api/',
+      appURL: 'http://localhost:7044/api/',
     //appURL:'http://localhost:510/api/',
    // databaseId:'K-00001',
     
