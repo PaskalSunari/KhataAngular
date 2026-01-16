@@ -169,8 +169,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
         flag: "supplyReport"
       };
 
-      this.service.getSupplyList(payload).subscribe((res: any) => {
-        console.log('Supply List: ', res);
+      this.service.getSupplyList(payload).subscribe((res: any) => {        
         if (res && res.data && res.data.length > 0) {
           this.supplyList = res.data;
           const pagiData = JSON.parse(res.paginationData);
@@ -204,8 +203,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
       this.toLocationName = item.toLocationName;
       this.demandId = item.demandMasterId;
       this.masterId = item.supplyId;
-      this.voucherNo = item.voucherNo;
-      console.log('Open details for supply item:', item);
+      this.voucherNo = item.voucherNo;     
       this.getSupplyDetails();
 
     } catch (err) {
@@ -228,8 +226,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
         }
       };
 
-      this.service.getGenericServices(payload).subscribe((res: any) => {
-        console.log('Supply Details: ', res);
+      this.service.getGenericServices(payload).subscribe((res: any) => {        
 
         if (res && res.data && res.data.length > 0) {
           this.supplyDetailsList = res.data;
@@ -249,8 +246,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
   //Open Supply Delete Confirm Box
   deleteSupplyConfirmBox(item: any) {
     try {
-      if (!item) return;
-      console.log('Delete supply item:', item);
+      if (!item) return;      
       const confirmBox = new ConfirmBoxInitializer();
       confirmBox.setTitle('Are you sure?');
       confirmBox.setMessage('Confirm to Delete !');
@@ -291,8 +287,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
   }
 
   //Delete supply by Id
-  deleteSupplyById(data: any) {
-    console.log('Deleting supply with ID:', data.supplyId);
+  deleteSupplyById(data: any) {    
     try {
       const payload = {
         tableName: 'Supply',
@@ -310,8 +305,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
       this.service.getGenericServices(payload).subscribe((res: any) => {
 
         if (res && res.data && res.data.length > 0) {
-          const responseMessage = res.data[0];
-          console.log('Response Message: ', responseMessage);
+          const responseMessage = res.data[0];       
 
           if (responseMessage.status == 200) {
             this.getSupplyList();
@@ -333,8 +327,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
   //Open Supply Delete Confirm Box
   deleteSupplyDetailsConfirmBox(item: any) {
     try {
-      if (!item) return;
-      console.log('Delete supply item:', item);
+      if (!item) return;     
       const confirmBox = new ConfirmBoxInitializer();
       confirmBox.setTitle('Are you sure?');
       confirmBox.setMessage('Confirm to Delete !');
@@ -376,8 +369,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
 
 
   //Delete supply Details by Id
-  deleteSupplyDetailsById(data: any) {
-    console.log('Deleting supply details:', data);
+  deleteSupplyDetailsById(data: any) {    
     try {
       const payload = {
         tableName: 'Supply',
@@ -397,8 +389,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
 
         if (res && res.data && res.data.length > 0) {
           const responseMessage = res.data[0];
-          console.log('Response Message suppy details: ', responseMessage);
-
+         
           if (responseMessage.status == 200) {
             this.getSupplyDetails();
             this.toastr.success(responseMessage.message || 'Supply Details deleted successfully');
@@ -421,8 +412,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
   //Open Supply Verify Confirm Box
   verifySupplyConfirmBox(item: any) {
     try {
-      if (!item) return;
-      console.log('Delete supply item:', item);
+      if (!item) return;      
       const confirmBox = new ConfirmBoxInitializer();
       confirmBox.setTitle('Are you sure?');
       confirmBox.setMessage('Confirm to Verify !');
@@ -463,8 +453,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
   }
 
   //Verify supply Details
-  verifySupplyDetails(data: any) {
-    console.log('Deleting supply details:', data);
+  verifySupplyDetails(data: any) {   
     try {
       const payload = {
         tableName: 'Supply',
@@ -480,11 +469,9 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
         }
       };
 
-      this.service.getGenericServices(payload).subscribe((res: any) => {
-        console.log('Verify Response: ', res);
+      this.service.getGenericServices(payload).subscribe((res: any) => {       
         if (res && res.data && res.data.length > 0) {
-          const responseMessage = res.data[0];
-          console.log('Response Message suppy details: ', responseMessage);
+          const responseMessage = res.data[0];        
 
           if (responseMessage.status == 200) {
             this.getSupplyDetails();
