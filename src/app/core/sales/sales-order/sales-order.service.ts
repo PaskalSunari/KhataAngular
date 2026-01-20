@@ -20,8 +20,9 @@ export class salesOrderService {
     return this.http.get(`${base}${this.endpoint.salesLedgerDropdownList}`,{params})
   }
 
-  getProductName(flag: any,code:any,branchId:any){
+  getProductName(flag: number, branchId:number, productCode: string){
     const base = this.baseurl.replace(/\/+$/, '');
-    return this.http.get(`${base}${this.endpoint.getProductByName}${flag}&code=${code}&branchId=${branchId}`);
+    const code = productCode ?? 'null';
+    return this.http.get(`${base}${this.endpoint.getProductByName}/${flag}/${branchId}/${code}`);
   }
 }

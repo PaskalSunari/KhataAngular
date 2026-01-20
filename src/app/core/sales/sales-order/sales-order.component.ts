@@ -50,19 +50,23 @@ export class SalesOrderComponent implements AfterViewInit {
   }
 
 
-    //get prefix suffix
+
       getProductDropdownList() {
-    this.service.getProductName(1,undefined,this.branchId).subscribe(
-      (res) => {
-        let result: any = res;
-         console.log(result, 'product list');
-        if (result) {
-          // this.prefixSuffixList=result
-          //  console.log(result,"product dropdown data");
-        }
+    this.service.getProductName(1,this.branchId, 'null').subscribe(
+      (res: any) => {
+        const products = res?.result || [];
+        const $sel = $(this.el.nativeElement).find('#productSelect');
+        $sel.empty().append('<option value=""></option>');
+        products.forEach((item : any) => {
+          $sel.append(`<option value="${item.productId}">${item.productName}</option>`);
+        });
+        $sel.select2({
+          placeholder : '--Choose--',
+          allowClear: true,
+          width: '100%'
+        })
       },
       (error) => {
-        // console.error('Error:', error); // Inspect full error message
         this.toastr.error(error?.error?.Messages);
       }
     );
