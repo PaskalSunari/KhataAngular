@@ -79,7 +79,7 @@
                                     </div>
                                     <div class="col-sm-4 col-md-3 col-lg-1 d-flex align-items-center">
                                         <div class="custom__input-container d-flex align-items-center">
-                                            <button type="button" id="btnSearchSupply" title="Search"
+                                            <button type="button" #btnSearchSupply id="btnSearchSupply" title="Search"
                                                 (click)="getSupplyList()" (keydown.enter)="getSupplyList()"
                                                 class="button button-sm btn btn-success ms-1">
                                                 <i class="fa-solid fa-rotate-right"></i>
@@ -112,8 +112,8 @@
                                             <thead class="table__head">
                                                 <tr>
                                                     <th width="5%">S.N.</th>
-                                                    <th width="10%" >Voucher No</th>
-                                                    <th  width="10%">Voucher Date</th>
+                                                    <th width="10%">Voucher No</th>
+                                                    <th width="10%">Voucher Date</th>
                                                     <th width="20%">From Location</th>
                                                     <th width="20%">To Location</th>
                                                     <th width="15%">Requested To</th>
@@ -123,13 +123,13 @@
                                             </thead>
                                             <tbody class="table__body" id="sales-main-table__body">
                                                 <tr *ngFor="let item of supplyList let i=index">
-                                                    <td>{{item.sn}}</td>
-                                                    <td>{{item.voucherNo}}</td>
-                                                    <td>{{item.voucherDate}}</td>
-                                                    <td>{{item.fromLocationName}}</td>
-                                                    <td>{{item.toLocationName}}</td>
+                                                    <td>{{item?.sn}}</td>
+                                                    <td>{{item?.voucherNo}}</td>
+                                                    <td>{{item?.voucherDate}}</td>
+                                                    <td>{{item?.fromLocationName}}</td>
+                                                    <td>{{item?.toLocationName}}</td>
                                                     <td>{{item.toUserName}}</td>
-                                                    <td>{{ item.isAccepted == 1 ? 'Verified' :(item.isAccepted == 2 ?
+                                                    <td>{{ item?.isAccepted == 1 ? 'Verified' :(item?.isAccepted == 2 ?
                                                         'Rejected' : 'Unverified') }}</td>
                                                     <td>
                                                         <button type="button" (click)="openSupplyDetailsModel(item)"
@@ -137,8 +137,8 @@
                                                             class="button button--extra-small button--success button--rounded-sm me-2">
                                                             <i class="fa-regular fa-eye"></i>
                                                         </button>
-                                                        <button type="button"   *ngIf="item?.status"
-                                                           (click)="deleteSupplyConfirmBox(item)"
+                                                        <button type="button" *ngIf="item?.status"
+                                                            (click)="deleteSupplyConfirmBox(item)"
                                                             class="button button--extra-small button--danger button--rounded-sm me-2">
                                                             <i class="fa-solid fa-trash"></i>
                                                         </button>
@@ -149,7 +149,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <mat-paginator #paginatorPopup (page)="handlePageEvent($event)" class="demo-paginator"                                
+                            <mat-paginator #paginatorPopup (page)="handlePageEvent($event)" class="demo-paginator"
                                 [length]="length" [pageSize]="pageSize" [disabled]="disabled"
                                 [showFirstLastButtons]="showFirstLastButtons"
                                 [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
@@ -236,7 +236,7 @@
 
                                                                         <button type="button" *ngIf="item?.isVerified"
                                                                             (click)="deleteSupplyDetailsConfirmBox(item)"
-                                                                            (keydown.enter)="deleteSupplyDetailsConfirmBox(item)"   
+                                                                            (keydown.enter)="deleteSupplyDetailsConfirmBox(item)"
                                                                             class="button button--extra-small button--danger button--rounded-sm me-2"
                                                                             title="Cancel">
                                                                             <i class="fa-solid fa-trash"></i>

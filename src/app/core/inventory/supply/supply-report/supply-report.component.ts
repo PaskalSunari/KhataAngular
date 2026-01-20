@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { SupplyReportService } from './service/supply-report.service';
 import { ToastrService } from 'ngx-toastr';
 import { AppearanceAnimation, ConfirmBoxInitializer, DialogLayoutDisplay, DisappearanceAnimation } from '@costlydeveloper/ngx-awesome-popup';
+
 declare const nepaliDatePicker: any;
 declare const englishDatePicker: any;
 declare var $: any;
@@ -76,24 +77,27 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
     this.titleService.setTitle("Supply Report");
 
   }
+  @ViewChild('btnSearchSupply') btnSearchSupply!: ElementRef;
 
   ngAfterViewInit(): void {
     const self = this;
     $(this.el.nativeElement).find('select').select2();
     this.initilizedDate();
-    this.getSupplyList();
+    //this.getSupplyList();
 
     $('#locationId').on('select2:close', function (e: any) {
-      const id = e.target.value;
-      self.locationId = id;
+      self.locationId = e.target.value;
       $('#status')?.focus();
     });
 
     $('#status').on('select2:close', function (e: any) {
-      const id = e.target.value;
-      self.locationId = id;
+      self.status = e.target.value;
       $('#btnSearchSupply')?.focus();
     });
+
+    setTimeout(() => {
+      this.btnSearchSupply.nativeElement.focus();
+    }, 0);
 
   }
 
@@ -144,6 +148,16 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
     try {
       const fromDateValue = (document.getElementById('hiddenFromDate') as HTMLInputElement).value;
       const toDateValue = (document.getElementById('hiddenToDate') as HTMLInputElement).value;
+
+      // Convert to Date objects
+      const fromDate = new Date(fromDateValue);
+      const toDate = new Date(toDateValue);
+
+      if (fromDate > toDate) {
+        this.toastr.error('From Date cannot be greater than To Date');
+        return;
+      }
+
       const locationIdValue = (document.getElementById('locationId') as HTMLInputElement).value;
       const statusValue = (document.getElementById('status') as HTMLInputElement).value;
       const searchSupplyData = (document.getElementById('searchSupplyData') as HTMLInputElement).value;
@@ -154,7 +168,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
       this.fromDate = fromDateValue ? fromDateValue : this.fromDate;
       this.toDate = toDateValue ? toDateValue : this.toDate;
 
-      //console.log('From Date:', this.fromDate, 'To Date:', this.toDate, 'Location ID:', this.locationId, 'Status:', this.status);
+      console.log('From Date:', this.fromDate, 'To Date:', this.toDate, 'Location ID:', this.locationId, 'Status:', this.status);
       const payload = {
         userId: this.userId,
         branchId: this.branchId,
@@ -169,7 +183,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
         flag: "supplyReport"
       };
 
-      this.service.getSupplyList(payload).subscribe((res: any) => {        
+      this.service.getSupplyList(payload).subscribe((res: any) => {
         if (res && res.data && res.data.length > 0) {
           this.supplyList = res.data;
           const pagiData = JSON.parse(res.paginationData);
@@ -203,7 +217,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
       this.toLocationName = item.toLocationName;
       this.demandId = item.demandMasterId;
       this.masterId = item.supplyId;
-      this.voucherNo = item.voucherNo;     
+      this.voucherNo = item.voucherNo;
       this.getSupplyDetails();
 
     } catch (err) {
@@ -226,7 +240,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
         }
       };
 
-      this.service.getGenericServices(payload).subscribe((res: any) => {        
+      this.service.getGenericServices(payload).subscribe((res: any) => {
 
         if (res && res.data && res.data.length > 0) {
           this.supplyDetailsList = res.data;
@@ -246,7 +260,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
   //Open Supply Delete Confirm Box
   deleteSupplyConfirmBox(item: any) {
     try {
-      if (!item) return;      
+      if (!item) return;
       const confirmBox = new ConfirmBoxInitializer();
       confirmBox.setTitle('Are you sure?');
       confirmBox.setMessage('Confirm to Delete !');
@@ -287,7 +301,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
   }
 
   //Delete supply by Id
-  deleteSupplyById(data: any) {    
+  deleteSupplyById(data: any) {
     try {
       const payload = {
         tableName: 'Supply',
@@ -305,7 +319,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
       this.service.getGenericServices(payload).subscribe((res: any) => {
 
         if (res && res.data && res.data.length > 0) {
-          const responseMessage = res.data[0];       
+          const responseMessage = res.data[0];
 
           if (responseMessage.status == 200) {
             this.getSupplyList();
@@ -327,7 +341,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
   //Open Supply Delete Confirm Box
   deleteSupplyDetailsConfirmBox(item: any) {
     try {
-      if (!item) return;     
+      if (!item) return;
       const confirmBox = new ConfirmBoxInitializer();
       confirmBox.setTitle('Are you sure?');
       confirmBox.setMessage('Confirm to Delete !');
@@ -369,7 +383,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
 
 
   //Delete supply Details by Id
-  deleteSupplyDetailsById(data: any) {    
+  deleteSupplyDetailsById(data: any) {
     try {
       const payload = {
         tableName: 'Supply',
@@ -389,7 +403,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
 
         if (res && res.data && res.data.length > 0) {
           const responseMessage = res.data[0];
-         
+
           if (responseMessage.status == 200) {
             this.getSupplyDetails();
             this.toastr.success(responseMessage.message || 'Supply Details deleted successfully');
@@ -412,7 +426,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
   //Open Supply Verify Confirm Box
   verifySupplyConfirmBox(item: any) {
     try {
-      if (!item) return;      
+      if (!item) return;
       const confirmBox = new ConfirmBoxInitializer();
       confirmBox.setTitle('Are you sure?');
       confirmBox.setMessage('Confirm to Verify !');
@@ -453,7 +467,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
   }
 
   //Verify supply Details
-  verifySupplyDetails(data: any) {   
+  verifySupplyDetails(data: any) {
     try {
       const payload = {
         tableName: 'Supply',
@@ -469,9 +483,9 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
         }
       };
 
-      this.service.getGenericServices(payload).subscribe((res: any) => {       
+      this.service.getGenericServices(payload).subscribe((res: any) => {
         if (res && res.data && res.data.length > 0) {
-          const responseMessage = res.data[0];        
+          const responseMessage = res.data[0];
 
           if (responseMessage.status == 200) {
             this.getSupplyDetails();

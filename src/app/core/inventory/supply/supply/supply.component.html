@@ -25,11 +25,11 @@
                             <div class="row">
                                 <div class="col-sm-4 col-md-4 col-lg-2">
                                     <div class="custom__input-container">
-                                        <select class="input-field custom__input  w-100 req " id="demandId" aria-hidden="true"
+                                        <select class="input-field custom__input   req " id="demandId" aria-hidden="true"
                                             data-placeholder="--Choose--" [disabled]="isDisabled"
                                             required>
                                             <option *ngFor="let item of demandList" value="{{item?.demandMasterId}}">
-                                                {{item?.VoucherNo}}</option>
+                                                {{item?.voucherNo}}</option>
                                         </select>
                                         <label>Demand List</label>
                                     </div>
@@ -130,9 +130,10 @@
                                                 <th class="sales-main-table__qty" style="width: 150px !important;">Batch
                                                 </th>
                                                 <th class="sales-main-batch">Unit</th>
-                                                <th class="sales-main-batch">Req. Qty</th>
-                                                <th class="sales-main-batch">Qty</th>
-                                                <th class="sales-main-batch">Available Qty</th>
+                                                <th class="sales-main-batch" title="Demand Qty">Req. Qty</th>
+                                                <th style="width: 75px !important" title="Input Qty">Qty</th>
+                                                <th class="sales-main-batch" title="Stock Qty">Available Qty</th>
+                                                <th class="sales-main-batch">Remarks</th>
                                                 <th class="sales-main-table__action">Action</th>
                                             </tr>
                                         </thead>
@@ -164,7 +165,7 @@
                                                     </select>
                                                 </td>
                                                 <td>{{ item?.units }}</td>
-                                                <td>{{ item?.transactionQty }}</td>
+                                                <td>{{item?.demandTransactionQty}} <span style="color: blue;">({{ item?.transactionQty }} Left) </span></td>
                                                 <!-- Qty input -->
                                                 <td [attr.data-index]="i">
                                                     <input type="number" class="form-control qty-input"
@@ -172,7 +173,11 @@
                                                         id="inputQty{{i}}" style="width: 100px !important;"
                                                         [attr.data-index]="i">
                                                 </td>
+                                                
                                                 <td>{{ truncateDecimal(item?.remainingQty) }}</td>
+                                                  <td [attr.data-index]="i">
+                                                    <textarea rows="1" id="details-remarks{{i}}" class="form-control details-remasks" [attr.data-index]="i" style="width: 190px !important;">{{item?.remarks}}</textarea>                                                 
+                                                </td>
                                                 <td>
                                                     <button type="button" id="save{{i}}"
                                                         [disabled]="item?.stockInfoList.length === 0 || isBtnDisabled"

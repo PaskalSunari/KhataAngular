@@ -75,6 +75,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+
     $(this.el.nativeElement).find('select').select2();
     const self = this;
     $('#demandId').focus();
@@ -229,6 +230,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
 
     this.service.getGenericServices(payload).subscribe((res: any) => {
       const data = res?.data;
+      //console.log('demand list data:', data);
       if (data && data?.length > 0) {
         this.demandMasterId = data[0]?.demandMasterId;
         this.demandList = res?.data;
@@ -378,7 +380,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
   //Fill supply draft list
   getSupplyDraftList() {
     this.service.getSupplyDraftList(this.userId, this.branchId, this.fiscalId, this.masterId).subscribe((res: any) => {
-      console.log('draft list: ', res);
+      //console.log('draft list: ', res);
       if (!res && res == null) {
         this.toastr.error('No supply details found.');
         return;
@@ -468,6 +470,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
 
         if (this.supplyDetailsList[index]) {
           this.supplyDetailsList[index].supplyType = selectedOption.val();
+          $(`#save${index}`).prop('disabled', false);
         }
 
         setTimeout(() => {
@@ -495,7 +498,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         const index = $select.data('index');
         const selectedOption = $select.find('option:selected');
 
-        $(`#save${index}`).prop('disabled', false);
+
         $(`#inputQty${index}`).prop('readonly', false);
 
         const stockQty = Number(selectedOption.data('stock')) || 0;
@@ -505,6 +508,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
           this.supplyDetailsList[index].batch = selectedVal;
           this.supplyDetailsList[index].stockQty = stockQty;
           this.supplyDetailsList[index].remainingQty = stockQty - inputQty;
+          $(`#save${index}`).prop('disabled', false);
         }
         this.isQtyDisabled = false;
         // Move focus only when valid batch selected
@@ -566,13 +570,40 @@ export class SupplyComponent implements OnInit, AfterViewInit {
         this.supplyDetailsList[index].inputQty = inputQty;
         const stQty = this.supplyDetailsList[index].stockQty;
         const remQty = this.truncateDecimal(stQty) - inputQty;
-
         this.supplyDetailsList[index].stockQty = stQty;
         this.supplyDetailsList[index].remainingQty = remQty < 0 ? 0 : this.truncateDecimal(remQty);
+        this.supplyDetailsList[index].isPartial = transactionQty == inputQty ? 0 : 1;
         this.supplyDetailsList[index].isPosting = 1;
+        $(`#save${index}`).prop('disabled', false);
         // move to save
-        $(`#save${index}`).focus();
+        $(`#details-remarks${index}`).focus();
       });
+
+    // Remarks → Save (ENTER)
+    $(document).off('keydown.details')
+      .on('keydown.details', '.details-remasks', (e: any) => {
+
+        if (e.key !== 'Enter') return;
+
+        e.preventDefault();   //  stop new line
+        e.stopPropagation();  //  stop bubbling
+
+        const $textarea = $(e.target);
+        const index = Number($textarea.data('index'));
+        const remarks = $textarea.val()?.toString().trim();
+
+        // store remarks
+        if (this.supplyDetailsList[index]) {
+          this.supplyDetailsList[index].remarks = remarks;
+          this.supplyDetailsList[index].isPosting = 1;
+        }
+        $(`#save${index}`).prop('disabled', false);
+        // move focus to Save button
+        setTimeout(() => {
+          $(`#save${index}`).focus();
+        }, 0);
+      });
+
 
 
     // Save → Next Row
@@ -630,7 +661,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
 
       this.supplyDetailsList[index].inputQty = qty;
       this.supplyDetailsList[index].remainingQty = remQty < 0 ? 0 : this.truncateDecimal(remQty);
-
+        this.supplyDetailsList[index].isPartial = transactionQty == qty ? 0 : 1;
       // Only executes if all values are valid
       this.supplyDetailsId = Number(btn.dataset?.['supplydetailsid']);
 
@@ -654,7 +685,7 @@ export class SupplyComponent implements OnInit, AfterViewInit {
 
       this.service.getGenericServices(payload).subscribe((res: any) => {
         const data = res?.data;
-        console.log('update response:', data);
+        //console.log('update response:', data);
         if (data?.length > 0) {
           if (data[0].status == 200) {
             $(`#inputQty${index}`).prop('readonly', true);
