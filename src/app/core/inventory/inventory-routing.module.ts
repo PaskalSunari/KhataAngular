@@ -60,6 +60,10 @@ const routes: Routes = [
     component: DeptStockLocationMappingComponent
   },
   {
+    path:'deptstocklocationmapping',
+    component:DeptStockLocationMappingComponent
+  },
+   {
     path: 'purchaseorder',
     component: PurchaseOrderComponent,
   },

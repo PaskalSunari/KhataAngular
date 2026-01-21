@@ -93,11 +93,7 @@ export class DemandComponent implements AfterViewInit, OnDestroy, OnInit {
           });
       }
     })
-    // $('#requestedToDepartment').on('change', function (event: any) {
-    //   if(event.target.value){
-    //   self.getRequestToDropdownList($('#requestBY').val(),$('#requestedToDepartment').val())
-    //   }
-    //    })
+    
   }
   ngOnDestroy(): void {
     try {

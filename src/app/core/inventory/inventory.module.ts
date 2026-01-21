@@ -34,7 +34,8 @@ import { SupplyReportComponent } from './supply/supply-report/supply-report.comp
     SupplyComponent,
     DeptStockLocationMappingComponent,
     PurchaseOrderComponent,
-    SupplyReportComponent
+    SupplyReportComponent,
+    PurchaseOrderComponent
   ],
   imports: [
     CommonModule,

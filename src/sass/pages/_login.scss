@@ -424,7 +424,7 @@ input[type=checkbox]~label {}
     margin-top: 8px;
 }
 
-.about-us__heading{
+.about-us__heading {
     font-size: 18px !important;
     margin-bottom: 1rem;
     font-weight: 600;
@@ -435,55 +435,53 @@ input[type=checkbox]~label {}
     text-align: justify;
 }
 
-.header--accordion{
+.header--accordion {
     cursor: pointer;
 }
 
-.accordion-cross-icon {
-    
-}
+.accordion-cross-icon {}
 
 .item {
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  margin-bottom: 10px;
-  overflow: hidden;
-  background: #fff;
-  transition: all 0.3s ease;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    background: #fff;
+    transition: all 0.3s ease;
 }
 
 /* Header */
 .header {
-  padding:8px 15px;
-  font-size: 15px;
-  cursor: pointer;
-  background: #f5f5f5;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: 600;
-  margin-bottom: 0;
-  user-select: none;
+    padding: 8px 15px;
+    font-size: 15px;
+    cursor: pointer;
+    background: #f5f5f5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    margin-bottom: 0;
+    user-select: none;
 }
 
 .header:hover {
-  background: #e8e8e8;
+    background: #e8e8e8;
 }
 
-.item .body{
+.item .body {
     padding: 1rem;
 }
 
 
 /* Arrow Icon */
 .icon {
-  display: inline-block;
-  transition: transform 0.3s ease;
-  font-size: 18px;
+    display: inline-block;
+    transition: transform 0.3s ease;
+    font-size: 18px;
 }
 
 .icon.rotate {
-  transform: rotate(180deg);
+    transform: rotate(180deg);
 }
 
 
@@ -511,6 +509,14 @@ input[type=checkbox]~label {}
         display: none !important;
     }
 
+    .login__form {
+        padding: 25px;
+        margin-left: 0;
+    }
+
+    // .login__container--right {
+    //     padding: 80px 0 50px 0;
+    // }
 }
 
 
@@ -521,11 +527,14 @@ input[type=checkbox]~label {}
         margin-left: 0;
         background: none;
     }
-    .copyright{
+
+    .copyright {
         flex-direction: column;
     }
-    .login-root{
+
+    .login-root {
         align-items: flex-start;
         margin-top: 40px;
     }
+
 }

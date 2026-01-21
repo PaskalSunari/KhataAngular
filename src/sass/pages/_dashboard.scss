@@ -34,11 +34,12 @@
 .dashboard-card-body {
     flex: 1;
 
-    h4{
+    h4 {
         color: #797979;
         font-weight: 500;
     }
-    p{
+
+    p {
         font-size: 1.6rem;
         font-weight: 500;
         margin-bottom: 0;
@@ -46,66 +47,80 @@
     }
 }
 
-.fa-money-bill{
+.fa-money-bill {
     background-color: #F0B992;
 }
 
-.fa-shopping-cart{
+.fa-shopping-cart {
     background-color: #82BD92;
 }
 
-.fa-university{
+.fa-university {
     background-color: #FFC0CA;
 }
 
-.fa-money-bill-wave{
+.fa-money-bill-wave {
     background-color: #91B5F0;
 }
 
 
-.transaction-table{
+.transaction-table {
     padding: 1rem
 }
 
 
-.transaction-inner{
+.transaction-inner {
     padding: 1rem;
     background: #fff;
 }
 
-.transaction-table .table__body td{
+.transaction-table .table__body td {
     padding: 3px 1rem;
 }
+
 //tabs
 
 .tabs {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
 .tabs button {
-  padding: 6px 18px;
-  border: 1px solid #ccc;
-  background: #f2f2f2;
-  font-size: 12px;
-  cursor: pointer;
-  border-radius: 4px;
+    padding: 6px 18px;
+    border: 1px solid #ccc;
+    background: #f2f2f2;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
 }
 
 .tabs button.active {
-  background: $primary-500;
-  color: #fff;
-  border-color: $primary-500;
+    background: $primary-500;
+    color: #fff;
+    border-color: $primary-500;
 }
+
 //tabs end
 
-.customPopup--location{
-    background: rgba(36, 36, 36, .384);
-    backdrop-filter: blur(1px);
-    -webkit-backdrop-filter: blur(1px);
-    padding: 1rem;
-    box-shadow: 0 4px 30px #0000001a;
-    border-radius: 4px;
-    color: #fff;
+
+@media only screen and (max-width: 992px) {
+    .card-container {
+        grid-template-columns: repeat(2, 1fr)
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .content-wrapper {
+        padding-bottom: 80px;
+    }
+}
+
+
+@media only screen and (max-width: 576px) {
+    .card-container {
+        grid-template-columns: 1fr
+    }
+
+
 }
