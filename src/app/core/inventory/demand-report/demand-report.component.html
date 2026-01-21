@@ -1,0 +1,131 @@
+<div class="page-head-bar">
+    <div class="container-fluid">
+        <div class="row align-items-center flex-wrap">
+            <div class="col-4">Demand Report</div>
+            <div class="col-4"></div>
+            <div class="col-4">
+                <div class="buttons-wrapper d-flex justify-content-end Gap-5">
+                    <!-- <div><button type="button" class="button button-sm btn btn-light ms-1">Demand</button></div>                 -->
+                    <div class="plus-btn" (click)="toggleForm()">
+                        <i class="fa-solid " [ngClass]="isFormVisible ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-body">
+    <div class="container-fluid px-0">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-0">
+                <div class="">
+                    <form class="" *ngIf="isFormVisible">
+                        <div class="container-fluid pt-0 px-0 pb-0">
+                            <div class="sales__form-box m-1 pb-4 ">
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+
+                                        <div class="custom__input-container" id="">
+                                            <input type="date" class="input-field custom__input w-100 req" required
+                                                id="" />
+                                            <label>From Date</label>
+                                        </div>
+                                      
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <div class="custom__input-container" id="">
+                                            <input type="date" class="input-field custom__input w-100 req" required
+                                                id="" />
+                                            <label>To Date</label>
+                                        </div>
+                                       
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <div class="custom__input-container">
+                                            <select class="input-field custom__input  w-100 req" id=""
+                                                data-placeholder="--Choose--" required>
+
+                                                <option>
+
+                                                </option>
+                                            </select>
+                                            <label>Location</label>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <div class="custom__input-container">
+                                            <select class="input-field custom__input  w-100 req" id="" required>
+                                                <option value="0">All</option>
+                                                <option value="1">Verified</option>
+                                                <option value="2">Unverified</option>
+                                            </select>
+                                            <label>Status</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-3 col-lg-1 d-flex">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <button type="button"  id="" title="Search"
+                                                
+                                                class="button button-sm btn btn-success ms-1">
+                                                <i class="fa-solid fa-rotate-right"></i>
+                                            </button>
+                                    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="filter sales__form-box m-1 pb-0" style="padding-top: 3px !important;">
+                                <div class="row d-flex justify-content-end">
+                                    <div class=" col-sm-4 col-md-3 col-lg-2 mb-1">
+                                        <div class="custom__input-container d-flex align-items-center mt-0">
+                                            <input id="" type="text" 
+                                                class="form-control custom__input search-icon-padding"
+                                                placeholder="Search" autocomplete="off">
+                                            <button class="search-icon"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table__wrapper  table__wrapper-55 table_xxl-65 mt-0 m-1">
+                                        <table class="table">
+                                            <thead class="table__head">
+                                                <tr>
+                                                    <th width="5%">S.N.</th>
+                                                    <th width="10%">Voucher No</th>
+                                                    <th width="10%">Voucher Date</th>
+                                                    <th width="20%">From Location</th>
+                                                    <th width="20%">To Location</th>
+                                                    <th width="15%">Requested To</th>
+                                                    <th width="10%">Status</th>
+                                                    <th width="10%">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table__body" id="sales-main-table__body">
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                          
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

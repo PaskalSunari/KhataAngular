@@ -13,6 +13,7 @@ import { SupplyComponent } from './supply/supply/supply.component';
 import { DeptStockLocationMappingComponent } from './dept-stock-location-mapping/dept-stock-location-mapping.component';
 import { PurchaseOrderComponent } from './Purchase/purchase-order/purchase-order.component';
 import { SupplyReportComponent } from './supply/supply-report/supply-report.component';
+import { DemandReportComponent } from './demand-report/demand-report.component';
 
 const routes: Routes = [
   {
@@ -66,6 +67,10 @@ const routes: Routes = [
   {
     path: 'supply-report',
     component: SupplyReportComponent
+  },
+  {
+    path: 'demand-report',
+    component: DemandReportComponent
   }
 ];
 

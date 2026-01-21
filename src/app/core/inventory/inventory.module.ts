@@ -19,6 +19,7 @@ import { DeptStockLocationMappingComponent } from './dept-stock-location-mapping
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { PurchaseOrderComponent } from './Purchase/purchase-order/purchase-order.component';
 import { SupplyReportComponent } from './supply/supply-report/supply-report.component';
+import { DemandReportComponent } from './demand-report/demand-report.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { SupplyReportComponent } from './supply/supply-report/supply-report.comp
     DeptStockLocationMappingComponent,
     PurchaseOrderComponent,
     SupplyReportComponent,
-    PurchaseOrderComponent
+    PurchaseOrderComponent,
+    DemandReportComponent
   ],
   imports: [
     CommonModule,
