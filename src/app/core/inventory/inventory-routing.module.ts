@@ -54,11 +54,7 @@ const routes: Routes = [
   {
     path: 'supply',
     component: SupplyComponent
-  },
-  {
-    path: 'deptstocklocationmapping',
-    component: DeptStockLocationMappingComponent
-  },
+  },  
   {
     path:'deptstocklocationmapping',
     component:DeptStockLocationMappingComponent
