@@ -25,4 +25,11 @@ export class salesOrderService {
     const code = productCode ?? 'null';
     return this.http.get(`${base}${this.endpoint.getProductByName}/${flag}/${branchId}/${code}`);
   }
+  getCustomer (flag: number, branchId: number){
+    const base = this.baseurl.replace(/\/+$/, '');
+    const params = new HttpParams()
+    .set('flag', flag.toString())
+    .set('branchId', branchId.toString());
+    return this.http.get(`${base}${this.endpoint.getCustomerList}`, {params});
+  }
 }

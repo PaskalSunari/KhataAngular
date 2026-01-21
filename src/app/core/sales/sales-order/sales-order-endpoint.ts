@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class salesOrderUrl {
  
 salesLedgerDropdownList: string = '/inventory/SalesOrder/SalesLedger';
-// getProductByName: string = '/inventory/SalesOrder/GetProductByCode?flag=';
 getProductByName: string = '/inventory/SalesOrder/GetProductByCode';
+getCustomerList: string =  '/inventory/SalesOrder/Customer';
 }
 

@@ -38,12 +38,15 @@
                                                 <div
                                                     class="custom__input-container d-flex align-items-center input-gap">
                                                     <div class="select-wrap">
-                                                        <select id="salesLedger" data-placeholder="--Choose--"
-                                                            class="input-field custom__input w-100 req">
-                                                            <option value="">
-
+                                                        <select
+                                                            id="salesLedger"
+                                                            class="form-control"
+                                                            [(ngModel)]="selectedSalesLedger"
+                                                            >
+                                                            <option value="" selected disabled>--Choose--</option>
+                                                            <option *ngFor="let ledger of salesLedgerList" [value]="ledger.value">
+                                                                {{ ledger.text }}
                                                             </option>
-                                                            <option value=""></option>
                                                         </select>
 
                                                         <label>Sales Ledger</label>
@@ -91,7 +94,7 @@
                                                 <div
                                                     class="custom__input-container d-flex align-items-center input-gap">
                                                     <div class="select-wrap">
-                                                        <select id="" class="input-field custom__input w-100 req"
+                                                        <select id="Customer" class="input-field custom__input w-100 req"
                                                             data-placeholder="--Choose--">
                                                             <option value=""></option>
                                                             <option value="">Select Customer</option>
@@ -174,7 +177,7 @@
                                     </div>
                                     <div class="col-5 col-sm-4 col-md-4 col-lg-2">
                                         <div class="custom__input-container">
-                                            <select id="" class="input-field custom__input w-100 req"
+                                            <select id="batch" class="input-field custom__input w-100 req"
                                                 data-placeholder="--Choose--">
                                                 <option value=""></option>
                                                 <option value=""></option>
