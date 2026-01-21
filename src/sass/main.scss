@@ -99,9 +99,12 @@ $khata-pos-theme: mat.define-light-theme((
 @import "pages/dashboard";
 @import "pages/temsCondition";
 @import "pages/product-creation";
+@import "pages/supply";
 @import "pages/purchaseOrder";
+@import "pages/sales-order";
 
 
 @import "custom";
 @import "responsive";
+@import "pages/demand";
 

@@ -99,6 +99,8 @@ textarea:required~label::after {
   padding: $input-field-padding-y $input-field-padding-x;
   border: 1px solid $color-gray-200;
   width: 100%;
+  appearance: none;
+  
 
   &:focus {
     border: 1px solid $primary-500;
@@ -376,4 +378,17 @@ ng-multiselect-dropdown .multiselect-dropdown {
   border: none;
   outline: none;
   padding: 0 5px;
+}
+
+
+/* Chrome, Edge, Safari */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }

@@ -1,10 +1,9 @@
 export const environment = {
     production: true,
-      appURL: 'https://api.khatasystem.com/api/',
-    //appURL:'https://localhost:7291/api/',
+      //appURL: 'https://api.khatasystem.com/api/',
+     appURL:'https://localhost:7291/api/',
     
-   reportSyncURL: "https://mainapi.hospitalsnepal.com/api/",
-   imageURL: "https://mainapi.hospitalsnepal.com/api/",
+  
    appVersion: require('../../package.json').version,
 
 

@@ -5,5 +5,6 @@ import { Injectable } from '@angular/core';
 })
 export class DashboardUrl {
   GetDashboardData: string = 'Account/MyFunction/GetDashboardData';
-  GetTransaction: string = 'Account/GlobalUtility/GenericAPI';
+  GetTransaction: string = 'Account/GlobalUtility/GenericAPI';  
+
 }

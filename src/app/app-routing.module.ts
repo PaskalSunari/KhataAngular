@@ -20,12 +20,12 @@ const routes: Routes = [
       },
       {
         path: 'policy/index',
-         title: 'Privacy Policy',
+        title: 'Privacy Policy',
         component: PolicyComponent,
       },
       {
         path: 'TermsConditions/Index',
-          title: 'Terms & Conditions-hospIT-all',
+        title: 'Terms & Conditions-hospIT-all',
         component: TermsAndconditionComponent,
       },
       {
@@ -33,7 +33,7 @@ const routes: Routes = [
         component: LayoutComponent,
         canActivate: [AuthGuardService],
         children: [
-           { path: '', component: DashboardComponent },
+          { path: '', component: DashboardComponent },
           { path: 'dashboard', component: DashboardComponent },
           {
             path: 'sales',
@@ -41,10 +41,17 @@ const routes: Routes = [
               import('./core/sales/sales.module').then((m) => m.SalesModule),
           },
 
-           {
+          {
             path: 'inventory',
             loadChildren: () =>
-              import('./core/inventory/inventory.module').then((m) => m.InventoryModule),
+              import('./core/inventory/inventory.module').then(
+                (m) => m.InventoryModule
+              ),
+          },
+          {
+            path: 'Inventory',
+            redirectTo: 'inventory',
+            pathMatch: 'prefix',
           },
         ],
       },

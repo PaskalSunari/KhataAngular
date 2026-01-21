@@ -49,6 +49,3 @@ export class AuthGuardService  {
   }
 }
 
-//Note:
-// allowedRoutes → Array of strings (['/dashboard', '/sales/pos', 'organization'])
-// requestedRoute → String ('/dashboard')

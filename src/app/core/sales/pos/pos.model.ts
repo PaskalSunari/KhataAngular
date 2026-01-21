@@ -1,16 +1,20 @@
 export class UnitModel {
-  productCode: string="";
-  flag: number = 0;
-  branch: string="";
-  productId: number =0;
-  unit: string="";
-  batch: string="";
-  rate: number = 0
+    
 }
 
-// export class ProductGroup {
-//   groupID:any=0
-//       groupName:string =''
-//     remarks:any=''
-    
-// }
+export class customerDetailModel {
+    customer:string ='';
+    mailingName:string ='';
+    address:string ='';
+    email:string ='';
+    pan:string ='';
+    creditPeriod:any;
+    date:any;
+    dispatched :any;
+    Destination:any;
+    carrierName:string ='';
+    vehicleNo:any;
+    challanNo:any;
+    RRNo:any;
+    Remarks:any;
+}

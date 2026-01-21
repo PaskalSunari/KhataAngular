@@ -1,0 +1,262 @@
+<div class="page-head-bar">
+    <div class="container-fluid">
+        <div class="row align-items-center flex-wrap">
+            <div class="col-4">Supply Report</div>
+            <div class="col-4"></div>
+            <div class="col-4">
+                <div class="buttons-wrapper d-flex justify-content-end Gap-5">
+                    <!-- <div><button type="button" class="button button-sm btn btn-light ms-1">Demand</button></div>                 -->
+                    <div class="plus-btn" (click)="toggleForm()">
+                        <i class="fa-solid " [ngClass]="isFormVisible ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-body">
+    <div class="container-fluid px-0">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-0">
+                <div class="" id="supply-form-container">
+                    <form class="">
+                        <div class="container-fluid pt-0 px-0 pb-0">
+                            <div class="sales__form-box m-1 pb-4 " *ngIf="isFormVisible">
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <input type="hidden" id="hiddenFromDate" />
+                                        <div class="custom__input-container" id="englishFromDatepicker"
+                                            *ngIf="isDatePickerVisible">
+                                            <input type="date" class="input-field custom__input w-100 req" required
+                                                id="engFromDate" />
+                                            <label>From Date</label>
+                                        </div>
+                                        <div class="custom__input-container" id="nepaliFromDatepicker"
+                                            *ngIf="!isDatePickerVisible">
+                                            <input type="text" class="input-field custom__input w-100 req" required
+                                                id="nepFromtDate" />
+                                            <label>From Date</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <input type="hidden" id="hiddenToDate" />
+                                        <div class="custom__input-container" id="englishToDatepicker"
+                                            *ngIf="isDatePickerVisible">
+                                            <input type="date" class="input-field custom__input w-100 req" required
+                                                id="engToDate" />
+                                            <label>To Date</label>
+                                        </div>
+                                        <div class="custom__input-container" id="nepaliToDatepicker"
+                                            *ngIf="!isDatePickerVisible">
+                                            <input type="text" class="input-field custom__input w-100 req" required
+                                                id="nepaliToDate" />
+                                            <label>To Date</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <div class="custom__input-container">
+                                            <select class="input-field custom__input  w-100 req" id="locationId"
+                                                data-placeholder="--Choose--" required>
+
+                                                <option *ngFor="let item of locationList" [value]="item.locationId">
+                                                    {{item.locationName}}
+                                                </option>
+                                            </select>
+                                            <label>Location</label>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <div class="custom__input-container">
+                                            <select class="input-field custom__input  w-100 req" id="status" required>
+                                                <option value="0">All</option>
+                                                <option value="1">Verified</option>
+                                                <option value="2">Unverified</option>
+                                            </select>
+                                            <label>Status</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-3 col-lg-1 d-flex align-items-center">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <button type="button" #btnSearchSupply id="btnSearchSupply" title="Search"
+                                                (click)="getSupplyList()" (keydown.enter)="getSupplyList()"
+                                                class="button button-sm btn btn-success ms-1">
+                                                <i class="fa-solid fa-rotate-right"></i>
+                                            </button>
+                                            <!--
+                                            <button type="button" class="button-sm btn btn-danger ms-1" title="Reset"
+                                                (click)="resetForm()" id="salesBtn_refresh">
+                                                <i class="fa-solid fa-rotate-left"></i>
+                                            </button> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="filter sales__form-box m-1 pb-0" style="padding-top: 3px !important;">
+                                <div class="row d-flex justify-content-end">
+                                    <div class=" col-sm-4 col-md-3 col-lg-2 mb-1">
+                                        <div class="custom__input-container d-flex align-items-center mt-0">
+                                            <input id="searchSupplyData" type="text" (input)="onSearchData($event)"
+                                                class="form-control custom__input search-icon-padding"
+                                                placeholder="Search" autocomplete="off">
+                                            <button class="search-icon"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table__wrapper  table__wrapper-55 table_xxl-65 mt-0 m-1">
+                                        <table class="table">
+                                            <thead class="table__head">
+                                                <tr>
+                                                    <th width="5%">S.N.</th>
+                                                    <th width="10%">Voucher No</th>
+                                                    <th width="10%">Voucher Date</th>
+                                                    <th width="20%">From Location</th>
+                                                    <th width="20%">To Location</th>
+                                                    <th width="15%">Requested To</th>
+                                                    <th width="10%">Status</th>
+                                                    <th width="10%">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table__body" id="sales-main-table__body">
+                                                <tr *ngFor="let item of supplyList let i=index">
+                                                    <td>{{item?.sn}}</td>
+                                                    <td>{{item?.voucherNo}}</td>
+                                                    <td>{{item?.voucherDate}}</td>
+                                                    <td>{{item?.fromLocationName}}</td>
+                                                    <td>{{item?.toLocationName}}</td>
+                                                    <td>{{item.toUserName}}</td>
+                                                    <td>{{ item?.isAccepted == 1 ? 'Verified' :(item?.isAccepted == 2 ?
+                                                        'Rejected' : 'Unverified' )}}
+                                                    <td>
+                                                        <button type="button" (click)="openSupplyDetailsModel(item)"
+                                                            (keydown.enter)="openSupplyDetailsModel(item)"
+                                                            class="button button--extra-small button--success button--rounded-sm me-2">
+                                                            <i class="fa-regular fa-eye"></i>
+                                                        </button>
+                                                        <button type="button" *ngIf="item?.status"
+                                                            (click)="deleteSupplyConfirmBox(item)"
+                                                            class="button button--extra-small button--danger button--rounded-sm me-2">
+                                                            <i class="fa-solid fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-paginator #paginatorPopup (page)="handlePageEvent($event)" class="demo-paginator"
+                                [length]="length" [pageSize]="pageSize" [disabled]="disabled"
+                                [showFirstLastButtons]="showFirstLastButtons"
+                                [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+                                [hidePageSize]="hidePageSize" [pageIndex]="pageIndex" aria-label="Select page">
+                            </mat-paginator>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Supply Details Modal -->
+<div *ngIf="supplyDetailsPopup">
+    <div class="customPopupContainer" (click)="closeSupplyDetailsPopup()">
+        <div (click)="$event.stopPropagation()"
+            class="customPopup customPopup-product-group customPopup-md-hgt-60 customPopup-md-80"
+            [ngClass]="modalAnimationClass">
+            <span class="closeIcon closeIcon-product-group" (click)="closeSupplyDetailsPopup()">
+                <i class="fa-solid fa-xmark"></i>
+            </span>
+            <div class="modal-body p-2">
+                <div class="page-head-bar">
+                    <div class="container-fluid">
+                        <div class="row align-items-center flex-wrap">
+                            <div class="col-9">Location: {{toLocationName}}</div>
+                            <div class="col-3 pe-3">
+                                <div class="buttons-wrapper d-flex justify-content-end Gap-5">
+                                    <div class="plus-btn" (click)="toggleForm()">
+                                        <!-- <i class="fa-solid " [ngClass]="showManufacturerForm ? 'fa-chevron-up' : 'fa-chevron-down'"></i> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-body">
+                    <div class="container-fluid px-0">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-0">
+                                <div class="" id="sales-form-container">
+                                    <form class="">
+                                        <div class="container-fluid pt-0 px-1 pb-1">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="table__wrapper  table__wrapper-40 table_xxl-65 mt-3">
+                                                        <table class="table">
+                                                            <thead class="table__head">
+                                                                <tr>
+                                                                    <th class="sales-main-table__sn">S.N.</th>
+                                                                    <th class="sales-main-table__item">Type</th>
+                                                                    <th class="sales-main-table__item">Product</th>
+                                                                    <th class="sales-main-batch">Batch</th>
+                                                                    <th class="sales-main-batch">Unit</th>
+                                                                    <th class="sales-main-table__qty">Transaction Qty
+                                                                    </th>
+
+                                                                    <th class="sales-main-expirydate">Status</th>
+                                                                    <th class="sales-main-table__action">Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="table__body" id="sales-main-table__body">
+                                                                <tr *ngFor="let item of supplyDetailsList; let i=index">
+                                                                    <td>{{1+i}}</td>
+                                                                    <td>{{item.supplyTupe==1?'Consume':'Transfer'}}</td>
+                                                                    <td>{{item.productName}}</td>
+                                                                    <td>{{item.batch}}</td>
+                                                                    <td>{{item.unitName}}</td>
+                                                                    <td>{{item.transactionQty}}</td>
+                                                                    <td>{{ item.isAccepted == 1 ? 'Verified'
+                                                                        :(item.isAccepted == 2 ? 'Cancelled' :
+                                                                        'Unverified') }}</td>
+                                                                    <td>
+                                                                        <button type="button"
+                                                                            (click)="verifySupplyConfirmBox(item)"
+                                                                            (keydown.enter)="verifySupplyConfirmBox(item)"
+                                                                            *ngIf="item?.isVerified"
+                                                                            class="button button--extra-small button--success button--rounded-sm me-2"
+                                                                            title="Verify">
+                                                                            <i class="fa-solid fa-check"></i>
+                                                                        </button>
+
+                                                                        <button type="button" *ngIf="item?.isVerified"
+                                                                            (click)="deleteSupplyDetailsConfirmBox(item)"
+                                                                            (keydown.enter)="deleteSupplyDetailsConfirmBox(item)"
+                                                                            class="button button--extra-small button--danger button--rounded-sm me-2"
+                                                                            title="Cancel">
+                                                                            <i class="fa-solid fa-trash"></i>
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

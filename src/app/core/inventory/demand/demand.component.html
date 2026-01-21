@@ -1,0 +1,212 @@
+<div class="page-head-bar">
+    <div class="container-fluid">
+        <div class="row align-items-center flex-wrap">
+            <div class="col-4">Demand</div>
+            <div class="col-4" (dblclick)="openStockDepartmentModel()">{{stockLocationName}}</div>
+            <div class="col-4">
+                <div class="buttons-wrapper d-flex justify-content-end Gap-5">
+                    <div class="plus-btn" (click)="toggleForm()">
+
+                        <i class="fa-solid " [ngClass]="showForm ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-body">
+    <div class="container-fluid px-0">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-0">
+                <div class="" id="sales-form-container">
+                    <form class="" (submit)="$event.preventDefault()">
+                        <div class="container-fluid pt-0 px-1 pb-1">
+                            <div class="sales__form-box m-2 pb-2 " *ngIf="showForm">
+                                <div class="row">
+                                    <!-- <div class="col-sm-4 col-md-4 col-lg-2">
+
+                                        <div class="custom__input-container">
+                                            <select #department class="input-field custom__input  w-100 req" id="requestByDepartment">
+                                                <option disabled selected>Choose</option>
+                                                <option *ngFor=" let data of getDepartmentList" [value] = "data.departmentID">{{data.departmentName}}</option>
+                                            </select>
+                                            <label>Request By Department</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <div class="custom__input-container">
+                                            <select #requestBy class="input-field custom__input  w-100 req" id="requestBY">
+                                                <option disabled selected>Choose</option>
+                                                <option *ngFor="let data of requestedByDropdownList" value="{{data.userID}}">{{data.userName}}</option>
+                                            </select>
+                                            <label>Requested By</label>
+                                        </div>
+                                    </div> -->
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <div class="custom__input-container">
+                                            <select #requestedToDepartment class="input-field custom__input  w-100 req" id="requestedToDepartment">
+                                                <option disabled selected>Choose</option>
+                                                <option *ngFor=" let data of getDepartmentList" [value] = "data.departmentID">{{data.departmentName}}</option>
+                                            </select>
+                                            <label>Requested To Department</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <div class="custom__input-container">
+                                            <select #requestTo class="input-field custom__input  w-100 req" id="requestTo">
+                                                 <option disabled selected>Choose</option>
+                                                <option *ngFor="let data of requestedToDropdownList" value="{{data.userID}}">{{data.userName}}</option>
+                                            </select>
+                                            <label>Requested To</label>
+                                        </div>
+                                    </div>                                    
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <div class="custom__input-container">
+                                            <select #product class="input-field custom__input  w-100 req" id="product">
+                                                <option disabled selected>Choose</option>
+                                                <option *ngFor="let data of productList" [value] = "data.productId">{{data.productName}}</option>
+                                            </select>
+                                            <label>Product</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <div class="custom__input-container">
+                                            <select #unit class="input-field custom__input  w-100 req" id="unit">
+                                                <option disabled selected>Choose</option>
+                                                <option *ngFor="let data of unitList" [value] = "data.unitID">{{data.unitName}}</option>
+                                            </select>
+                                            <label>Unit</label>
+                                        </div>
+                                    </div>
+                                    <div class=" col-sm-4 col-md-3 col-lg-1">
+                                        <div class="custom__input-container d-flex align-items-start flex-column">
+                                            <div class="d-flex align-items-center w-100">
+                                                <input #quantity id="quantity" type="text" class="form-control custom__input"
+                                                    autocomplete="off" style="height: 28px;">
+                                                <span *ngIf="lastAvailableQty !== null" 
+                                                    #availableQtyInfo
+                                                    class="ms-2 text-info"
+                                                    style="cursor: pointer; font-size: 16px;"
+                                                    title="">
+                                                    <i class="fa-solid fa-circle-info"></i>
+                                                </span>
+                                            </div>
+                                            <label>Quantity</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-3 col-lg-1">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <button id="button1" type="button" class="button-sm btn btn-success ms-1"
+                                                title="Insert Item" (click)="addRowToTable()">
+                                                <i class="fa-solid fa-plus"></i>
+                                            </button>
+                                            <!-- <button type="button" class="button-sm btn btn-danger ms-1" title="Reset"
+                                                 (click)="resetForm()" id="salesBtn_refresh" href="">
+                                                <i class="fa-solid fa-rotate-left"></i>
+                                            </button> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table__wrapper  table__wrapper-40 table_xxl-65 mt-3">
+                                        <table class="table">
+                                            <thead class="table__head">
+                                                <tr>
+                                                    <th class="sales-main-table__sn">S.N.</th>
+                                                    <th class="sales-main-table__item">Date</th>
+                                                    <th class="sales-main-table__qty">Requested By</th>
+                                                    <th class="sales-main-batch">Requested To</th>
+                                                    <th class="sales-main-table__action">Particulars</th>
+                                                    <th class="sales-main-table__action">Quantity</th>
+                                                    <th class="sales-main-table__action">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table__body" id="sales-main-table__body">
+                                                <tr *ngIf="tableRows.length === 0">
+                                                    <td colspan="9" class="text-center">No items added yet</td>
+                                                </tr>
+                                                <tr *ngFor="let row of tableRows; let i = index" [ngClass]="{'row-removing' : row.removing}">
+                                                    <td>{{row.sn}}</td>
+                                                    <td>{{row.date}}</td>
+                                                    <!-- <td>{{row.requestByDepartment}}</td> -->
+                                                    <td>{{row.requestedBy}} ({{row.requestByDepartment}})</td>
+                                                    <!-- <td>{{row.category}}</td> -->
+                                                    <td>{{row.requestedTo}} ({{row.category}})</td>
+                                                    <td>{{row.particulars}}</td>
+                                                    <td>{{row.quantity}} {{row.unit}}</td>
+                                                    <td style="position: relative;">
+                                                        <button class="button-sm btn btn-danger" title="Remove" (click)="removeRowFromTable(i)">
+                                                            <i class="fa-solid fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="sales__form-box m-2 pb-2 " *ngIf="showForm">
+                <div class="row">
+                    <div class=" col-sm-4 col-md-3 col-lg-2">
+                        <div class="custom__input-container d-flex align-items-center">
+                            <input #expectedDate class="date-picker__input custom__input" maxlength="10" type="date"
+                                placeholder="yyyy/mm/dd" [value]="today" [min]="today"/>
+                            <label>Expected Date</label>
+                        </div>
+                    </div>
+                    <div class=" col-sm-6 col-md-4 col-lg-4">
+                        <div class="custom__input-container d-flex align-items-center">
+                            <input #remarks id="groupRemarks" type="text" class="form-control custom__input" autocomplete="off">
+                            <label>Remarks</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-3 col-lg-1">
+                        <div class="custom__input-container d-flex align-items-center">
+                            <button id="finalPostButton" type="button" class="button-sm btn btn-success ms-1" title="Insert Item" (click)="FinalPost()">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                            <button type="button" class="button-sm btn btn-danger ms-1" title="Reset"  (click)="resetForm()" id="salesBtn_refresh" href="">
+                                <i class="fa-solid fa-rotate-left"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Location popup -->
+<div *ngIf="isLocationVisible">
+    <div class="customPopupContainer">
+        <div class="customPopup customPopup--location customPopup-md-hgt-40 customPopup-md-30"
+            [ngClass]="modalAnimationClass">
+            <div class="modal-body p-2">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <h2 class="text-center mb-4">Select Location</h2>
+                        <div class="custom__input-container">
+                            <select class="input-field custom__input  w-90 req" id="locationId" name="Nature"
+                                data-placeholder="--Choose--">
+                                <option value=""></option>
+                                <option *ngFor="let item of LocationList" [value]="item.id"
+                                    [attr.data-department-id]="item.departmentId">
+                                    {{ item.text }}
+                                </option>
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

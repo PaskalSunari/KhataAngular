@@ -1,0 +1,163 @@
+<div class="page-head-bar">
+    <div class="container-fluid">
+        <div class="row align-items-center flex-wrap">
+            <div class="col-9">Department Stock Location Mapping</div>
+            <div class="col-3">
+                <div class="buttons-wrapper d-flex justify-content-end Gap-5">
+                    <!-- <button class="btn btn-success button-sm"><i class="fa-solid fa-file-pdf"></i></button>
+                    <button class="btn button-info button-sm"><i class="fa-solid fa-file-csv"></i></button>
+                    <button class="btn btn-danger button-sm"><i class="fa-solid fa-print"></i></button> -->
+                    <div class="plus-btn" (click)="toggleForm()">
+                        <i class="fa-solid " [ngClass]="isFormVisible ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-body">
+    <div class="container-fluid px-0">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-0">
+                <div class="" id="sales-form-container">
+                    <form class="">
+                        <div class="container-fluid pt-0 px-0 pb-0">
+                            <div class="sales__form-box m-1 pb-4 " *ngIf="isFormVisible">
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <div class="custom__input-container">
+                                            <select class="input-field custom__input  w-100 req" id="departmentId"
+                                                name="Department" data-placeholder="--Choose--" required>
+                                                <option value=""></option>
+                                                <option *ngFor="let item of DepartmentList"
+                                                    value="{{item.departmentID}}">{{item.departmentName}}</option>
+                                            </select>
+                                            <label>Department</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <div class="custom__input-container">
+                                            <select class="input-field custom__input  w-100 req" id="userId" name="User"
+                                                data-placeholder="--Choose--" required>
+                                                <option value=""></option>
+                                                <option *ngFor="let item of UserList" value="{{item.userId}}">
+                                                    {{item.userName}}</option>
+                                            </select>
+                                            <label>User</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-2" *ngIf="!isSelect2Show">
+                                        <div class="custom__input-container">
+                                            <ng-multiselect-dropdown id="multiLocationId" name="Variable Multi Option"
+                                                [placeholder]="'Choose'" class="w-100" [data]="this.StockLocationList"
+                                                [settings]="multidropdownSettings"
+                                                [(ngModel)]="service.storeLocationModel.multiSelectValue">
+                                            </ng-multiselect-dropdown>
+
+
+                                            <label>Location</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-2" *ngIf="isSelect2Show">
+                                        <div class="custom__input-container">
+                                            <select multiple class="input-field custom__input  w-100 req"
+                                                id="storeLocationId" name="Location" data-placeholder="--Choose--"
+                                                required>
+                                                <option value=""></option>
+                                                <option *ngFor="let item of StockLocationList"
+                                                    value="{{item.locationId}}">{{item.locationName}}</option>
+                                            </select>
+                                            <label>Location</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4 col-md-4 col-lg-2">
+                                        <div class="custom__input-container">
+                                            <select class="input-field custom__input  w-100 req" id="status"
+                                                (change)="service.storeLocationModel.status = $any($event.target).value">
+                                                <option value="1">Active</option>
+                                                <option value="0">InActive</option>
+                                            </select>
+                                            <label>Status</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-md-3 col-lg-1  d-flex align-items-center">
+                                        <div class="custom__input-container d-flex align-items-center">
+                                            <button type="button" id="button" (click)="onSubmitData()"
+                                                class="button button-sm btn btn-success ms-1">
+                                                <i *ngIf="!isEditMode" class="fa-solid fa-save"></i>
+                                                <i *ngIf="isEditMode" class="fa-solid fa-rotate-right"></i>
+                                            </button>
+                                            <button type="button" class="button-sm btn btn-danger ms-1" title="Reset"
+                                                (click)="resetForm()" id="salesBtn_refresh">
+                                                <i class="fa-solid fa-rotate-left"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="filter sales__form-box m-1 pb-0" style="padding-top: 3px !important;">
+                                <div class="row d-flex justify-content-end">
+                                    <div class=" col-sm-4 col-md-3 col-lg-2 mb-1">
+                                        <div class="custom__input-container d-flex align-items-center mt-0">
+                                            <input id="mappingSearchString" type="text" (input)="onSearchData($event)"
+                                                class="form-control custom__input search-icon-padding"
+                                                placeholder="Search" autocomplete="off">
+                                            <button class="search-icon"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table__wrapper  table__wrapper-55 table_xxl-65 mt-0 m-1">
+                                        <table class="table">
+                                            <thead class="table__head">
+                                                <tr>
+                                                    <th class="sales-main-table__sn">S.N.</th>
+                                                    <th class="sales-main-table__item">Stock Location</th>
+                                                    <th class="sales-main-table__qty">Store</th>
+                                                    <th class="sales-main-batch">User</th>
+                                                    <th class="sales-main-expirydate">Status</th>
+                                                    <th class="sales-main-table__action">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table__body" id="sales-main-table__body">
+                                                <tr *ngFor="let item of DepartmentStockLocationMappingList let i=index">
+                                                    <td>{{item.sn}}</td>
+                                                    <td>{{item.locationName}}</td>
+                                                    <td>{{item.departmentName}}</td>
+                                                    <td>{{item.userName}}</td>
+                                                    <td>{{item.status?'Active':'InActive'}}</td>
+                                                    <td>
+                                                        <button type="button"
+                                                            (click)="getById(item?.id, item?.branchId,item?.userId)"
+                                                            class="button button--extra-small button--success button--rounded-sm me-2">
+                                                            <i class="fa-regular fa-pen-to-square"></i>
+                                                        </button>
+                                                        <button type="button"
+                                                            class="button button--extra-small button--danger button--rounded-sm me-2"
+                                                            (click)="deleteConfirmBox(item?.id, item?.branchId)">
+                                                            <i class="fa-solid fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-paginator #paginatorPopup (page)="handlePageEvent($event)" class="demo-paginator"
+                                [length]="length" [pageSize]="pageSize" [disabled]="disabled"
+                                [showFirstLastButtons]="showFirstLastButtons"
+                                [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+                                [hidePageSize]="hidePageSize" [pageIndex]="pageIndex" aria-label="Select page">
+                            </mat-paginator>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
