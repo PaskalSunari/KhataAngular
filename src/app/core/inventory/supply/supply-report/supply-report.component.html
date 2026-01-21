@@ -130,7 +130,7 @@
                                                     <td>{{item?.toLocationName}}</td>
                                                     <td>{{item.toUserName}}</td>
                                                     <td>{{ item?.isAccepted == 1 ? 'Verified' :(item?.isAccepted == 2 ?
-                                                        'Rejected' : 'Unverified') }}</td>
+                                                        'Rejected' : 'Unverified' )}}
                                                     <td>
                                                         <button type="button" (click)="openSupplyDetailsModel(item)"
                                                             (keydown.enter)="openSupplyDetailsModel(item)"
