@@ -25,11 +25,11 @@
                             <div class="row">
                                 <div class="col-sm-4 col-md-4 col-lg-2">
                                     <div class="custom__input-container">
-                                        <select class="input-field custom__input  w-100 req" id="demandId"
-                                            name="demandId" data-placeholder="--Choose--" required>
+                                        <select class="input-field custom__input   req " id="demandId" aria-hidden="true"
+                                            data-placeholder="--Choose--" [disabled]="isDisabled"
+                                            required>
                                             <option *ngFor="let item of demandList" value="{{item?.demandMasterId}}">
-                                                {{item?.VoucherNo}}</option>
-
+                                                {{item?.voucherNo}}</option>
                                         </select>
                                         <label>Demand List</label>
                                     </div>
@@ -37,7 +37,8 @@
                                 <div class="col-sm-4 col-md-4 col-lg-3">
                                     <div class="custom__input-container">
                                         <select class="input-field custom__input  w-100 req" id="fromLocationId"
-                                            name="fromLocation" data-placeholder="--Choose--" required>
+                                            name="fromLocation" data-placeholder="--Choose--" [disabled]="isDisabled"
+                                            required>
                                             <option value=""></option>
                                             <option *ngFor="let item of fromLocationList" value="{{item.locationId}}">
                                                 {{item.locationName}}</option>
@@ -48,7 +49,8 @@
                                 <div class="col-sm-4 col-md-4 col-lg-3">
                                     <div class="custom__input-container">
                                         <select class="input-field custom__input  w-100 req" id="toLocationId"
-                                            name="toLocationId" data-placeholder="--Choose--" required>
+                                            name="toLocationId" data-placeholder="--Choose--" [disabled]="isDisabled"
+                                            required>
                                             <option value=""></option>
                                             <option *ngFor="let item of toLocationList" value="{{item.locationId}}">
                                                 {{item.locationName}}</option>
@@ -56,10 +58,21 @@
                                         <label>To Location</label>
                                     </div>
                                 </div>
+                                <div class="col-sm-4 col-md-4 col-lg-1">
+                                    <div class="custom__input-container">
+                                        <select class="input-field custom__input  w-100 req" id="requestedTo"
+                                             data-placeholder="--Choose--" [disabled]="isDisabledToUser" required>
+                                            <option value=""></option>
+                                            <option *ngFor="let item of requestedToList" value="{{item.userId}}">
+                                                {{item.userName}}</option>
+                                        </select>
+                                        <label>Requested To</label>
+                                    </div>
+                                </div>                                
                                 <div class="col-sm-4 col-md-4 col-lg-2">
                                     <div class="custom__input-container">
                                         <select class="input-field custom__input  w-100 req" id="assignedToUserId"
-                                            name="User" data-placeholder="--Choose--" required>
+                                            name="User" data-placeholder="--Choose--" [disabled]="isDisabled" required>
                                             <option value=""></option>
                                             <option *ngFor="let item of assignedToList" value="{{item.userId}}">
                                                 {{item.userName}}</option>
@@ -71,7 +84,11 @@
                                     class="col-sm-4 col-md-3 col-lg-1 d-flex align-items-center justify-content-left text-left">
                                     <div class="custom__input-container d-flex align-items-center">
                                         <button type="button" id="button" class="button button-sm btn btn-success ms-1"
-                                            (click)="loadDemandDataIntoSupply()">
+                                            (click)="transformDemandToSupply()">
+                                            <i class="fa-solid fa-rotate-right"></i>
+                                        </button>
+                                        <button type="button" id="button" class="button button-sm btn btn-danger ms-1"
+                                            (click)="resetSupply()">
                                             <i class="fa-solid fa-rotate-left"></i>
                                         </button>
                                     </div>
@@ -101,27 +118,79 @@
                                                     <div
                                                         class="d-flex align-items-center justify-content-center text-center">
                                                         <label class="me-2 mb-0">Type</label>
-                                                        <select class="custom__select2" id="supplyType"
-                                                            name="transferType" data-placeholder="--Choose--">
+                                                        <!-- <select class="custom__select2" id="supplyType"
+                                                            data-placeholder="--Choose--">
                                                             <option value=""></option>
-                                                            <option value="1">Consumer</option>
-                                                            <option value="2">Transfer</option>
-                                                        </select>
+                                                            <option *ngFor="let item of transferTypeList"
+                                                                [value]="item.id">{{ item.name }}</option>
+                                                        </select> -->
                                                     </div>
                                                 </th>
-
-                                                <th class="sales-main-table__qty">Batch</th>
+                                                <th class="sales-main-table__qty">Product Name</th>
+                                                <th class="sales-main-table__qty" style="width: 150px !important;">Batch
+                                                </th>
                                                 <th class="sales-main-batch">Unit</th>
-                                                <th class="sales-main-batch">Req. Qty</th>
-                                                <th class="sales-main-batch">Qty</th>
-                                                <th class="sales-main-batch">Aviable Qty</th>
-                                                <th class="sales-main-batch">Satus</th>
+                                                <th class="sales-main-batch" title="Demand Qty">Req. Qty</th>
+                                                <th style="width: 75px !important" title="Input Qty">Qty</th>
+                                                <th class="sales-main-batch" title="Stock Qty">Available Qty</th>
+                                                <th class="sales-main-batch">Remarks</th>
                                                 <th class="sales-main-table__action">Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody class="table__body" id="sales-main-table__body">
-                                            <tr>
 
+                                        <tbody class="table__body" id="sales-main-table__body">
+                                            <tr *ngFor="let item of supplyDetailsList; let i = index">
+                                                <td>{{ i + 1 }}</td>
+                                                <td>
+                                                    <select class="transferType-select from-select"
+                                                        id="transferType{{i}}" [attr.data-index]="i"
+                                                        [disabled]="item?.stockInfoList.length === 0">
+                                                        <option value="0">--Choose--</option>
+                                                        <option *ngFor="let item of transferTypeList" [value]="item.id"
+                                                            [attr.data-transferType]="item?.id">{{ item.name }}</option>
+                                                    </select>
+                                                </td>
+                                                <td>{{ item?.productName }}</td>
+                                                <!-- Batch dropdown -->
+                                                <td>
+                                                    <select class="batch-select form-select"
+                                                        [disabled]="item?.stockInfoList.length === 0" id="batch{{i}}"
+                                                        [attr.data-index]="i">
+                                                        <option value="">--Choose--</option>
+
+                                                        <option *ngFor="let stock of item?.stockInfoList"
+                                                            [attr.data-stock]="stock?.stockQty" [value]="stock?.batch">
+                                                            {{ stock.batch }} (Qty: {{truncateDecimal(stock?.stockQty)}} )
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>{{ item?.units }}</td>
+                                                <td>{{item?.demandTransactionQty}} <span style="color: blue;">({{ item?.transactionQty }} Left) </span></td>
+                                                <!-- Qty input -->
+                                                <td [attr.data-index]="i">
+                                                    <input type="number" class="form-control qty-input"
+                                                        [disabled]="item?.stockInfoList.length === 0 "
+                                                        id="inputQty{{i}}" style="width: 100px !important;"
+                                                        [attr.data-index]="i">
+                                                </td>
+                                                
+                                                <td>{{ truncateDecimal(item?.remainingQty) }}</td>
+                                                  <td [attr.data-index]="i">
+                                                    <textarea rows="1" id="details-remarks{{i}}" class="form-control details-remasks" [attr.data-index]="i" style="width: 190px !important;">{{item?.remarks}}</textarea>                                                 
+                                                </td>
+                                                <td>
+                                                    <button type="button" id="save{{i}}"
+                                                        [disabled]="item?.stockInfoList.length === 0 || isBtnDisabled"
+                                                        [attr.data-supplydetailsid]="item?.supplyDetailsId"
+                                                        class="button button--extra-small button--success button--rounded-sm me-2">
+                                                        <i class="fa-solid fa-save"></i>
+                                                    </button>
+                                                    <button type="button" id="delete{{i}}"
+                                                        [attr.data-supplydetailsid]="item?.supplyDetailsId"
+                                                        class="button button--extra-small button--danger button--rounded-sm me-2">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -134,7 +203,6 @@
                                     <div class="custom__input-container">
                                         <textarea class="input-field custom__input  w-100" id="narration"
                                             style="height: 50px !important;">
-
                                         </textarea>
                                         <label>Narration</label>
                                     </div>
@@ -142,13 +210,16 @@
                                 <div
                                     class="col-sm-4 col-md-3 col-lg-1 d-flex align-items-center justify-content-left text-left">
                                     <div class="custom__input-container d-flex align-items-center">
-                                        <button type="button" id="button" class="button button-sm btn btn-success ms-1">
+                                        <button type="button" id="btnPosting" class="button btn-lg btn btn-success ms-1"
+                                        [disabled]="isSubmitDisabled"    
+                                          (keydown.enter)="postingSupply()"
+                                        (click)="postingSupply()">
                                             <i class="fa-solid fa-save"></i>
                                         </button>
-                                         <button type="button" id="button" class="button button-sm btn btn-danger ms-1">
-                                              <i class="fa-solid fa-trash"></i>
+                                        <button type="button" id="btnDelete" [disabled]="isSubmitDisabled"
+                                            (click)="deleteSupply()" class="button btn-lg btn btn-danger ms-1">
+                                            <i class="fa-solid fa-trash"></i>
                                         </button>
-                                        
                                     </div>
                                 </div>
                             </div>

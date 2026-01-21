@@ -12,9 +12,11 @@ import { ProductCreationComponent } from './Product/product-creation/product-cre
 import { SupplyComponent } from './supply/supply/supply.component';
 import { DeptStockLocationMappingComponent } from './dept-stock-location-mapping/dept-stock-location-mapping.component';
 import { PurchaseOrderComponent } from './Purchase/purchase-order/purchase-order.component';
+import { SupplyReportComponent } from './supply/supply-report/supply-report.component';
+import { DemandReportComponent } from './demand-report/demand-report.component';
 
 const routes: Routes = [
- {
+  {
     path: 'productgroup',
     component: ProductGroupComponent,
   },
@@ -22,38 +24,38 @@ const routes: Routes = [
     path: 'productcategory',
     component: ProductCategoryComponent,
   },
-   {
+  {
     path: 'productunit',
     component: ProductUnitComponent,
   },
-   {
+  {
     path: 'productmanufacture',
     component: ProductManufacturerComponent,
   },
-   {
+  {
     path: 'productbrand',
     component: ProductBrandComponent,
   },
-   {
+  {
     path: 'productmodel',
     component: ProductModelComponent,
   },
-   {
+  {
     path: 'productsize',
     component: ProductSizeComponent,
   },
-   {
+  {
     path: 'demand',
     component: DemandComponent,
   },
-    {
+  {
     path: 'productcreate',
     component: ProductCreationComponent,
   },
   {
-    path:'supply',
-    component:SupplyComponent
-  },
+    path: 'supply',
+    component: SupplyComponent
+  },  
   {
     path:'deptstocklocationmapping',
     component:DeptStockLocationMappingComponent
@@ -62,6 +64,14 @@ const routes: Routes = [
     path: 'purchaseorder',
     component: PurchaseOrderComponent,
   },
+  {
+    path: 'supply-report',
+    component: SupplyReportComponent
+  },
+  {
+    path: 'demand-report',
+    component: DemandReportComponent
+  }
 ];
 
 @NgModule({
@@ -70,4 +80,4 @@ const routes: Routes = [
 })
 export class InventoryRoutingModule {
 
- }
+}
