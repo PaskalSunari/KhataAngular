@@ -168,7 +168,7 @@ export class SupplyReportComponent implements OnInit, AfterViewInit {
       this.fromDate = fromDateValue ? fromDateValue : this.fromDate;
       this.toDate = toDateValue ? toDateValue : this.toDate;
 
-      console.log('From Date:', this.fromDate, 'To Date:', this.toDate, 'Location ID:', this.locationId, 'Status:', this.status);
+      //console.log('From Date:', this.fromDate, 'To Date:', this.toDate, 'Location ID:', this.locationId, 'Status:', this.status);
       const payload = {
         userId: this.userId,
         branchId: this.branchId,

@@ -123,8 +123,7 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
     };
 
     this.service.getDepartmentList(payload).subscribe((res: any) => {
-      const data = res?.data;
-      console.log('data:', data);
+      const data = res?.data;      
       if (data && data.length > 0) {
         this.DepartmentList = res?.data;
       } else {
@@ -212,8 +211,7 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
 
     this.hasSubmit = true;
     if (this.hasSubmit) {
-      this.service.insertUpdate(payload).subscribe((res: any) => {
-        console.log('res: ', res);
+      this.service.insertUpdate(payload).subscribe((res: any) => {        
         this.hasSubmit = false;
         if (res && res.status == 200) {
           this.toastr.success(res?.message);
@@ -256,8 +254,7 @@ export class DeptStockLocationMappingComponent implements AfterViewInit, OnInit 
 
       } else {
         this.toastr.error(res.message);
-      }
-      console.log('GetById:', res);
+      }      
     })
   }
 
