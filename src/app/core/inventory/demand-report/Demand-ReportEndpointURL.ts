@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class DemandReportEndpointURL {
-   locationList :string= `Inventory/DemandReport/LocationList?branchId=`
+  public readonly locationList :string= `Inventory/DemandReport/LocationList?branchId=`;
+  public readonly demandList :string= `Inventory/users/{userId}/demand-reports`;
  
 }
