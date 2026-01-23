@@ -44,7 +44,7 @@
                                             <select class="input-field custom__input  w-100 req" id="locationId"
                                                 required [(ngModel)]="selectedLocationId" name="locationId" (change)="onLocationChange($event)">
 
-                                                
+                                                <option [ngValue]="null" selected>--Choose--</option>
                                                 <option *ngFor="let location of locationList" [value]="location.locationId">{{ location.locationName }}</option>
                                             </select>
                                             <label>Location</label>
@@ -103,23 +103,38 @@
                                                 </tr>
                                             </thead>
                                             <tbody class="table__body" id="sales-main-table__body">
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
+                                                <tr *ngFor="let item of demandReportList; let i = index">
+                                                    <td>{{i + 1}}</td>
+                                                    <td>{{item.voucherNo}}</td>
+                                                    <td>{{item.entryDate | date: 'yyyy-MM-dd'}}</td>
+                                                    <td>{{item.requestFromDept}}</td>
+                                                    <td>{{item.requestedToDept}}</td>
+                                                    <td>{{item.requestedTo}}</td>
+                                                    <td>
+                                                        <span [ngClass]="item.status ? 'text-success' : 'text-danger'">
+                                                            {{ item.status ? 'Verified' : 'Unverified' }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <button class="button button-sm btn btn-info me-1" title="View" (click)="onView(item)">
+                                                            <i class="fa fa-eye"></i>
+                                                        </button>
+                                                        <button class="button button-sm btn btn-warning me-1"  title="Edit"  (click)="onEdit(item)">
+                                                            <i class="fa fa-edit"></i>
+                                                        </button>
+                                                        <button class="button button-sm btn btn-danger" title="Delete" (click)="onDelete(item)">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="demandReportList.length === 0">
+                                                    <td colspan="8" class="text-center">No records found.</td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-                            </div>
-                          
+                            </div>                          
                         </div>
                     </form>
                 </div>

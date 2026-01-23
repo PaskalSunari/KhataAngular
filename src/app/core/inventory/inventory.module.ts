@@ -20,6 +20,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { PurchaseOrderComponent } from './Purchase/purchase-order/purchase-order.component';
 import { SupplyReportComponent } from './supply/supply-report/supply-report.component';
 import { DemandReportComponent } from './demand-report/demand-report.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -45,8 +47,9 @@ import { DemandReportComponent } from './demand-report/demand-report.component';
     SharedModule,
     FormsModule,
     MatPaginatorModule,
-      NgMultiSelectDropDownModule,
-  
+    NgMultiSelectDropDownModule,
+    MatSelectModule,
+    MatFormFieldModule  
 ]
 })
 export class InventoryModule { }
