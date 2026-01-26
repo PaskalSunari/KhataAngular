@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DemandReportService } from './Service/demand-report.service';
 import { error } from 'jquery';
 
@@ -6,7 +6,7 @@ import { error } from 'jquery';
   selector: 'app-demand-report',
   templateUrl: './demand-report.component.html'
 })
-export class DemandReportComponent implements OnInit  {
+export class DemandReportComponent implements OnInit {
   locationList: any[] = [];
   demandReportList: any[] = [];
   selectedLocationId: number | null = null;
@@ -19,38 +19,54 @@ export class DemandReportComponent implements OnInit  {
   toggleForm() {
     this.isFormVisible = !this.isFormVisible;
   }
-  loadLocations (){
+  loadLocations() {
     this.demandReportService.getLocationDropdownList().subscribe({
-      next: (Location:any) => this.locationList = Location.result,
-      error: (error:any) => console.error('Error fetching location list:', error)
+      next: (Location: any) => this.locationList = Location.result,
+      error: (error: any) => console.error('Error fetching location list:', error)
     })
-    console.log(this.locationList,"location list");
-    
+    console.log(this.locationList, "location list");
+
   }
-  loadDemandReports(){
+  loadDemandReports() {
     this.demandReportService.getDemandReportList().subscribe({
       next: (response: any) => {
-        this.demandReportList =   response?.result ?? [];
+        this.demandReportList = response?.result ?? [];
       },
-      error: (error) =>{
+      error: (error) => {
         console.error('Error fetching demand report list:', error);
       }
     });
   }
-  onView(item: any){
+  onView(item: any) {
     console.log('View button clicked for item:', item);
   }
-  onEdit(item: any){
+  onEdit(item: any) {
     console.log('Edit button clicked for item:', item);
   }
-  onDelete(item: any){
+  onDelete(item: any) {
     const isConfirmed = confirm('Are you sure you want to delete this item?');
-    if (!isConfirmed){
+    if (!isConfirmed) {
       return;
     }
-    console.log('Delete button clicked for item:', item); 
+    console.log('Delete button clicked for item:', item);
   }
   onLocationChange(event: any) {
     this.selectedLocationId = event.target.value ? +event.target.value : null;
   }
+
+  modalAnimationClass = '';
+  demandReportPopup: boolean = false;
+  openDemandreportModel() {
+    this.demandReportPopup = true;
+    this.modalAnimationClass = 'modal-enter';
+
+  }
+
+  closeDemandPopup() {
+    this.modalAnimationClass = 'modal-exit';
+    this.demandReportPopup = false;
+  }
+
+
+
 }
