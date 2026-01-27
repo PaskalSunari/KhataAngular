@@ -9,8 +9,12 @@ import { error } from 'jquery';
 export class DemandReportComponent implements OnInit {
   locationList: any[] = [];
   demandReportList: any[] = [];
+  demandDetails: any[] = [];
   selectedLocationId: number | null = null;
   isFormVisible: boolean = true;
+  isLoadingDetails: boolean = false;
+  modalAnimationClass = '';
+  demandReportPopup: boolean = false;
   constructor(private demandReportService: DemandReportService) { }
   ngOnInit(): void {
     this.loadLocations();
@@ -24,7 +28,6 @@ export class DemandReportComponent implements OnInit {
       next: (Location: any) => this.locationList = Location.result,
       error: (error: any) => console.error('Error fetching location list:', error)
     })
-    console.log(this.locationList, "location list");
 
   }
   loadDemandReports() {
@@ -37,25 +40,35 @@ export class DemandReportComponent implements OnInit {
       }
     });
   }
-  onView(item: any) {
-    console.log('View button clicked for item:', item);
+
+  onView(demandMasterID: number): void {
+    this.openDemandreportModel();
+    this.demandDetails = [];
+    this.demandReportService.getDemandReportDetails(demandMasterID).subscribe({
+      next: (response: any) => {
+        this.demandDetails = response?.result ?? [];
+        this.isLoadingDetails = false;
+       
+      },
+      error: (error) => {
+        console.error('Error fetching demand report details:', error);
+        this.isLoadingDetails = false;
+      }
+    });
   }
-  onEdit(item: any) {
-    console.log('Edit button clicked for item:', item);
-  }
+
   onDelete(item: any) {
     const isConfirmed = confirm('Are you sure you want to delete this item?');
     if (!isConfirmed) {
       return;
     }
-    console.log('Delete button clicked for item:', item);
+   
   }
   onLocationChange(event: any) {
     this.selectedLocationId = event.target.value ? +event.target.value : null;
   }
 
-  modalAnimationClass = '';
-  demandReportPopup: boolean = false;
+ 
   openDemandreportModel() {
     this.demandReportPopup = true;
     this.modalAnimationClass = 'modal-enter';

@@ -119,7 +119,7 @@
                                                     <td>
                                                         <button (click)="openDemandreportModel()"
                                                             class="button button-sm btn btn-info me-1" title="View"
-                                                            (click)="onView(item)">
+                                                            (click)="onView(item.demandMasterID)">
                                                             <i class="fa fa-eye"></i>
                                                         </button>
                                                         <!-- <button class="button button-sm btn btn-warning me-1"
@@ -162,7 +162,7 @@
                 <div class="page-head-bar">
                     <div class="container-fluid">
                         <div class="row align-items-center flex-wrap">
-                            <div class="col-9">Location:</div>
+                            <!-- <div class="col-9">Location:</div> -->
                             <div class="col-3 pe-3">
                                 <div class="buttons-wrapper d-flex justify-content-end Gap-5">
                                     <div class="plus-btn" (click)="toggleForm()">
@@ -187,9 +187,7 @@
                                                             <thead class="table__head">
                                                                 <tr>
                                                                     <th class="sales-main-table__sn">S.N.</th>
-                                                                    <th class="sales-main-table__item">Type</th>
                                                                     <th class="sales-main-table__item">Product</th>
-                                                                    <th class="sales-main-batch">Batch</th>
                                                                     <th class="sales-main-batch">Unit</th>
                                                                     <th class="sales-main-table__qty">Transaction Qty
                                                                     </th>
@@ -199,14 +197,12 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody class="table__body" id="sales-main-table__body">
-                                                                <tr>
-                                                                    <td></td>
-                                                                    <td></td>
-                                                                    <td></td>
-                                                                    <td></td>
-                                                                    <td></td>
-                                                                    <td></td>
-                                                                    <td></td>
+                                                                <tr *ngFor="let detail of demandDetails; let i = index">
+                                                                    <td>{{i + 1}}</td>
+                                                                    <td>{{detail.productName}}</td>
+                                                                    <td>{{detail.formalName}}</td>
+                                                                    <td>{{detail.transactionQty}}</td>
+                                                                    <td>{{detail.status}}</td>
                                                                     <td class= "text-center action-cell">
                                                                         <button type="button"
                                                                             class="btn btn-success btn-lg verify-btn me-3"
