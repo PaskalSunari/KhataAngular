@@ -21,12 +21,20 @@ export class DemandReportService {
   }
   getLocationDropdownList() {
     const branchID = this.getBranchId();
-    const url = `${this.baseUrl}${this.endPoint.locationList}${branchID}`;
+    const userId = this.getuserId();
+    const endPoint = this.endPoint.locationList.replace('{userId}', userId).replace('{branchId}', branchID);
+    const url = `${this.baseUrl}${endPoint}`;
     return this.http.get(url);
   }
   getDemandReportList() {
     const userId = this.getuserId();
     const endPoint = this.endPoint.demandList.replace('{userId}', userId);
+    const url = `${this.baseUrl}${endPoint}`;
+    return this.http.get(url);
+  }
+  getDemandReportDetails(demandMasterId: number) {
+    const userId = this.getuserId();
+    const endPoint = this.endPoint.demandDetails.replace('{userId}', userId).replace('{demandMasterId}', demandMasterId.toString());
     const url = `${this.baseUrl}${endPoint}`;
     return this.http.get(url);
   }
