@@ -122,10 +122,6 @@
                                                             (click)="onView(item.demandMasterID)">
                                                             <i class="fa fa-eye"></i>
                                                         </button>
-                                                        <!-- <button class="button button-sm btn btn-warning me-1"
-                                                            title="Edit" (click)="onEdit(item)">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button> -->
                                                         <button class="button button-sm btn btn-danger" title="Delete"
                                                             (click)="onDelete(item)">
                                                             <i class="fa fa-trash"></i>
@@ -202,11 +198,13 @@
                                                                     <td>{{detail.productName}}</td>
                                                                     <td>{{detail.formalName}}</td>
                                                                     <td>{{detail.transactionQty}}</td>
-                                                                    <td>{{detail.status}}</td>
+                                                                    <td>{{detail.status ? 'Verified' : 'Pending'}}</td>
                                                                     <td class= "text-center action-cell">
                                                                         <button type="button"
                                                                             class="btn btn-success btn-lg verify-btn me-3"
                                                                             title="Verify Transaction"
+                                                                            (click)="OnVerify()"
+                                                                            [disabled]="detail.status"
                                                                             >
                                                                             <i class="fa-solid fa-circle-check me-2"></i>
                                                                             Verify

@@ -38,4 +38,10 @@ export class DemandReportService {
     const url = `${this.baseUrl}${endPoint}`;
     return this.http.get(url);
   }
+  updateVerificationStatus(demandMasterId: number){
+    const userId = this.getuserId();
+    const endPoint = this.endPoint.updateVerificationStatus.replace('{userId}', userId).replace('{demandMasterId}', demandMasterId.toString());
+    const url = `${this.baseUrl}${endPoint}`;
+    return this.http.put<void>(url, {});
+  }
 }

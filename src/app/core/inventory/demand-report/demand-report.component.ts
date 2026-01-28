@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DemandReportService } from './Service/demand-report.service';
-import { error } from 'jquery';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-demand-report',
@@ -15,7 +15,10 @@ export class DemandReportComponent implements OnInit {
   isLoadingDetails: boolean = false;
   modalAnimationClass = '';
   demandReportPopup: boolean = false;
-  constructor(private demandReportService: DemandReportService) { }
+  demandMasterId!:number;
+
+  constructor(private demandReportService: DemandReportService,
+     private toastr: ToastrService ) { }
   ngOnInit(): void {
     this.loadLocations();
     this.loadDemandReports();
@@ -42,6 +45,7 @@ export class DemandReportComponent implements OnInit {
   }
 
   onView(demandMasterID: number): void {
+    this.demandMasterId = demandMasterID;
     this.openDemandreportModel();
     this.demandDetails = [];
     this.demandReportService.getDemandReportDetails(demandMasterID).subscribe({
@@ -79,7 +83,25 @@ export class DemandReportComponent implements OnInit {
     this.modalAnimationClass = 'modal-exit';
     this.demandReportPopup = false;
   }
-
-
-
+  OnVerify(): void{
+    if (!this.demandMasterId)
+      {
+        console.error('Invalid demandMasterId for verification.');
+        return;
+      }
+    this.demandReportService.updateVerificationStatus(this.demandMasterId).subscribe({
+      next: () => {
+        this.toastr.success('Demand report verified successfully.');
+        this.demandDetails = this.demandDetails.map(detail => ({
+          ...detail,
+          status : true
+        }));
+        this.loadDemandReports();
+      },
+      error: (error) => {
+        console.error('Error verifying demand report:', error);
+        this.toastr.error('Failed to verify demand report. Please try again.');
+      }
+    });
+  }
 }
