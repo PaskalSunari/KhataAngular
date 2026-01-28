@@ -7,4 +7,5 @@ export class DemandReportEndpointURL {
   public readonly locationList :string= `Inventory/users/{userId}/demand-reports/branches/{branchId}/locations`;
   public readonly demandList :string= `Inventory/users/{userId}/demand-reports`;
   public readonly demandDetails: string = `Inventory/users/{userId}/demand-reports/{demandMasterId}/details`;
+  public readonly updateVerificationStatus: string = `Inventory/users/{userId}/demand-reports/{demandMasterId}/verify`;
 }
